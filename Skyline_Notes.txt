@@ -1,0 +1,96 @@
+
+
+c:\ctwoplus\progcode\allegro\Skyline\src>grep -r -E -I -n difficulty_radio .\*.*
+.\Game.cpp:33:   difficulty_radio.SetDrawPos(x , (maxheight - difficulty_radio.Area().H())/2);
+.\Game.cpp:34:   x += difficulty_radio.Area().W() + padding;
+.\Game.cpp:38:   WidgetBase::SetDrawDimensions(setting_text_width + padding + difficulty_radio.Area().W() + padding +
+.\Game.cpp:46:   int h = difficulty_radio.Area().H();
+.\Game.cpp:60:      difficulty_radio(string(description) + " - radio" , RADIO_HORIZONTAL , Rectangle(0,0,1,1) , padding),
+.\Game.cpp:85:   int msg = difficulty_radio.CheckInputs(msx,msy).Messages();
+.\Game.cpp:99:   difficulty_radio.DisplayOn(bmp , x + lx , y + ly);
+.\Game.cpp:107:   const WidgetMsg radio_click(&difficulty_radio , TOPIC_RADIO_BUTTON , RADIO_BTN_CLICKED);
+.\Game.cpp:111:      difficulty = (DIFFICULTY)difficulty_radio.ActiveItemIndex();
+.\Game.cpp:203:   difficulty_radio.ClearItems();
+.\Game.cpp:204:   difficulty_radio.SetDrawDimensions(NUM_DIFFICULTIES*btn_up->w + (NUM_DIFFICULTIES - 1)*padding , btn_up->h);
+.\Game.cpp:210:      difficulty_radio.AddItem(iconbtn , true);
+.\Game.cpp:212:   difficulty_radio.SetActiveItem(UINT(difficulty));
+.\Game.cpp:243:   difficulty_radio.SetActiveItem(UINT(difficulty));
+.\Game.hpp:45:   GenericRadioButton difficulty_radio;
+.\Game.hpp:101:   DIFFICULTY SelectedDifficulty() {return (DIFFICULTY)difficulty_radio.ActiveItemIndex();}
+.\Game.hpp:103:   Rectangle RadioButtonArea(DIFFICULTY d) {return difficulty_radio.ItemIndexToButton(d)->Area();}
+
+c:\ctwoplus\progcode\allegro\Skyline\src>
+
+
+c:\ctwoplus\progcode\allegro\Skyline>gdb SkylineDebug.exe
+GNU gdb (GDB) 7.3
+Copyright (C) 2011 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "mingw32".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from c:\ctwoplus\progcode\allegro\skyline\SkylineDebug.exe...done.
+(gdb) break Game.cpp:550
+Breakpoint 1 at 0x408fd1: file C:/ctwoplus/progcode/allegro/Skyline/src/Game.cpp, line 550.
+(gdb) run
+Starting program: c:\ctwoplus\progcode\allegro\skyline\SkylineDebug.exe
+[New Thread 4448.0x1650]
+BFD: C:\Windows\system32\atiumdva.dll: Warning: Ignoring section flag IMAGE_SCN_MEM_NOT_PAGED in section .text
+BFD: C:\Windows\system32\atiumdva.dll: Warning: Ignoring section flag IMAGE_SCN_MEM_NOT_PAGED in section .rdata
+BFD: C:\Windows\system32\atiumdva.dll: Warning: Ignoring section flag IMAGE_SCN_MEM_NOT_PAGED in section .data
+[New Thread 4448.0x11a8]
+[New Thread 4448.0x1678]
+[New Thread 4448.0x17c4]
+[New Thread 4448.0xdd8]
+warning: al-main INFO: Allegro initialised (instance 1)
+
+[New Thread 4448.0x11e8]
+[New Thread 4448.0x1614]
+warning: al-gfx INFO: Called set_gfx_mode(2, 800, 600, 0, 0).
+
+warning: al-gfx INFO: First call, remembering console state.
+
+warning: al-gfx INFO: Autodetecting graphic driver.
+
+BFD: C:\Windows\system32\atiumdva.dll: Warning: Ignoring section flag IMAGE_SCN_MEM_NOT_PAGED in section .text
+BFD: C:\Windows\system32\atiumdva.dll: Warning: Ignoring section flag IMAGE_SCN_MEM_NOT_PAGED in section .rdata
+BFD: C:\Windows\system32\atiumdva.dll: Warning: Ignoring section flag IMAGE_SCN_MEM_NOT_PAGED in section .data
+[New Thread 4448.0x134c]
+warning: al-gfx INFO: The driver will wait for vsync.
+
+warning: al-gfx INFO: set_gfx_card success for 800x600x32.
+
+warning:
+
+
+Breakpoint 1, _fu16__DEFAULT_FLAGS () at C:/ctwoplus/progcode/allegro/Skyline/src/Game.cpp:550
+550        SetGuiValues(GetConfigSettings());
+(gdb) p enemy_explode_time_setting.Area()
+$1 = {<AreaBase> = {_vptr$AreaBase = 0x70d5ef9c}, x = 0, y = 0, w = 21233952, h = 30, brx = 21233951, bry = 29}
+(gdb) p &enemy_explode_time_setting
+$2 = (SettingWidget *) 0x22dd50
+(gdb) p $2->difficulty_radio.Area()
+$3 = {<AreaBase> = {_vptr$AreaBase = 0x70d5ef9c}, x = 202, y = 0, w = 21233668, h = 30, brx = 21233869, bry = 29}
+(gdb) p &($2->difficulty_radio)
+$4 = (struct GenericRadioButton *) 0x22deb0
+(gdb) p $4->buttons.size()
+$5 = 4
+(gdb) p $4->buttons[0]->Area()
+$6 = {<AreaBase> = {_vptr$AreaBase = 0x70d5ef9c}, x = 202, y = 0, w = 1, h = 30, brx = 202, bry = 29}
+(gdb) p $4->buttons[1]->Area()
+$7 = {<AreaBase> = {_vptr$AreaBase = 0x70d5ef9c}, x = 7078091, y = 0, w = 1, h = 30, brx = 7078091, bry = 29}
+(gdb) p $4->buttons[2]->Area()
+$8 = {<AreaBase> = {_vptr$AreaBase = 0x70d5ef9c}, x = 14155980, y = 0, w = 1, h = 30, brx = 14155980, bry = 29}
+(gdb) p $4->buttons[3]->Area()
+$9 = {<AreaBase> = {_vptr$AreaBase = 0x70d5ef9c}, x = 21233869, y = 0, w = 1, h = 30, brx = 21233869, bry = 29}
+(gdb) quit
+A debugging session is active.
+
+        Inferior 1 [process 4448] will be killed.
+
+Quit anyway? (y or n) y
+
+c:\ctwoplus\progcode\allegro\Skyline>

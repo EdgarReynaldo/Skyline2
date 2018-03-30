@@ -1,0 +1,2 @@
+New York,Data/Images/NewYorkSkyline.bmp
+Chicago,Data/Images/ChicagoSkyline.bmp
