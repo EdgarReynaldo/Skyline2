@@ -767,7 +767,7 @@ void Game::DrawGame(BITMAP* bmp) {
    else if (state == LOSE) {
       textout_centre_ex(buffer , font , "YOU LOSE! LOSE! LOSE! LOSE! LOSE!" , 400 , 296 , makecol(255,0,0) , -1);
    }
-   pointer->DrawTo(buffer , mousex - pointer->W()/2 , mousey - pointer->H()/2);
+   pointer->DrawTo(buffer , mx - pointer->W()/2 , my - pointer->H()/2);
    blit(buffer , bmp , 0 , 0 , 0 , 0 , buffer.W() , buffer.H());
 }
 
@@ -1014,12 +1014,16 @@ void Game::SetupCities(string file , int screenw , int screenh) {
 
 int Game::Run() {
    ticks = 1;
+   show_mouse(screen);
    while (1) {
+      Display(screen);
+/*
       scare_mouse();
       acquire_screen();
       Display(screen);
       release_screen();
       unscare_mouse();
+*/
       while (ticks < 1) {rest(1);}
       ticks = 0;
       if (Update(SPT) == QUIT) {break;}
@@ -1038,7 +1042,7 @@ STATE Game::Update(double dt) {
    }
    switch (state) {
       case INTRO :
-//         state = MENUE;
+         state = MENUE;
          break;
       case MENUE :
          menu_gui.Update(dt);
@@ -1065,6 +1069,7 @@ STATE Game::Update(double dt) {
 STATE Game::CheckInputs(int msx , int msy) {
    switch (state) {
       case INTRO :
+         state=MENUE;
          if (AnyKeysPressed()) {
             state = MENUE;
             show_mouse(screen);
