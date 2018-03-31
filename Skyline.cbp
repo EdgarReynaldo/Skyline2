@@ -52,12 +52,30 @@
 					<Add option="-DALLEGRO_STATICLINK" />
 				</Compiler>
 				<Linker>
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
 					<Add option="-leagle4-debug-static" />
-					<Add option="-ljpgalleg-debug" />
-					<Add option="-lloadpng-debug" />
+					<Add option="-lalleggl" />
+					<Add option="-ljpgalleg" />
+					<Add option="-lloadpng" />
+					<Add option="-llogg" />
+					<Add option="-lalleg-debug-static" />
+					<Add option="-lvorbis" />
+					<Add option="-lvorbisenc" />
+					<Add option="-lvorbisfile" />
+					<Add option="-logg" />
 					<Add option="-lpng16" />
 					<Add option="-lzlibstatic" />
-					<Add option="-lalleg44-debug.dll" />
+					<Add option="-lkernel32" />
+					<Add option="-luser32" />
+					<Add option="-lgdi32" />
+					<Add option="-lcomdlg32" />
+					<Add option="-lole32" />
+					<Add option="-ldinput" />
+					<Add option="-lddraw" />
+					<Add option="-ldxguid" />
+					<Add option="-lwinmm" />
+					<Add option="-ldsound" />
 				</Linker>
 			</Target>
 			<Target title="StaticRelease">
@@ -71,12 +89,31 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add option="-static" />
 					<Add option="-leagle4-static" />
+					<Add option="-lalleggl" />
 					<Add option="-ljpgalleg" />
 					<Add option="-lloadpng" />
+					<Add option="-llogg" />
+					<Add option="-lalleg" />
+					<Add option="-lvorbis" />
+					<Add option="-lvorbisenc" />
+					<Add option="-lvorbisfile" />
+					<Add option="-logg" />
 					<Add option="-lpng16" />
 					<Add option="-lzlibstatic" />
-					<Add option="-lalleg44.dll" />
+					<Add option="-lkernel32" />
+					<Add option="-luser32" />
+					<Add option="-lgdi32" />
+					<Add option="-lcomdlg32" />
+					<Add option="-lole32" />
+					<Add option="-ldinput" />
+					<Add option="-lddraw" />
+					<Add option="-ldxguid" />
+					<Add option="-lwinmm" />
+					<Add option="-ldsound" />
 				</Linker>
 			</Target>
 		</Build>
@@ -89,18 +126,9 @@
 			<Add directory="C:/ctwoplus/progcode/allegro/EagleClassic/cbbuild/lib" />
 			<Add directory="E:/LIBS/LIBS71Distro/Allegro443_MinGW71/lib" />
 		</Linker>
-		<Unit filename="Data/Cities.txt" />
-		<Unit filename="Data/Config.txt" />
 		<Unit filename="Skyline_Notes.txt" />
-		<Unit filename="build.bat" />
-		<Unit filename="build.sh" />
-		<Unit filename="fix.bat" />
-		<Unit filename="fix.sh" />
-		<Unit filename="makefile">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="makefile.mgw" />
-		<Unit filename="makefile.nix" />
+		<Unit filename="cbbuild/bin/Data/Cities.txt" />
+		<Unit filename="cbbuild/bin/Data/Config.txt" />
 		<Unit filename="src/City.cpp" />
 		<Unit filename="src/City.hpp" />
 		<Unit filename="src/Config.cpp" />
@@ -112,6 +140,8 @@
 		<Unit filename="src/Main.cpp" />
 		<Unit filename="src/Missiles.cpp" />
 		<Unit filename="src/Missiles.hpp" />
+		<Unit filename="src/SettingsWidget.cpp" />
+		<Unit filename="src/SettingsWidget.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

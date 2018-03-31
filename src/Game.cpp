@@ -1,8 +1,14 @@
 
 
+#include <fstream>
+using std::ifstream;
+
+#include <iostream>
+using std::ios;
+using std::endl;
+
 #include "Game.hpp"
 #include "Config.hpp"
-using std::endl;
 
 
 
