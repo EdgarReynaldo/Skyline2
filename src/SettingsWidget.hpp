@@ -6,6 +6,15 @@
 #define SettingsWidget_HPP
 
 
+#error "Don't include this file"
+
+
+/**
+
+#include "Eagle.hpp"
+
+#include "Config.hpp"
+
 
 
 extern const unsigned int TOPIC_SETTING_WIDGET;
@@ -14,6 +23,8 @@ enum SETTING_WIDGET_MSGS {
    DIFFICULTY_SELECTION_CHANGED = 0,
    CUSTOM_VALUE_CHANGED =1
 };
+
+struct BITMAP;
 
 class SettingWidget : public WidgetBase {
 private :
@@ -94,7 +105,7 @@ public :
 
 };
 
-
+//*/
 
 
 #endif // SettingsWidget_HPP

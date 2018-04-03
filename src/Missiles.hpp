@@ -3,7 +3,11 @@
 #ifndef Missiles_H
 #define Missiles_H
 
-#include <allegro.h>
+#include "Eagle.hpp"
+#include "Eagle/backends/Allegro5Backend.hpp"
+#include "Config.hpp"
+
+
 
 #include <cmath>
 #include <cstdlib>
@@ -14,9 +18,8 @@ using std::list;
 #include <string>
 using std::string;
 
-#include "Eagle.hpp"
 
-#include "Config.hpp"
+extern Rectangle r;
 
 enum MISSILE_STATE {
    NORMAL = 0,
@@ -44,7 +47,7 @@ public :
    virtual ~Missile() {}
    
    virtual void Update(double dt);
-   virtual void Display(BITMAP* bmp);
+   virtual void Display();
 
    void Explode();
    void Destroy();
@@ -67,7 +70,7 @@ public :
    AAMissile(float startx , float starty , float speed , float angle , int radius , float time , int destx , int desty);
 
    virtual void Update(double dt);
-   virtual void Display(BITMAP* bmp);
+   virtual void Display();
 
 };
 
@@ -106,8 +109,8 @@ public :
    void SetAI(AI* new_ai);
    
    void Update(double dt);
-   void CheckInputs(int msx , int msy);
-   void Display(BITMAP* bmp);
+   void CheckInputs();
+   void Display();
    
    bool Ready() {return ttnl <= 0.0f;}
 
@@ -122,6 +125,7 @@ protected :
    Config c;
    
 public :
+   
    AI(Rectangle launch_zone , int num_missiles , Config config);
 
    virtual ~AI() {}
@@ -130,7 +134,7 @@ public :
    void DelayLaunchBy(double dt);
    
    virtual void Update(double dt)=0;
-   virtual void CheckInputs(int msx , int msy)=0;
+   virtual void CheckInputs()=0;
 };
 
 
@@ -146,7 +150,7 @@ public :
    virtual void ControlMissileBattery(MissileBattery* battery);
    
    virtual void Update(double dt);
-   virtual void CheckInputs(int msx , int msy);
+   virtual void CheckInputs();
 
 };
 
@@ -161,7 +165,7 @@ public :
    virtual void ControlMissileBattery(MissileBattery* battery);
    
    virtual void Update(double dt);
-   virtual void CheckInputs(int msx , int msy);
+   virtual void CheckInputs();
 
    void Launch(int dx , int dy);
    

@@ -4,21 +4,24 @@
 #define City_H
 
 
-#include "Eagle.hpp"
+#include "Eagle/backends/Allegro5Backend.hpp"
+
+
 
 #include <string>
 using std::string;
 
 
-int CountPixels(BITMAP* bmp , int color);
-int CountPixels(BITMAP* bmp , int red , int green , int blue);
+int CountPixels(Allegro5Image* image , ALLEGRO_COLOR c);
+int CountPixels(Allegro5Image* image , int red , int green , int blue , int alpha);
 
 
 
 class City {
+   friend class Game;
 private :
-   BitmapHandler original;
-   BitmapHandler workingcopy;
+   Allegro5Image original;
+   Allegro5Image workingcopy;
    
    string city;
    
@@ -31,11 +34,11 @@ public :
    
    City(string name , string path , int screenw , int screenh);
    
-   void Display(BITMAP* bmp);
+   void Display(EagleGraphicsContext* win);
    
    void Reset();
    
-   void Destroy(int cx , int cy , int radius);
+   void Destroy(EagleGraphicsContext* win , int cx , int cy , int radius);
    
    void Recount();
    

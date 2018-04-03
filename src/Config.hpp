@@ -11,6 +11,17 @@ using std::string;
 #include "Eagle.hpp"
 
 
+/// Compatibility layer for A4 config file routines
+
+int get_config_int(const char* section , const char* name , int def);
+float get_config_float(const char* section , const char* name , float def);
+const char* get_config_string(const char* section , const char* name , const char* def);
+
+void set_config_int(const char* section , const char* name , int val);
+void set_config_float(const char* section , const char* name , float val);
+void set_config_string(const char* section , const char* name , string val);
+
+
 enum DIFFICULTY {
    EASY = 0,
    MEDIUM = 1,
@@ -70,7 +81,6 @@ public :
    Config configs[NUM_DIFFICULTIES];
    Difficulty diffs;
    int seed;
-   int gui_padding;
 };
 
 void CreateConfigFile(const char* filepath);
@@ -83,8 +93,6 @@ Config GetConfig();
 ConfigSettings GetConfigSettings();
 Difficulty GetDifficulties();
 int GetSeed();
-
-WidgetColorset GetColorConfig();
 
 void SetCustomConfig(Config custom_config);
 void SetDifficulties(Difficulty difficulties);

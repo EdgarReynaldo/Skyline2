@@ -8,24 +8,24 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="cbbuild/bin/skyline2d" prefix_auto="1" extension_auto="1" />
+				<Option output="../cbbuild/bin/skyline2d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../cbbuild/bin/" />
 				<Option object_output="obj/Dynamic/Debug/" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add option="-leagle4-debug.dll" />
-					<Add option="-ljpgalleg-debug" />
-					<Add option="-lloadpng-debug" />
-					<Add option="-lpng16.dll" />
-					<Add option="-lzlib.dll" />
-					<Add option="-lalleg44-debug.dll" />
+					<Add option="-leagle_a5_debug.dll" />
+					<Add option="-leagle_debug.dll" />
+					<Add option="-lallegro_monolith-debug.dll" />
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="cbbuild/bin/skyline2" prefix_auto="1" extension_auto="1" />
+				<Option output="../cbbuild/bin/skyline2" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../cbbuild/bin/" />
 				<Option object_output="obj/Dynamic/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -34,16 +34,14 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-leagle4.dll" />
-					<Add option="-ljpgalleg" />
-					<Add option="-lloadpng" />
-					<Add option="-lpng16.dll" />
-					<Add option="-lzlib.dll" />
-					<Add option="-lalleg44.dll" />
+					<Add option="-leagle_a5.dll" />
+					<Add option="-leagle.dll" />
+					<Add option="-lallegro_monolith.dll" />
 				</Linker>
 			</Target>
 			<Target title="StaticDebug">
-				<Option output="cbbuild/bin/skyline2ds" prefix_auto="1" extension_auto="1" />
+				<Option output="../cbbuild/bin/skyline2ds" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../cbbuild/bin/" />
 				<Option object_output="obj/Static/Debug/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -79,7 +77,8 @@
 				</Linker>
 			</Target>
 			<Target title="StaticRelease">
-				<Option output="cbbuild/bin/skyline2s" prefix_auto="1" extension_auto="1" />
+				<Option output="../cbbuild/bin/skyline2s" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../cbbuild/bin/" />
 				<Option object_output="obj/Static/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -119,12 +118,14 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="C:/ctwoplus/progcode/allegro/EagleClassic/include" />
-			<Add directory="E:/LIBS/LIBS71Distro/Allegro443_MinGW71/include" />
+			<Add directory="../include" />
+			<Add directory="../Allegro5/include" />
 		</Compiler>
 		<Linker>
-			<Add directory="C:/ctwoplus/progcode/allegro/EagleClassic/cbbuild/lib" />
-			<Add directory="E:/LIBS/LIBS71Distro/Allegro443_MinGW71/lib" />
+			<Add option="-lopengl32" />
+			<Add option="-lglu32" />
+			<Add directory="../cbbuild/lib" />
+			<Add directory="../Allegro5/lib" />
 		</Linker>
 		<Unit filename="Skyline_Notes.txt" />
 		<Unit filename="cbbuild/bin/Data/Cities.txt" />
@@ -133,14 +134,30 @@
 		<Unit filename="src/City.hpp" />
 		<Unit filename="src/Config.cpp" />
 		<Unit filename="src/Config.hpp" />
+		<Unit filename="src/Explosion.cpp" />
+		<Unit filename="src/Explosion.hpp" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Game.hpp" />
+		<Unit filename="src/Globals.cpp" />
+		<Unit filename="src/Globals.hpp" />
 		<Unit filename="src/Intro.cpp" />
 		<Unit filename="src/Intro.hpp" />
-		<Unit filename="src/Main.cpp" />
 		<Unit filename="src/Missiles.cpp" />
 		<Unit filename="src/Missiles.hpp" />
-		<Unit filename="src/SettingsWidget.cpp" />
+		<Unit filename="src/NewMain.cpp" />
+		<Unit filename="src/OldMain.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/SettingsScreen.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/SettingsScreen.hpp" />
+		<Unit filename="src/SettingsWidget.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="src/SettingsWidget.hpp" />
 		<Extensions>
 			<code_completion />

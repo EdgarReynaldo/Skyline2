@@ -1,6 +1,12 @@
 
 
+#include "Globals.hpp"
 #include "Missiles.hpp"
+#include "Explosion.hpp"
+
+
+#define MIN(a,b) ((a<b)?a:b)
+
 
 
 /// ------------------------------------     Missile class     --------------------------------------
@@ -55,18 +61,20 @@ void Missile::Update(double dt) {
    }
 }
 
-void Missile::Display(BITMAP* bmp) {
+void Missile::Display() {
    switch (state) {
       case NORMAL :
+         win->DrawFilledCircle(xp , yp , 3.0f , EagleColor(255,0,0));
 ///         putpixel(bmp , (int)xp , (int)yp , makecol(255,255,255));
-         circlefill(bmp , (int)xp , (int)yp , 3 , makecol(255,0,0));
+///         circlefill(bmp , (int)xp , (int)yp , 3 , makecol(255,0,0));
          break;
       case EXPLODING :
       case EXPLODED :
       case IMPLODING :
+         DrawExplosion(xp + 0.5 , yp + 0.5 , crad , EagleColor(255,0,0) , EagleColor(255,255,0));
 //void ring_gradient(BITMAP* bmp , int cx , int cy , int inner_radius , int outer_radius , int inner_color , int outer_color);
 ///         circlefill(bmp , (int)xp , (int)yp , (int)crad , makecol(255,255,255));
-         ring_gradient(bmp , (int)xp , (int)yp , 0 , (int)crad , makecol(255,0,0) , makecol(255,255,0));
+///         ring_gradient(bmp , (int)xp , (int)yp , 0 , (int)crad , makecol(255,0,0) , makecol(255,255,0));
 //         ring_gradient(bmp , (int)xp , (int)yp , 0 , (int)crad , makecol(0,64,255) , makecol(255,255,255));
          break;
       case TOAST :
@@ -141,21 +149,19 @@ void AAMissile::Update(double dt) {
 
 
 
-void AAMissile::Display(BITMAP* bmp) {
+void AAMissile::Display() {
 ///   Missile::Display(bmp);
 
 //*
    switch (state) {
       case NORMAL :
-///         putpixel(bmp , (int)xp , (int)yp , makecol(255,255,255));
-         circlefill(bmp , (int)xp , (int)yp , 3 , makecol(255,255,0));
+         win->DrawFilledCircle(xp , yp , 3.0 , EagleColor(255,0,0));
+///         circlefill(bmp , (int)xp , (int)yp , 3 , makecol(255,255,0));
          break;
       case EXPLODING :
       case EXPLODED :
       case IMPLODING :
-//void ring_gradient(BITMAP* bmp , int cx , int cy , int inner_radius , int outer_radius , int inner_color , int outer_color);
-///         circlefill(bmp , (int)xp , (int)yp , (int)crad , makecol(255,255,255));
-         ring_gradient(bmp , (int)xp , (int)yp , 0 , (int)crad , makecol(0,64,255) , makecol(255,255,255));
+         DrawExplosion(xp + 0.5 , yp + 0.5 , crad , EagleColor(0.0f , 0.25f , 1.0f , 1.0f) , EagleColor(1.0f,1.0f,1.0f , 1.0f));
          break;
       case TOAST :
          break;
@@ -203,7 +209,7 @@ void MissileBattery::FreeMissiles() {
 
 
 void MissileBattery::SetAI(AI* new_ai) {
-   ASSERT(new_ai);
+   EAGLE_ASSERT(new_ai);
    FreeAI();
    ai = new_ai;
    ai->ControlMissileBattery(this);
@@ -212,7 +218,7 @@ void MissileBattery::SetAI(AI* new_ai) {
 
 
 void MissileBattery::Update(double dt) {
-   ASSERT(ai);
+   EAGLE_ASSERT(ai);
    for (list<Missile*>::iterator it = missiles.begin() ; it != missiles.end() ; ) {
       Missile* m = *it;
       m->Update(dt);
@@ -230,17 +236,17 @@ void MissileBattery::Update(double dt) {
 
 
 
-void MissileBattery::CheckInputs(int msx , int msy) {
-   ASSERT(ai);
-   ai->CheckInputs(msx,msy);
+void MissileBattery::CheckInputs() {
+   EAGLE_ASSERT(ai);
+   ai->CheckInputs();
 }
 
 
 
-void MissileBattery::Display(BITMAP* bmp) {
+void MissileBattery::Display() {
    for (list<Missile*>::iterator it = missiles.begin() ; it != missiles.end() ; ++it) {
       Missile* m = *it;
-      m->Display(bmp);
+      m->Display();
    }
 }
 
@@ -274,7 +280,7 @@ void AI::DelayLaunchBy(double dt) {
 
 
 void EnemyAI::Launch() {
-   ASSERT(mb);
+   EAGLE_ASSERT(mb);
    if (!(mb->nmissilesleft)) {return;}
    --(mb->nmissilesleft);
    ++(mb->nmissiles);
@@ -298,7 +304,7 @@ EnemyAI::EnemyAI(Rectangle launch_zone , int num_missiles , Config config) :
 
 
 void EnemyAI::ControlMissileBattery(MissileBattery* battery) {
-   ASSERT(battery);
+   EAGLE_ASSERT(battery);
    mb = battery;
    mb->FreeMissiles();
 /*
@@ -335,7 +341,7 @@ void EnemyAI::Update(double dt) {
 
 
 
-void EnemyAI::CheckInputs(int msx , int msy) {}
+void EnemyAI::CheckInputs() {(void)0;}
 
 
 
@@ -344,7 +350,7 @@ void EnemyAI::CheckInputs(int msx , int msy) {}
 
 
 void PlayerAI::Launch(int dx , int dy) {
-   ASSERT(mb);
+   EAGLE_ASSERT(mb);
    if (!(mb->nmissilesleft)) {return;}
    --(mb->nmissilesleft);
    int startx = zone.X() + rand()%zone.W();
@@ -366,7 +372,7 @@ PlayerAI::PlayerAI(Rectangle launch_zone , int num_missiles , Config config) :
 
 
 void PlayerAI::ControlMissileBattery(MissileBattery* battery) {
-   ASSERT(battery);
+   EAGLE_ASSERT(battery);
    mb = battery;
    mb->FreeMissiles();
 /*
@@ -385,18 +391,19 @@ void PlayerAI::ControlMissileBattery(MissileBattery* battery) {
 
 
 void PlayerAI::Update(double dt) {
-   ASSERT(mb);
+   EAGLE_ASSERT(mb);
    mb->ttnl -= dt;
    
 }
 
 
 
-void PlayerAI::CheckInputs(int msx , int msy) {
-   ASSERT(mb);
+void PlayerAI::CheckInputs() {
+   EAGLE_ASSERT(mb);
    if (input_mouse_press(LMB)) {
+      printf("PlayerAI::CheckInputs : LMB pressed\n");
       if (mb->ttnl <= 0.0) {
-         Launch(msx,msy);
+         Launch(mouse_x , mouse_y);
       }
    }
 }

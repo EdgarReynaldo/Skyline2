@@ -1,12 +1,64 @@
 
 
 #include "Config.hpp"
-#include <allegro.h>
+
 #include <cstdio>
+
+#include "allegro5/allegro.h"
+
+
+ALLEGRO_CONFIG* allegro_config = 0;
+
+
+
+int get_config_int(const char* section , const char* name , int def) {
+   const char* s = get_config_string(section , name , "0.0");
+   if (!s) {return def;}
+   int n = def;
+   sscanf(s , "%d" , &n);
+   return n;
+}
+
+
+
+float get_config_float(const char* section , const char* name , float def) {
+   const char* s = get_config_string(section , name , "0.0");
+   if (!s) {return def;}
+   float n = -1.0;
+   sscanf(s , "%f" , &n);
+   return n;
+}
+
+
+
+const char* get_config_string(const char* section , const char* name , const char* def) {
+   const char* s = al_get_config_value(allegro_config , section , name);
+   if (!s) {return def;}
+   return s;
+}
+
+
+void set_config_int(const char* section , const char* name , int val) {
+   return set_config_string(section , name , StringPrintF("%d" , val));
+}
+
+
+
+void set_config_float(const char* section , const char* name , float val) {
+   return set_config_string(section , name , StringPrintF("%f" , val));
+}
+
+
+
+void set_config_string(const char* section , const char* name , string val) {
+   return al_set_config_value(allegro_config , section , name , val.c_str());
+}
 
 
 
 ConfigSettings settings;
+
+/**
 WidgetColorset gui_colors;
 
 void MakeGuiColors();
@@ -37,14 +89,14 @@ void MakeGuiColors() {
    int r,g,b,a;
    for (int i = 0 ; i < NUMCOLS ; ++i) {
       if (4 != sscanf(gui_color_strs[i] , "%i,%i,%i,%i" , &r , &g , &b , &a)) {
-         throw EagleError(StringPrintF("Gui color string #%i (%s) is invalid - proper format is r,g,b,a.\n" , i , gui_color_strs[i]));
+         throw EagleException(StringPrintF("Gui color string #%i (%s) is invalid - proper format is r,g,b,a.\n" , i , gui_color_strs[i]));
       }
       gui_colors.SetRGBA((WIDGETCOLOR)i , r , g , b , a);
    }
 }
 
 
-
+//*/
 const char* DiffToStr(DIFFICULTY d) {
    switch (d) {
       case EASY   : return "EASY";
@@ -157,8 +209,7 @@ Difficulty::Difficulty() :
 ConfigSettings::ConfigSettings() :
       configs(),
       diffs(),
-      seed(232),
-      gui_padding(4)
+      seed(232)
 {
    configs[EASY].enemy_nmsl = 45;
    configs[MEDIUM].enemy_nmsl = 90;
@@ -226,8 +277,7 @@ ConfigSettings::ConfigSettings() :
 ConfigSettings::ConfigSettings(const ConfigSettings& cset) :
       configs(),
       diffs(cset.diffs),
-      seed(cset.seed),
-      gui_padding(cset.gui_padding)
+      seed(cset.seed)
 {
    for (int i = 0 ; i < NUM_DIFFICULTIES ; ++i) {
       configs[i] = cset.configs[i];
@@ -242,7 +292,6 @@ ConfigSettings& ConfigSettings::operator=(const ConfigSettings& cset) {
    }
    diffs = cset.diffs;
    seed = cset.seed;
-   gui_padding = cset.gui_padding;
    return *this;
 }
 
@@ -360,7 +409,7 @@ void CreateConfigFile(const char* filepath) {
    
    FILE* file = fopen(filepath , "wb");
    if (!file) {
-      OutputLog() << "Warning : Failed to create config file. :/" << std::endl;
+      EagleLog() << "Warning : Failed to create config file. :/" << std::endl;
       return;
    }
    for (int i = 0 ; i < (int)sizeof(lines)/(int)sizeof(const char*) ; ++i) {
@@ -372,6 +421,10 @@ void CreateConfigFile(const char* filepath) {
 
 
 void LoadConfig() {
+
+   if (!allegro_config) {
+      allegro_config = al_load_config_file("Config.txt");
+   }
 
    Config* c = settings.configs;
    for (int d = 0 ; d < NUM_DIFFICULTIES ; ++d) {
@@ -393,13 +446,6 @@ void LoadConfig() {
    for (int i = 0 ; i < (int)sizeof(diff_strs)/(int)sizeof(const char*) ; ++i) {
       *(diff_ptrs[i]) = StrToDiff(get_config_string("AI" , diff_strs[i] , DiffToStr(*(diff_ptrs[i]))));
    }
-   
-   for (int i = 0 ; i < NUMCOLS ; ++i) {
-      gui_color_strs[i] = get_config_string("GUI" , gui_color_names[i] , gui_color_strs[i]);
-   }
-   MakeGuiColors();
-   
-   settings.gui_padding = get_config_int("GUI" , "padding" , settings.gui_padding);
 }
 
 
@@ -444,12 +490,6 @@ Difficulty GetDifficulties() {
 
 
 int GetSeed() {return settings.seed;}
-
-
-
-WidgetColorset GetColorConfig() {
-   return gui_colors;
-}
 
 
 
