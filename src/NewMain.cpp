@@ -14,8 +14,10 @@ int main(int argc , char** argv) {
    (void)argc;
    (void)argv;
    
+   SendOutputToFile("SkylineLog.txt" , StringPrintF("Skyline log:\n") , false);
    
-   sys = dynamic_cast<Allegro5System*>(Eagle::EagleLibrary::System("Allegro5"));
+   sys = GetAllegro5System();///dynamic_cast<Allegro5System*>(Eagle::EagleLibrary::System("Allegro5"));
+///   sys = dynamic_cast<Allegro5System*>(Eagle::EagleLibrary::System("Allegro5"));
    
    if (sys->Initialize(EAGLE_FULL_SETUP) != EAGLE_FULL_SETUP) {
       /// Usually touch fails to install, so ignore
