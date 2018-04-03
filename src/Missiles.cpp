@@ -71,7 +71,7 @@ void Missile::Display() {
       case EXPLODING :
       case EXPLODED :
       case IMPLODING :
-         DrawExplosion(xp + 0.5 , yp + 0.5 , crad , EagleColor(255,0,0) , EagleColor(255,255,0));
+         DrawExplosion(xp + 0.5 , yp + 0.5 , crad , EagleColor(255,0,0,127) , EagleColor(255,255,0,255));
 //void ring_gradient(BITMAP* bmp , int cx , int cy , int inner_radius , int outer_radius , int inner_color , int outer_color);
 ///         circlefill(bmp , (int)xp , (int)yp , (int)crad , makecol(255,255,255));
 ///         ring_gradient(bmp , (int)xp , (int)yp , 0 , (int)crad , makecol(255,0,0) , makecol(255,255,0));
@@ -155,13 +155,13 @@ void AAMissile::Display() {
 //*
    switch (state) {
       case NORMAL :
-         win->DrawFilledCircle(xp , yp , 3.0 , EagleColor(255,0,0));
+         win->DrawFilledCircle(xp , yp , 3.0 , EagleColor(255,255,255));
 ///         circlefill(bmp , (int)xp , (int)yp , 3 , makecol(255,255,0));
          break;
       case EXPLODING :
       case EXPLODED :
       case IMPLODING :
-         DrawExplosion(xp + 0.5 , yp + 0.5 , crad , EagleColor(0.0f , 0.25f , 1.0f , 1.0f) , EagleColor(1.0f,1.0f,1.0f , 1.0f));
+         DrawExplosion(xp + 0.5 , yp + 0.5 , crad , EagleColor(0.0f , 0.25f , 1.0f , 0.5f) , EagleColor(1.0f,1.0f,1.0f , 1.0f));
          break;
       case TOAST :
          break;

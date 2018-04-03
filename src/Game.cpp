@@ -68,20 +68,22 @@ void Game::SetupMissileBatteries(Config c) {
 
 void Game::DrawGame() {
    win->Clear();
+
    city->Display(win);
+
    for (unsigned int i = 0 ; i < enemy_mbs.size() ; ++i) {
       enemy_mbs[i]->Display();
    }
    player_mb.Display();
+
    if (state == WIN) {
       win->DrawTextString(win->DefaultFont() , "WIN! WIN! WIN! WIN! WIN!" , ww/2 , wh/2 , EagleColor(0,255,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
    else if (state == LOSE) {
       win->DrawTextString(win->DefaultFont() , "YOU LOSE! LOSE! LOSE! LOSE! LOSE!" , ww/2 , wh/2 , EagleColor(255,0,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
+
    win->Draw(pointer , mouse_x - pointer->W()/2 , mouse_y - pointer->H()/2);
-///   pointer->DrawTo(buffer , mx - pointer->W()/2 , my - pointer->H()/2);
-///   blit(buffer , bmp , 0 , 0 , 0 , 0 , buffer.W() , buffer.H());
 }
 
 
@@ -447,9 +449,6 @@ STATE Game::HandleEvent(EagleEvent ee) {
          if (ee.type == EAGLE_EVENT_KEY_DOWN && ee.keyboard.keycode == EAGLE_KEY_ESCAPE) {
             state = MENUE;
          }
-         if (ee.type == EAGLE_EVENT_MOUSE_BUTTON_DOWN) {
-            printf("MOUSE_DOWN event (btn = %d), input_mouse_press(ee.mouse.button) = %s\n" , ee.mouse.button , (input_mouse_press(ee.mouse.button)?"true":"false"));
-         }
       }
       break;
    case WIN:
@@ -553,7 +552,6 @@ STATE Game::CheckInputs() {
          else {
             pointer = &nopointer;
          }
-         if (input_key_press(EAGLE_KEY_ESCAPE)) {state = MENUE;}
          break;
       case WIN :
       case LOSE :
