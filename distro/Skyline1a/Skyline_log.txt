@@ -1,0 +1,1545 @@
+Skyline log file
+
+
+$$$ Allegro initialization successful.
+$$$ Close button callback successfully set.
+$$$ Desktop resolution and color depth determined to be 1920 X 1080 X 32
+$$$ Allegro keyboard initialization successful.
+$$$ Allegro timer initialization successful.
+$$$ Allegro mouse initialization successful. The mouse in use has 5 buttons.
+
+Gfx_mode_handler attempting new mode...
+
+Starting change_res(2 (GFX_AUTODETECT_WINDOWED) , 800 , 600 , 32 , mode = CRM_DIRECT)
+    Success changing to new resolution
+GfxModeHandler : Successfully set the SW_BACKGROUND display switch mode.
+GfxModeHandler : Current display switch mode is SWITCH_BACKGROUND
+GfxModeHandler : Successfully set the display callback in.
+GfxModeHandler : Successfully set the display callback out.
+Change Mode Flags : FULL_SUCCESS
+line read for city = 'New York,Data/Images/NewYorkSkyline.bmp'
+Data/Images/NewYorkSkyline.bmp pixel count = 105451
+Total size = 174400
+line read for city = 'Chicago,Data/Images/ChicagoSkyline.bmp'
+Data/Images/ChicagoSkyline.bmp pixel count = 79373
+Total size = 192000
+line read for city = 'Houston,Data/Images/HoustonSkyline.bmp'
+Data/Images/HoustonSkyline.bmp pixel count = 183204
+Total size = 264800
+line read for city = ''
+
+WidgetHandler class object - address 0x87ef08 {
+   Buffer Data :
+      BitmapHandler (0x87f014) : {
+         bmp = 0x4900e60 , (cd,w,h = 32,800,600)
+         Clear color :
+         Color (0x87f024) : (r,g,b = 0,0,0), (a = 255), (color = -16777216 , cd = 32)         memtype = MEMORY , drawtype = SOLID
+         Image path = '' , Store palette = 0
+         Registry = 0 , blender type = USE_ALPHA_BLENDER
+      }
+   Background Data :
+      BitmapHandler (0x87efc8) : {
+         bmp = 0x4957d98 , (cd,w,h = 32,800,600)
+         Clear color :
+         Color (0x87efd8) : (r,g,b = 64,64,64), (a = 255), (color = -12566464 , cd = 32)         memtype = MEMORY , drawtype = SOLID
+         Image path = '' , Store palette = 0
+         Registry = 0 , blender type = USE_ALPHA_BLENDER
+      }
+   clear_background = true
+   wfocus = 0x87aaf8 , whover = 0
+   WidgetBase (menu_gui) (0x87ef08) {
+      parent widget : 0 , dest bitmap : 0x48ed6a0
+      &wc = 0x87ef2c , wcols = 0x87ef2c
+      area = Size( 800 X 600 ) , At( 0 , 0 )
+      Minimum dimensions = 0 X 0
+      Flags {
+         ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (Y) , MOVEABLE (Y)
+         RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+      }
+   }
+   Widgets used by this dialog : {
+      Widget # 0
+      WidgetBase (menu_gui-titlebar) (0x87f0f0) {
+         parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+         &wc = 0x87f114 , wcols = 0x87ef2c
+         area = Size( 798 X 16 ) , At( 1 , 1 )
+         Minimum dimensions = 0 X 0
+         Flags {
+            ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (Y) , MOVEABLE (Y)
+            RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+         }
+      }
+      Widget # 1
+      Setting widget {
+         WidgetBase (SettingWidget : Number of enemy missiles) (0x87aaf8) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87ab1c , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 170 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (Y) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = INTEGER_INPUT , difficulty = EASY
+         ivars = 45,90,180,90
+         fvars = 0.000000,0.000000,0.000000,0.000000
+         WidgetBase (description text - Number of enemy missiles) (0x87abb0) {
+            parent widget : 0x87aaf8 , dest bitmap : 0
+            &wc = 0x87abd4 , wcols = 0x87ef2c
+            area = Size( 192 X 8 ) , At( 23 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Number of enemy missiles - radio) (0x87ac94) {
+               parent widget : 0x87aaf8 , dest bitmap : 0
+               &wc = 0x87acb8 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x48f6fe8
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Number of enemy missiles_iconbtn_EASY) (0x48f6fe8) {
+                     parent widget : 0x87ac94 , dest bitmap : 0
+                     &wc = 0x48f700c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Number of enemy missiles_iconbtn_MEDIUM) (0x48f98e0) {
+                     parent widget : 0x87ac94 , dest bitmap : 0
+                     &wc = 0x48f9904 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Number of enemy missiles_iconbtn_HARD) (0x48faf88) {
+                     parent widget : 0x87ac94 , dest bitmap : 0
+                     &wc = 0x48fafac , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Number of enemy missiles_iconbtn_CUSTOM) (0x49035d8) {
+                     parent widget : 0x87ac94 , dest bitmap : 0
+                     &wc = 0x49035fc , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Number of enemy missiles) (0x87ad8c) {
+            parent widget : 0x87aaf8 , dest bitmap : 0
+            &wc = 0x87adb0 , wcols = 0x87ef2c
+            area = Size( 16 X 8 ) , At( 363 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Number of enemy missiles) (0x87ae70) {
+            parent widget : 0x87aaf8 , dest bitmap : 0
+            &wc = 0x87ae94 , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (Y) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 2
+      Setting widget {
+         WidgetBase (SettingWidget : Number of player missiles) (0x87b000) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87b024 , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 194 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = INTEGER_INPUT , difficulty = EASY
+         ivars = 80,180,360,180
+         fvars = 0.000000,0.000000,0.000000,0.000000
+         WidgetBase (description text - Number of player missiles) (0x87b0b8) {
+            parent widget : 0x87b000 , dest bitmap : 0
+            &wc = 0x87b0dc , wcols = 0x87ef2c
+            area = Size( 200 X 8 ) , At( 15 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Number of player missiles - radio) (0x87b19c) {
+               parent widget : 0x87b000 , dest bitmap : 0
+               &wc = 0x87b1c0 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x4904db0
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Number of player missiles_iconbtn_EASY) (0x4904db0) {
+                     parent widget : 0x87b19c , dest bitmap : 0
+                     &wc = 0x4904dd4 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Number of player missiles_iconbtn_MEDIUM) (0x490af50) {
+                     parent widget : 0x87b19c , dest bitmap : 0
+                     &wc = 0x490af74 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Number of player missiles_iconbtn_HARD) (0x490b320) {
+                     parent widget : 0x87b19c , dest bitmap : 0
+                     &wc = 0x490b344 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Number of player missiles_iconbtn_CUSTOM) (0x490b6f0) {
+                     parent widget : 0x87b19c , dest bitmap : 0
+                     &wc = 0x490b714 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Number of player missiles) (0x87b294) {
+            parent widget : 0x87b000 , dest bitmap : 0
+            &wc = 0x87b2b8 , wcols = 0x87ef2c
+            area = Size( 16 X 8 ) , At( 363 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Number of player missiles) (0x87b378) {
+            parent widget : 0x87b000 , dest bitmap : 0
+            &wc = 0x87b39c , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 3
+      Setting widget {
+         WidgetBase (SettingWidget : Enemy time between launch) (0x87b508) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87b52c , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 218 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = FLOATING_POINT_INPUT , difficulty = EASY
+         ivars = 0,0,0,0
+         fvars = 8.000000,4.000000,2.000000,2.000000
+         WidgetBase (description text - Enemy time between launch) (0x87b5c0) {
+            parent widget : 0x87b508 , dest bitmap : 0
+            &wc = 0x87b5e4 , wcols = 0x87ef2c
+            area = Size( 200 X 8 ) , At( 15 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Enemy time between launch - radio) (0x87b6a4) {
+               parent widget : 0x87b508 , dest bitmap : 0
+               &wc = 0x87b6c8 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x490bac0
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Enemy time between launch_iconbtn_EASY) (0x490bac0) {
+                     parent widget : 0x87b6a4 , dest bitmap : 0
+                     &wc = 0x490bae4 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Enemy time between launch_iconbtn_MEDIUM) (0x4913e98) {
+                     parent widget : 0x87b6a4 , dest bitmap : 0
+                     &wc = 0x4913ebc , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Enemy time between launch_iconbtn_HARD) (0x4914268) {
+                     parent widget : 0x87b6a4 , dest bitmap : 0
+                     &wc = 0x491428c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Enemy time between launch_iconbtn_CUSTOM) (0x4914638) {
+                     parent widget : 0x87b6a4 , dest bitmap : 0
+                     &wc = 0x491465c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Enemy time between launch) (0x87b79c) {
+            parent widget : 0x87b508 , dest bitmap : 0
+            &wc = 0x87b7c0 , wcols = 0x87ef2c
+            area = Size( 64 X 8 ) , At( 315 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Enemy time between launch) (0x87b880) {
+            parent widget : 0x87b508 , dest bitmap : 0
+            &wc = 0x87b8a4 , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 4
+      Setting widget {
+         WidgetBase (SettingWidget : Player time between launch) (0x87ba10) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87ba34 , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 242 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = FLOATING_POINT_INPUT , difficulty = EASY
+         ivars = 0,0,0,0
+         fvars = 0.250000,0.500000,0.500000,0.500000
+         WidgetBase (description text - Player time between launch) (0x87bac8) {
+            parent widget : 0x87ba10 , dest bitmap : 0
+            &wc = 0x87baec , wcols = 0x87ef2c
+            area = Size( 208 X 8 ) , At( 7 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Player time between launch - radio) (0x87bbac) {
+               parent widget : 0x87ba10 , dest bitmap : 0
+               &wc = 0x87bbd0 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x4914a08
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Player time between launch_iconbtn_EASY) (0x4914a08) {
+                     parent widget : 0x87bbac , dest bitmap : 0
+                     &wc = 0x4914a2c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Player time between launch_iconbtn_MEDIUM) (0x49155e0) {
+                     parent widget : 0x87bbac , dest bitmap : 0
+                     &wc = 0x4915604 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Player time between launch_iconbtn_HARD) (0x4917db8) {
+                     parent widget : 0x87bbac , dest bitmap : 0
+                     &wc = 0x4917ddc , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Player time between launch_iconbtn_CUSTOM) (0x4920190) {
+                     parent widget : 0x87bbac , dest bitmap : 0
+                     &wc = 0x49201b4 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Player time between launch) (0x87bca4) {
+            parent widget : 0x87ba10 , dest bitmap : 0
+            &wc = 0x87bcc8 , wcols = 0x87ef2c
+            area = Size( 64 X 8 ) , At( 315 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Player time between launch) (0x87bd88) {
+            parent widget : 0x87ba10 , dest bitmap : 0
+            &wc = 0x87bdac , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 5
+      Setting widget {
+         WidgetBase (SettingWidget : Percent of city left to win) (0x87bf18) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87bf3c , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 266 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = FLOATING_POINT_INPUT , difficulty = EASY
+         ivars = 0,0,0,0
+         fvars = 0.100000,0.250000,0.500000,0.250000
+         WidgetBase (description text - Percent of city left to win) (0x87bfd0) {
+            parent widget : 0x87bf18 , dest bitmap : 0
+            &wc = 0x87bff4 , wcols = 0x87ef2c
+            area = Size( 216 X 8 ) , At( -1 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Percent of city left to win - radio) (0x87c0b4) {
+               parent widget : 0x87bf18 , dest bitmap : 0
+               &wc = 0x87c0d8 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x4920560
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Percent of city left to win_iconbtn_EASY) (0x4920560) {
+                     parent widget : 0x87c0b4 , dest bitmap : 0
+                     &wc = 0x4920584 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Percent of city left to win_iconbtn_MEDIUM) (0x49224d0) {
+                     parent widget : 0x87c0b4 , dest bitmap : 0
+                     &wc = 0x49224f4 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Percent of city left to win_iconbtn_HARD) (0x49220e8) {
+                     parent widget : 0x87c0b4 , dest bitmap : 0
+                     &wc = 0x492210c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Percent of city left to win_iconbtn_CUSTOM) (0x4921918) {
+                     parent widget : 0x87c0b4 , dest bitmap : 0
+                     &wc = 0x492193c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Percent of city left to win) (0x87c1ac) {
+            parent widget : 0x87bf18 , dest bitmap : 0
+            &wc = 0x87c1d0 , wcols = 0x87ef2c
+            area = Size( 64 X 8 ) , At( 315 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Percent of city left to win) (0x87c290) {
+            parent widget : 0x87bf18 , dest bitmap : 0
+            &wc = 0x87c2b4 , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 6
+      Setting widget {
+         WidgetBase (SettingWidget : Enemy missile speed) (0x87c420) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87c444 , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 290 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = FLOATING_POINT_INPUT , difficulty = EASY
+         ivars = 0,0,0,0
+         fvars = 25.000000,50.000000,75.000000,50.000000
+         WidgetBase (description text - Enemy missile speed) (0x87c4d8) {
+            parent widget : 0x87c420 , dest bitmap : 0
+            &wc = 0x87c4fc , wcols = 0x87ef2c
+            area = Size( 152 X 8 ) , At( 63 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Enemy missile speed - radio) (0x87c5bc) {
+               parent widget : 0x87c420 , dest bitmap : 0
+               &wc = 0x87c5e0 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x4921d00
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Enemy missile speed_iconbtn_EASY) (0x4921d00) {
+                     parent widget : 0x87c5bc , dest bitmap : 0
+                     &wc = 0x4921d24 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Enemy missile speed_iconbtn_MEDIUM) (0x49228b8) {
+                     parent widget : 0x87c5bc , dest bitmap : 0
+                     &wc = 0x49228dc , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Enemy missile speed_iconbtn_HARD) (0x4920d60) {
+                     parent widget : 0x87c5bc , dest bitmap : 0
+                     &wc = 0x4920d84 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Enemy missile speed_iconbtn_CUSTOM) (0x4921148) {
+                     parent widget : 0x87c5bc , dest bitmap : 0
+                     &wc = 0x492116c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Enemy missile speed) (0x87c6b4) {
+            parent widget : 0x87c420 , dest bitmap : 0
+            &wc = 0x87c6d8 , wcols = 0x87ef2c
+            area = Size( 64 X 8 ) , At( 315 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Enemy missile speed) (0x87c798) {
+            parent widget : 0x87c420 , dest bitmap : 0
+            &wc = 0x87c7bc , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 7
+      Setting widget {
+         WidgetBase (SettingWidget : Player missile speed) (0x87c928) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87c94c , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 314 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = FLOATING_POINT_INPUT , difficulty = EASY
+         ivars = 0,0,0,0
+         fvars = 250.000000,200.000000,150.000000,200.000000
+         WidgetBase (description text - Player missile speed) (0x87c9e0) {
+            parent widget : 0x87c928 , dest bitmap : 0
+            &wc = 0x87ca04 , wcols = 0x87ef2c
+            area = Size( 160 X 8 ) , At( 55 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Player missile speed - radio) (0x87cac4) {
+               parent widget : 0x87c928 , dest bitmap : 0
+               &wc = 0x87cae8 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x4921530
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Player missile speed_iconbtn_EASY) (0x4921530) {
+                     parent widget : 0x87cac4 , dest bitmap : 0
+                     &wc = 0x4921554 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Player missile speed_iconbtn_MEDIUM) (0x492d108) {
+                     parent widget : 0x87cac4 , dest bitmap : 0
+                     &wc = 0x492d12c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Player missile speed_iconbtn_HARD) (0x492f430) {
+                     parent widget : 0x87cac4 , dest bitmap : 0
+                     &wc = 0x492f454 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Player missile speed_iconbtn_CUSTOM) (0x492c550) {
+                     parent widget : 0x87cac4 , dest bitmap : 0
+                     &wc = 0x492c574 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Player missile speed) (0x87cbbc) {
+            parent widget : 0x87c928 , dest bitmap : 0
+            &wc = 0x87cbe0 , wcols = 0x87ef2c
+            area = Size( 64 X 8 ) , At( 315 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Player missile speed) (0x87cca0) {
+            parent widget : 0x87c928 , dest bitmap : 0
+            &wc = 0x87ccc4 , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 8
+      Setting widget {
+         WidgetBase (SettingWidget : Enemy missile radius) (0x87ce30) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87ce54 , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 338 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = INTEGER_INPUT , difficulty = EASY
+         ivars = 20,40,60,40
+         fvars = 0.000000,0.000000,0.000000,0.000000
+         WidgetBase (description text - Enemy missile radius) (0x87cee8) {
+            parent widget : 0x87ce30 , dest bitmap : 0
+            &wc = 0x87cf0c , wcols = 0x87ef2c
+            area = Size( 160 X 8 ) , At( 55 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Enemy missile radius - radio) (0x87cfcc) {
+               parent widget : 0x87ce30 , dest bitmap : 0
+               &wc = 0x87cff0 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x492dcc0
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Enemy missile radius_iconbtn_EASY) (0x492dcc0) {
+                     parent widget : 0x87cfcc , dest bitmap : 0
+                     &wc = 0x492dce4 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Enemy missile radius_iconbtn_MEDIUM) (0x492f048) {
+                     parent widget : 0x87cfcc , dest bitmap : 0
+                     &wc = 0x492f06c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Enemy missile radius_iconbtn_HARD) (0x492d8d8) {
+                     parent widget : 0x87cfcc , dest bitmap : 0
+                     &wc = 0x492d8fc , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Enemy missile radius_iconbtn_CUSTOM) (0x492e0a8) {
+                     parent widget : 0x87cfcc , dest bitmap : 0
+                     &wc = 0x492e0cc , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Enemy missile radius) (0x87d0c4) {
+            parent widget : 0x87ce30 , dest bitmap : 0
+            &wc = 0x87d0e8 , wcols = 0x87ef2c
+            area = Size( 16 X 8 ) , At( 363 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Enemy missile radius) (0x87d1a8) {
+            parent widget : 0x87ce30 , dest bitmap : 0
+            &wc = 0x87d1cc , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 9
+      Setting widget {
+         WidgetBase (SettingWidget : Player missile radius) (0x87d338) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87d35c , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 362 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = INTEGER_INPUT , difficulty = EASY
+         ivars = 100,75,50,75
+         fvars = 0.000000,0.000000,0.000000,0.000000
+         WidgetBase (description text - Player missile radius) (0x87d3f0) {
+            parent widget : 0x87d338 , dest bitmap : 0
+            &wc = 0x87d414 , wcols = 0x87ef2c
+            area = Size( 168 X 8 ) , At( 47 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Player missile radius - radio) (0x87d4d4) {
+               parent widget : 0x87d338 , dest bitmap : 0
+               &wc = 0x87d4f8 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x492e490
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Player missile radius_iconbtn_EASY) (0x492e490) {
+                     parent widget : 0x87d4d4 , dest bitmap : 0
+                     &wc = 0x492e4b4 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Player missile radius_iconbtn_MEDIUM) (0x492c938) {
+                     parent widget : 0x87d4d4 , dest bitmap : 0
+                     &wc = 0x492c95c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Player missile radius_iconbtn_HARD) (0x492e878) {
+                     parent widget : 0x87d4d4 , dest bitmap : 0
+                     &wc = 0x492e89c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Player missile radius_iconbtn_CUSTOM) (0x492ec60) {
+                     parent widget : 0x87d4d4 , dest bitmap : 0
+                     &wc = 0x492ec84 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Player missile radius) (0x87d5cc) {
+            parent widget : 0x87d338 , dest bitmap : 0
+            &wc = 0x87d5f0 , wcols = 0x87ef2c
+            area = Size( 24 X 8 ) , At( 355 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Player missile radius) (0x87d6b0) {
+            parent widget : 0x87d338 , dest bitmap : 0
+            &wc = 0x87d6d4 , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 10
+      Setting widget {
+         WidgetBase (SettingWidget : Enemy explosion duration) (0x87d840) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87d864 , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 386 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = FLOATING_POINT_INPUT , difficulty = EASY
+         ivars = 0,0,0,0
+         fvars = 4.000000,2.000000,0.500000,2.000000
+         WidgetBase (description text - Enemy explosion duration) (0x87d8f8) {
+            parent widget : 0x87d840 , dest bitmap : 0
+            &wc = 0x87d91c , wcols = 0x87ef2c
+            area = Size( 192 X 8 ) , At( 23 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Enemy explosion duration - radio) (0x87d9dc) {
+               parent widget : 0x87d840 , dest bitmap : 0
+               &wc = 0x87da00 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x492f818
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Enemy explosion duration_iconbtn_EASY) (0x492f818) {
+                     parent widget : 0x87d9dc , dest bitmap : 0
+                     &wc = 0x492f83c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Enemy explosion duration_iconbtn_MEDIUM) (0x492bd80) {
+                     parent widget : 0x87d9dc , dest bitmap : 0
+                     &wc = 0x492bda4 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Enemy explosion duration_iconbtn_HARD) (0x492c168) {
+                     parent widget : 0x87d9dc , dest bitmap : 0
+                     &wc = 0x492c18c , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Enemy explosion duration_iconbtn_CUSTOM) (0x492cd20) {
+                     parent widget : 0x87d9dc , dest bitmap : 0
+                     &wc = 0x492cd44 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Enemy explosion duration) (0x87dad4) {
+            parent widget : 0x87d840 , dest bitmap : 0
+            &wc = 0x87daf8 , wcols = 0x87ef2c
+            area = Size( 64 X 8 ) , At( 315 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Enemy explosion duration) (0x87dbb8) {
+            parent widget : 0x87d840 , dest bitmap : 0
+            &wc = 0x87dbdc , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 11
+      Setting widget {
+         WidgetBase (SettingWidget : Player explosion duration) (0x87dd48) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87dd6c , wcols = 0x87ef2c
+            area = Size( 446 X 20 ) , At( 177 , 410 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         setting_text_width = 216 , value_text_width = 64 , padding = 4
+         input_type = FLOATING_POINT_INPUT , difficulty = EASY
+         ivars = 0,0,0,0
+         fvars = 5.000000,3.500000,2.000000,3.500000
+         WidgetBase (description text - Player explosion duration) (0x87de00) {
+            parent widget : 0x87dd48 , dest bitmap : 0
+            &wc = 0x87de24 , wcols = 0x87ef2c
+            area = Size( 200 X 8 ) , At( 15 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         GenericRadioButton {
+            WidgetBase (Player explosion duration - radio) (0x87dee4) {
+               parent widget : 0x87dd48 , dest bitmap : 0
+               &wc = 0x87df08 , wcols = 0x87ef2c
+               area = Size( 92 X 20 ) , At( 220 , 0 )
+               Minimum dimensions = 16 X 1
+               Flags {
+                  ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                  RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+               }
+            }
+            radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x492d4f0
+            Buttons (Count = 4) {
+               Button #0 {
+                  WidgetBase (Player explosion duration_iconbtn_EASY) (0x492d4f0) {
+                     parent widget : 0x87dee4 , dest bitmap : 0
+                     &wc = 0x492d514 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 220 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #1 {
+                  WidgetBase (Player explosion duration_iconbtn_MEDIUM) (0x4943ce0) {
+                     parent widget : 0x87dee4 , dest bitmap : 0
+                     &wc = 0x4943d04 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 244 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #2 {
+                  WidgetBase (Player explosion duration_iconbtn_HARD) (0x49444b0) {
+                     parent widget : 0x87dee4 , dest bitmap : 0
+                     &wc = 0x49444d4 , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 268 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+               Button #3 {
+                  WidgetBase (Player explosion duration_iconbtn_CUSTOM) (0x4942188) {
+                     parent widget : 0x87dee4 , dest bitmap : 0
+                     &wc = 0x49421ac , wcols = 0x87ef2c
+                     area = Size( 20 X 20 ) , At( 292 , 0 )
+                     Minimum dimensions = 0 X 0
+                     Flags {
+                        ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                        RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                     }
+                  }
+               }
+            }
+         }
+         WidgetBase (value text - Player explosion duration) (0x87dfdc) {
+            parent widget : 0x87dd48 , dest bitmap : 0
+            &wc = 0x87e000 , wcols = 0x87ef2c
+            area = Size( 64 X 8 ) , At( 315 , 6 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         WidgetBase (input box - Player explosion duration) (0x87e0c0) {
+            parent widget : 0x87dd48 , dest bitmap : 0
+            &wc = 0x87e0e4 , wcols = 0x87ef2c
+            area = Size( 62 X 14 ) , At( 384 , 3 )
+            Minimum dimensions = 0 X 0
+            Flags {
+               ENABLED (N) , VISIBLE (N) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+      }
+      Widget # 12
+      GenericRadioButton {
+         WidgetBase (nl_radio) (0x87e250) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87e274 , wcols = 0x87ef2c
+            area = Size( 98 X 14 ) , At( 397 , 434 )
+            Minimum dimensions = 11 X 1
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x48f7ad8
+         Buttons (Count = 3) {
+            Button #0 {
+               WidgetBase (nl_radio_btn_1) (0x48f8668) {
+                  parent widget : 0x87e250 , dest bitmap : 0
+                  &wc = 0x48f868c , wcols = 0x87ef2c
+                  area = Size( 30 X 14 ) , At( 397 , 434 )
+                  Minimum dimensions = 0 X 0
+                  Flags {
+                     ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                     RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                  }
+               }
+            }
+            Button #1 {
+               WidgetBase (nl_radio_btn_2) (0x48f6560) {
+                  parent widget : 0x87e250 , dest bitmap : 0
+                  &wc = 0x48f6584 , wcols = 0x87ef2c
+                  area = Size( 30 X 14 ) , At( 431 , 434 )
+                  Minimum dimensions = 0 X 0
+                  Flags {
+                     ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                     RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                  }
+               }
+            }
+            Button #2 {
+               WidgetBase (nl_radio_btn_3) (0x48f7ad8) {
+                  parent widget : 0x87e250 , dest bitmap : 0
+                  &wc = 0x48f7afc , wcols = 0x87ef2c
+                  area = Size( 30 X 14 ) , At( 465 , 434 )
+                  Minimum dimensions = 0 X 0
+                  Flags {
+                     ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                     RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                  }
+               }
+            }
+         }
+      }
+      Widget # 13
+      WidgetBase (nl_text) (0x87e348) {
+         parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+         &wc = 0x87e36c , wcols = 0x87ef2c
+         area = Size( 152 X 8 ) , At( 241 , 437 )
+         Minimum dimensions = 0 X 0
+         Flags {
+            ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+            RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+         }
+      }
+      Widget # 14
+      GenericRadioButton {
+         WidgetBase (alldiff_radio) (0x87e42c) {
+            parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+            &wc = 0x87e450 , wcols = 0x87ef2c
+            area = Size( 116 X 20 ) , At( 397 , 146 )
+            Minimum dimensions = 21 X 1
+            Flags {
+               ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+               RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+            }
+         }
+         radio_type = RADIO_HORIZONTAL , padding = 4 , active_item = 0x4944898
+         Buttons (Count = 5) {
+            Button #0 {
+               WidgetBase (alldiff_radio_btn_EASY) (0x4944898) {
+                  parent widget : 0x87e42c , dest bitmap : 0
+                  &wc = 0x49448bc , wcols = 0x87ef2c
+                  area = Size( 20 X 20 ) , At( 397 , 146 )
+                  Minimum dimensions = 0 X 0
+                  Flags {
+                     ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                     RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                  }
+               }
+            }
+            Button #1 {
+               WidgetBase (alldiff_radio_btn_MEDIUM) (0x4942570) {
+                  parent widget : 0x87e42c , dest bitmap : 0
+                  &wc = 0x4942594 , wcols = 0x87ef2c
+                  area = Size( 20 X 20 ) , At( 421 , 146 )
+                  Minimum dimensions = 0 X 0
+                  Flags {
+                     ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                     RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                  }
+               }
+            }
+            Button #2 {
+               WidgetBase (alldiff_radio_btn_HARD) (0x49438f8) {
+                  parent widget : 0x87e42c , dest bitmap : 0
+                  &wc = 0x494391c , wcols = 0x87ef2c
+                  area = Size( 20 X 20 ) , At( 445 , 146 )
+                  Minimum dimensions = 0 X 0
+                  Flags {
+                     ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                     RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                  }
+               }
+            }
+            Button #3 {
+               WidgetBase (alldiff_radio_btn_CUSTOM) (0x49440c8) {
+                  parent widget : 0x87e42c , dest bitmap : 0
+                  &wc = 0x49440ec , wcols = 0x87ef2c
+                  area = Size( 20 X 20 ) , At( 469 , 146 )
+                  Minimum dimensions = 0 X 0
+                  Flags {
+                     ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                     RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                  }
+               }
+            }
+            Button #4 {
+               WidgetBase (alldiff_radio_btn_mixed) (0x4944c80) {
+                  parent widget : 0x87e42c , dest bitmap : 0
+                  &wc = 0x4944ca4 , wcols = 0x87ef2c
+                  area = Size( 20 X 20 ) , At( 493 , 146 )
+                  Minimum dimensions = 0 X 0
+                  Flags {
+                     ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+                     RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+                  }
+               }
+            }
+         }
+      }
+      Widget # 15
+      WidgetBase (alldiff_text) (0x87e524) {
+         parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+         &wc = 0x87e548 , wcols = 0x87ef2c
+         area = Size( 160 X 8 ) , At( 233 , 152 )
+         Minimum dimensions = 0 X 0
+         Flags {
+            ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+            RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+         }
+      }
+      Widget # 16
+      WidgetBase (play_btn) (0x87e608) {
+         parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+         &wc = 0x87e62c , wcols = 0x87ef2c
+         area = Size( 54 X 14 ) , At( 489 , 492 )
+         Minimum dimensions = 0 X 0
+         Flags {
+            ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+            RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+         }
+      }
+      Widget # 17
+      WidgetBase (quit_btn) (0x87e740) {
+         parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+         &wc = 0x87e764 , wcols = 0x87ef2c
+         area = Size( 54 X 14 ) , At( 343 , 492 )
+         Minimum dimensions = 0 X 0
+         Flags {
+            ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+            RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+         }
+      }
+      Widget # 18
+      WidgetBase (save_changes_btn) (0x87e878) {
+         parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+         &wc = 0x87e89c , wcols = 0x87ef2c
+         area = Size( 54 X 14 ) , At( 489 , 474 )
+         Minimum dimensions = 0 X 0
+         Flags {
+            ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+            RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+         }
+      }
+      Widget # 19
+      WidgetBase (revert_changes_btn) (0x87e9b0) {
+         parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+         &wc = 0x87e9d4 , wcols = 0x87ef2c
+         area = Size( 54 X 14 ) , At( 343 , 474 )
+         Minimum dimensions = 0 X 0
+         Flags {
+            ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+            RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+         }
+      }
+      Widget # 20
+      WidgetBase (city_ddl) (0x87eae8) {
+         parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+         &wc = 0x87eb0c , wcols = 0x87ef2c
+         area = Size( 112 X 18 ) , At( 397 , 452 )
+         Minimum dimensions = 82 X 18
+         Flags {
+            ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+            RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (Y)
+         }
+      }
+      Widget # 21
+      WidgetBase (city_text) (0x87ee20) {
+         parent widget : 0x87ef08 , dest bitmap : 0x4900e60
+         &wc = 0x87ee44 , wcols = 0x87ef2c
+         area = Size( 104 X 8 ) , At( 289 , 457 )
+         Minimum dimensions = 0 X 0
+         Flags {
+            ENABLED (Y) , VISIBLE (Y) , HOVER (N) , HASFOCUS (N) , MOVEABLE (Y)
+            RESIZEABLE (Y) , NEEDS_REDRAW (Y) , NEEDS_BG_REDRAW (Y) , ALLOW_CLOSE (N) , ALLOW_OVERLAP (N)
+         }
+      }
+   }
+}
+
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87eae8) , Name = city_ddl , Topic = TOPIC_DDL , Message = DDL_SELECTION_CHANGED]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_CLICKED]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
+menu_gui received WidgetMsg [WidgetMsg : From widget (0x87e608) , Name = play_btn , Topic = TOPIC_BUTTON_WIDGET , Message = BUTTON_HELD]
