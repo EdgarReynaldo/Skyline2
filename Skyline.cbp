@@ -16,6 +16,8 @@
 				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-DDEBUG" />
+					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
 				</Compiler>
 				<Linker>
 					<Add option="-leagle_a5_debug.dll" />
@@ -48,32 +50,42 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DALLEGRO_STATICLINK" />
+					<Add option="-DDEBUG" />
+					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
 				</Compiler>
 				<Linker>
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
-					<Add option="-leagle4-debug-static" />
-					<Add option="-lalleggl" />
-					<Add option="-ljpgalleg" />
-					<Add option="-lloadpng" />
-					<Add option="-llogg" />
-					<Add option="-lalleg-debug-static" />
-					<Add option="-lvorbis" />
-					<Add option="-lvorbisenc" />
+					<Add option="-static" />
+					<Add option="-leagle_a5_debug-static" />
+					<Add option="-leagle_debug-static" />
+					<Add option="-lallegro_monolith-debug-static" />
+					<Add option="-ljpeg" />
+					<Add option="-ldumb" />
+					<Add option="-lFLAC" />
+					<Add option="-lfreetype" />
 					<Add option="-lvorbisfile" />
+					<Add option="-lvorbis" />
 					<Add option="-logg" />
+					<Add option="-lphysfs" />
 					<Add option="-lpng16" />
 					<Add option="-lzlibstatic" />
-					<Add option="-lkernel32" />
-					<Add option="-luser32" />
-					<Add option="-lgdi32" />
-					<Add option="-lcomdlg32" />
-					<Add option="-lole32" />
-					<Add option="-ldinput" />
-					<Add option="-lddraw" />
-					<Add option="-ldxguid" />
-					<Add option="-lwinmm" />
 					<Add option="-ldsound" />
+					<Add option="-lgdiplus" />
+					<Add option="-luuid" />
+					<Add option="-lkernel32" />
+					<Add option="-lwinmm" />
+					<Add option="-lpsapi" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-luser32" />
+					<Add option="-lcomdlg32" />
+					<Add option="-lgdi32" />
+					<Add option="-lshell32" />
+					<Add option="-lole32" />
+					<Add option="-ladvapi32" />
+					<Add option="-lws2_32" />
+					<Add option="-lshlwapi" />
 				</Linker>
 			</Target>
 			<Target title="StaticRelease">
@@ -91,28 +103,35 @@
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
 					<Add option="-static" />
-					<Add option="-leagle4-static" />
-					<Add option="-lalleggl" />
-					<Add option="-ljpgalleg" />
-					<Add option="-lloadpng" />
-					<Add option="-llogg" />
-					<Add option="-lalleg" />
-					<Add option="-lvorbis" />
-					<Add option="-lvorbisenc" />
+					<Add option="-leagle_a5-static" />
+					<Add option="-leagle-static" />
+					<Add option="-lallegro_monolith-static" />
+					<Add option="-ljpeg" />
+					<Add option="-ldumb" />
+					<Add option="-lFLAC" />
+					<Add option="-lfreetype" />
 					<Add option="-lvorbisfile" />
+					<Add option="-lvorbis" />
 					<Add option="-logg" />
+					<Add option="-lphysfs" />
 					<Add option="-lpng16" />
 					<Add option="-lzlibstatic" />
-					<Add option="-lkernel32" />
-					<Add option="-luser32" />
-					<Add option="-lgdi32" />
-					<Add option="-lcomdlg32" />
-					<Add option="-lole32" />
-					<Add option="-ldinput" />
-					<Add option="-lddraw" />
-					<Add option="-ldxguid" />
-					<Add option="-lwinmm" />
 					<Add option="-ldsound" />
+					<Add option="-lgdiplus" />
+					<Add option="-luuid" />
+					<Add option="-lkernel32" />
+					<Add option="-lwinmm" />
+					<Add option="-lpsapi" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-luser32" />
+					<Add option="-lcomdlg32" />
+					<Add option="-lgdi32" />
+					<Add option="-lshell32" />
+					<Add option="-lole32" />
+					<Add option="-ladvapi32" />
+					<Add option="-lws2_32" />
+					<Add option="-lshlwapi" />
 				</Linker>
 			</Target>
 		</Build>
@@ -142,6 +161,8 @@
 		<Unit filename="src/Globals.hpp" />
 		<Unit filename="src/Intro.cpp" />
 		<Unit filename="src/Intro.hpp" />
+		<Unit filename="src/Lasers.cpp" />
+		<Unit filename="src/Lasers.hpp" />
 		<Unit filename="src/Missiles.cpp" />
 		<Unit filename="src/Missiles.hpp" />
 		<Unit filename="src/NewMain.cpp" />

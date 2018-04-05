@@ -401,7 +401,6 @@ void PlayerAI::Update(double dt) {
 void PlayerAI::CheckInputs() {
    EAGLE_ASSERT(mb);
    if (input_mouse_press(LMB)) {
-      printf("PlayerAI::CheckInputs : LMB pressed\n");
       if (mb->ttnl <= 0.0) {
          Launch(mouse_x , mouse_y);
       }

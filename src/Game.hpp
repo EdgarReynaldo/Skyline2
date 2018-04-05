@@ -13,6 +13,7 @@ using std::vector;
 
 #include "City.hpp"
 #include "Missiles.hpp"
+#include "Lasers.hpp"
 #include "Config.hpp"
 ///#include "SettingsWidget.hpp"
 
@@ -35,6 +36,7 @@ private :
    string citystr;
    City* city;
 
+   Allegro5Image cbuffer;
    Allegro5Image nopointer;
    Allegro5Image okpointer;
    Allegro5Image* pointer;
@@ -48,6 +50,8 @@ private :
    MissileBattery player_mb;
    PlayerAI* player_ai;
 
+   LaserBattery player_lasers;
+   
    ConfigSettings last_config_settings;
    ConfigSettings current_config_settings;
    Config current_config;

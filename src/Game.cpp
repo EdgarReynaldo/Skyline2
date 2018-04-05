@@ -10,9 +10,12 @@ using std::endl;
 #include "Game.hpp"
 #include "Config.hpp"
 #include "Globals.hpp"
+#include "Blend.hpp"
+
 
 #include "Eagle/backends/Allegro5Backend.hpp"
 #include "Eagle/InputHandler.hpp"
+
 
 
 const int FPS = 60;
@@ -67,8 +70,17 @@ void Game::SetupMissileBatteries(Config c) {
 
 
 void Game::DrawGame() {
+   win->SetDrawingTarget(&cbuffer);
    win->Clear();
+   SetAdditiveBlender();
+   player_lasers.Draw();
 
+   win->DrawToBackBuffer();
+   al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_ZERO);
+   win->Draw(&cbuffer , 0 , 0);
+   
+   al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_INVERSE_ALPHA);
+   
    city->Display(win);
 
    for (unsigned int i = 0 ; i < enemy_mbs.size() ; ++i) {
@@ -76,6 +88,7 @@ void Game::DrawGame() {
    }
    player_mb.Display();
 
+   
    if (state == WIN) {
       win->DrawTextString(win->DefaultFont() , "WIN! WIN! WIN! WIN! WIN!" , ww/2 , wh/2 , EagleColor(0,255,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
@@ -153,7 +166,34 @@ void Game::CheckCollisions() {
          m->Explode();
       }
    }
+   /// Check for player lasers hitting missiles
+///   vector<Laser*> lasers = player_lasers.GetActiveLaserBeams();
+   ALLEGRO_BITMAP* bmp = cbuffer.AllegroBitmap();
+   ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(bmp , ALLEGRO_PIXEL_FORMAT_ANY_32_WITH_ALPHA , ALLEGRO_LOCK_READONLY);
+   for (unsigned int i = 0 ; i < missiles.size() ; ++i) {
+      Missile* m = missiles[i];
+      ALLEGRO_COLOR c;
+      c = al_get_pixel(bmp , m->X() , m->Y());
+      unsigned char r,g,b;
+      al_unmap_rgb(c , &r , &g , &b);
+      if (r == 255 && g == 255 && b == 255) {
+         if (!m->Exploding()) {m->Explode();}
+      }
+   }
+   al_unlock_bitmap(bmp);
+      
 
+/**
+      for (unsigned int j = 0 ; j < lasers.size() ; ++j) {
+         Laser* l = lasers[j];
+         if (l->Hit(m->X() , m->Y())) {
+            if (!m->Exploding()) {
+               m->Explode();
+            }
+         }
+      }
+   }
+//*/
 }
 
 
@@ -195,6 +235,7 @@ Game::Game(string cityfile) :
    cities(),
    citystr(),
    city(0),
+   cbuffer(ww,wh),
    nopointer(nopointer_file),
    okpointer(okpointer_file),
    pointer(&nopointer),
@@ -204,6 +245,7 @@ Game::Game(string cityfile) :
    enemy_mbs(),
    player_mb(),
    player_ai(0),
+   player_lasers(),
    last_config_settings(),
    current_config_settings(),
    current_config(),
@@ -249,6 +291,9 @@ Game::Game(string cityfile) :
 */
 ///{
    SetupCities(cityfile , ww , wh);
+   if (!cbuffer.Valid()) {
+      throw EagleException("Failed to allocate cbuffer!\n");
+   }
    if (!okpointer.Load(okpointer_file)) {
       throw EagleException(StringPrintF("Failed to load okay pointer (%s)!\n" , okpointer_file.c_str()));
    }
@@ -339,14 +384,6 @@ int Game::Run() {
             Update(ee.timer.eagle_timer_source->SPT());
          }
          else {
-            if (ee.type == EAGLE_EVENT_MOUSE_BUTTON_DOWN) {
-               printf("Master mouse down. %s %s %s\n" , input_mouse_press(LMB)?"true":"false" , ms_press(LMB)?"true":"false" , (mouse_press&1)?"true":"false");
-/**
-               EAGLE_ASSERT(input_mouse_press(LMB));
-               EAGLE_ASSERT(ms_press(LMB));
-               EAGLE_ASSERT(mouse_press & 1);
-//*/
-            }
             CheckInputs();
          }
          state = HandleEvent(ee);
@@ -410,6 +447,7 @@ STATE Game::Update(double dt) {
             enemy_mbs[i]->Update(dt);
          }
          player_mb.Update(dt);
+         player_lasers.Update(dt);
          CheckCollisions();
          state = CheckGameState();
          break;
@@ -448,6 +486,9 @@ STATE Game::HandleEvent(EagleEvent ee) {
       {
          if (ee.type == EAGLE_EVENT_KEY_DOWN && ee.keyboard.keycode == EAGLE_KEY_ESCAPE) {
             state = MENUE;
+         }
+         if (ee.type == EAGLE_EVENT_MOUSE_AXES) {
+            player_lasers.AimAt(ee.mouse.x , ee.mouse.y);
          }
       }
       break;
@@ -538,14 +579,12 @@ STATE Game::CheckInputs() {
          
          break;
       case GAME :
-         if (input_mouse_press(LMB)) {
-            printf("Game::CheckInputs : detected LMB press.\n");
-         }
          for (unsigned int i = 0 ; i < enemy_mbs.size() ; ++i) {
             MissileBattery* mbtry = enemy_mbs[i];
             mbtry->CheckInputs();
          }
          player_mb.CheckInputs();
+         player_lasers.CheckInputs();
          if (player_mb.Ready()) {
             pointer = &okpointer;
          }
