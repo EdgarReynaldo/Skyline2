@@ -70,25 +70,13 @@ void Game::SetupMissileBatteries(Config c) {
 void Game::DrawGame() {
    win->SetDrawingTarget(&cbuffer);
    win->Clear();
-///   SetAdditiveBlender();
-///   al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_ZERO);
-///   al_set_blender(ALLEGRO_ADD , ALLEGRO_ALPHA , ALLEGRO_ONE);
-   al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_ONE);
-
+   SetAdditiveBlender();
    player_lasers.Draw();
 
-   
-   
    win->DrawToBackBuffer();
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_ZERO);
-   
    win->Draw(&cbuffer , 0 , 0);
-
-///   SetMultiplyBlender();
-   al_set_blender(ALLEGRO_ADD , ALLEGRO_DEST_COLOR , ALLEGRO_ZERO);
-
-   win->Draw(&bg , 0 , 0);
-         
+   
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_INVERSE_ALPHA);
    
    city->Display(win);
@@ -246,7 +234,6 @@ Game::Game(string cityfile) :
    citystr(),
    city(0),
    cbuffer(ww,wh),
-   bg("Data/Images/CloudyOcean.png"),
    nopointer(nopointer_file),
    okpointer(okpointer_file),
    pointer(&nopointer),
@@ -304,9 +291,6 @@ Game::Game(string cityfile) :
    SetupCities(cityfile , ww , wh);
    if (!cbuffer.Valid()) {
       throw EagleException("Failed to allocate cbuffer!\n");
-   }
-   if (!bg.Valid()) {
-      throw EagleException("Failed to load background.\n");
    }
    if (!okpointer.Load(okpointer_file)) {
       throw EagleException(StringPrintF("Failed to load okay pointer (%s)!\n" , okpointer_file.c_str()));
