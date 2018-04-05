@@ -12,7 +12,7 @@
 
 
 double LASER_BEAM_WIDTH = 100.0;
-double LASER_BEAM_DURATION = 5.0;
+double LASER_BEAM_DURATION = 2.0;
 
 
 
@@ -44,12 +44,12 @@ void Laser::DrawLaser(EagleColor ic , EagleColor oc) {
    };
    
    glBegin(GL_TRIANGLE_FAN);
-   glColor4f(ic.fR() , ic.fG() , ic.fB() , ic.fA());
+   glColor4f(ic.fR() , ic.fG() , ic.fB() , 255.0/FPS);///ic.fA());
    glVertex2f(p[0].X() , p[0].Y());
    glColor4f(oc.fR() , oc.fG() , oc.fB() , oc.fA());
    glVertex2f(p[1].X() , p[1].Y());
    glVertex2f(p[2].X() , p[2].Y());
-   glColor4f(ic.fR() , ic.fG() , ic.fB() , ic.fA());
+   glColor4f(ic.fR() , ic.fG() , ic.fB() , 255.0/FPS);///ic.fA());
    glVertex2f(p[3].X() , p[3].Y());
    glColor4f(oc.fR() , oc.fG() , oc.fB() , oc.fA());
    glVertex2f(p[4].X() , p[4].Y());
@@ -62,7 +62,11 @@ void Laser::DrawLaser(EagleColor ic , EagleColor oc) {
 LASER_STATE Laser::Update(double dt) {
    ttl -= (float)dt;
    if (ttl < 0.0f) {return LASER_TOAST;}
-   w = maxw*((ttlmax - ttl)/ttlmax);
+   double pct = 2.0*(ttlmax - ttl)/ttlmax;
+   if (pct > 1.0) {
+      pct = 2.0 - pct;
+   }
+   w = maxw*pct;
    return LASER_FIRING;
 }
 
@@ -219,9 +223,9 @@ void LaserBattery::Setup() {
    lasers.push_back(new LaserLauncher(Pos2F(0 , wh) , range));
    lasers.push_back(new LaserLauncher(Pos2F(ww/2 , wh) , range));
    lasers.push_back(new LaserLauncher(Pos2F(ww , wh) , range));
-   lasers[0]->SetColors(EagleColor(255,0,0) , EagleColor(255,255,255,0));
-   lasers[1]->SetColors(EagleColor(0,255,0) , EagleColor(255,255,255,0));
-   lasers[2]->SetColors(EagleColor(0,0,255) , EagleColor(255,255,255,0));
+   lasers[0]->SetColors(EagleColor(255,0,0,255) , EagleColor(255,255,255,0));
+   lasers[1]->SetColors(EagleColor(0,255,0,255) , EagleColor(255,255,255,0));
+   lasers[2]->SetColors(EagleColor(0,0,255,255) , EagleColor(255,255,255,0));
 }
 
 
@@ -268,7 +272,7 @@ void LaserBattery::Update(double dt) {
 
 
 void LaserBattery::CheckInputs() {
-   if (input_mouse_press(RMB)) {
+   if (input_mouse_held(RMB)) {
       Fire();
    }
 }

@@ -18,8 +18,6 @@ using std::endl;
 
 
 
-const int FPS = 60;
-
 const float SPT = 1.0f/float(FPS);
 
 
@@ -383,9 +381,7 @@ int Game::Run() {
          if (ee.type == EAGLE_EVENT_TIMER) {
             Update(ee.timer.eagle_timer_source->SPT());
          }
-         else {
-            CheckInputs();
-         }
+         CheckInputs();
          state = HandleEvent(ee);
       } while (sys->GetSystemQueue()->HasEvent(0));
    }

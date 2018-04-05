@@ -9,6 +9,8 @@
 extern int ww;
 extern int wh;
 
+extern int FPS;
+
 class EagleSystem;
 class EagleGraphicsContext;
 class EagleEventHandler;
