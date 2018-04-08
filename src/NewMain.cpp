@@ -36,6 +36,7 @@ int main(int argc , char** argv) {
    
    t = sys->GetSystemTimer();
    
+   f = win->LoadFont("Verdana.ttf" , -36);
    
    Game game("Data/Cities.txt");
    

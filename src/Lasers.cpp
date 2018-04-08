@@ -22,7 +22,7 @@ Laser::Laser(float srcx , float srcy , float destx , float desty , float time_to
       ttlmax(time_to_live),
       ttl(time_to_live),
       maxw(LASER_BEAM_WIDTH),
-      w(LASER_BEAM_WIDTH)
+      w(0.0)
 {}
 
 
@@ -43,17 +43,28 @@ void Laser::DrawLaser(EagleColor ic , EagleColor oc) {
       s , vsl , vdl , d , vdr , vsr
    };
    
+   float a = 5.0/FPS;
+   
    glBegin(GL_TRIANGLE_FAN);
-   glColor4f(ic.fR() , ic.fG() , ic.fB() , 255.0/FPS);///ic.fA());
+///   glColor4f(ic.fR() , ic.fG() , ic.fB() , 3.0/FPS);///ic.fA());
+   
+   glColor4f(a*ic.fR() , a*ic.fG() , a*ic.fB() , a);///ic.fA());
    glVertex2f(p[0].X() , p[0].Y());
-   glColor4f(oc.fR() , oc.fG() , oc.fB() , oc.fA());
+
+///   glColor4f(oc.fR() , oc.fG() , oc.fB() , 0.0f);///oc.fA());
+   glColor4f(0.0f , 0.0f , 0.0f , 0.0f);
+
    glVertex2f(p[1].X() , p[1].Y());
    glVertex2f(p[2].X() , p[2].Y());
-   glColor4f(ic.fR() , ic.fG() , ic.fB() , 255.0/FPS);///ic.fA());
+
+   glColor4f(a*ic.fR() , a*ic.fG() , a*ic.fB() , a);///ic.fA());
    glVertex2f(p[3].X() , p[3].Y());
-   glColor4f(oc.fR() , oc.fG() , oc.fB() , oc.fA());
+///   glColor4f(oc.fR() , oc.fG() , oc.fB() , 0.0f);///oc.fA());
+
+   glColor4f(0.0f , 0.0f , 0.0f , 0.0f);
    glVertex2f(p[4].X() , p[4].Y());
    glVertex2f(p[5].X() , p[5].Y());
+
    glEnd();
 }
 
@@ -223,9 +234,23 @@ void LaserBattery::Setup() {
    lasers.push_back(new LaserLauncher(Pos2F(0 , wh) , range));
    lasers.push_back(new LaserLauncher(Pos2F(ww/2 , wh) , range));
    lasers.push_back(new LaserLauncher(Pos2F(ww , wh) , range));
+   /// CMY
+   lasers[0]->SetColors(EagleColor(255,255,0,255) , EagleColor(255,255,255,0));
+   lasers[1]->SetColors(EagleColor(0,255,255,255) , EagleColor(255,255,255,0));
+   lasers[2]->SetColors(EagleColor(255,0,255,255) , EagleColor(255,255,255,0));
+/** RGB
    lasers[0]->SetColors(EagleColor(255,0,0,255) , EagleColor(255,255,255,0));
    lasers[1]->SetColors(EagleColor(0,255,0,255) , EagleColor(255,255,255,0));
    lasers[2]->SetColors(EagleColor(0,0,255,255) , EagleColor(255,255,255,0));
+*/
+}
+
+
+
+void LaserBattery::Reset() {
+   for (unsigned int i = 0 ; i < lasers.size() ; ++i) {
+      lasers[i]->Free();
+   }
 }
 
 

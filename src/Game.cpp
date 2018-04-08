@@ -69,11 +69,11 @@ void Game::SetupMissileBatteries(Config c) {
 
 void Game::DrawGame() {
    win->SetDrawingTarget(&cbuffer);
-   win->Clear();
-///   SetAdditiveBlender();
-///   al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_ZERO);
-///   al_set_blender(ALLEGRO_ADD , ALLEGRO_ALPHA , ALLEGRO_ONE);
-   al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_ONE);
+///   win->DrawToBackBuffer();
+   
+   win->Clear(EagleColor(0,0,0,255));
+
+   SetAdditiveBlender();
 
    player_lasers.Draw();
 
@@ -84,6 +84,8 @@ void Game::DrawGame() {
    
    win->Draw(&cbuffer , 0 , 0);
 
+///   return;
+   
 ///   SetMultiplyBlender();
    al_set_blender(ALLEGRO_ADD , ALLEGRO_DEST_COLOR , ALLEGRO_ZERO);
 
@@ -100,10 +102,10 @@ void Game::DrawGame() {
 
    
    if (state == WIN) {
-      win->DrawTextString(win->DefaultFont() , "WIN! WIN! WIN! WIN! WIN!" , ww/2 , wh/2 , EagleColor(0,255,0)  ,HALIGN_CENTER , VALIGN_CENTER);
+      win->DrawTextString(f , "WIN! WIN! WIN! WIN! WIN!" , ww/2 , wh/2 , EagleColor(0,255,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
    else if (state == LOSE) {
-      win->DrawTextString(win->DefaultFont() , "YOU LOSE! LOSE! LOSE! LOSE! LOSE!" , ww/2 , wh/2 , EagleColor(255,0,0)  ,HALIGN_CENTER , VALIGN_CENTER);
+      win->DrawTextString(f , "YOU LOSE! LOSE! LOSE! LOSE! LOSE!" , ww/2 , wh/2 , EagleColor(255,0,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
 
    win->Draw(pointer , mouse_x - pointer->W()/2 , mouse_y - pointer->H()/2);
@@ -246,7 +248,7 @@ Game::Game(string cityfile) :
    citystr(),
    city(0),
    cbuffer(ww,wh),
-   bg("Data/Images/CloudyOcean.png"),
+   bg("Data/Images/CloudySky.png"),
    nopointer(nopointer_file),
    okpointer(okpointer_file),
    pointer(&nopointer),
@@ -387,6 +389,7 @@ int Game::Run() {
 
    al_show_mouse_cursor(dynamic_cast<Allegro5GraphicsContext*>(win)->AllegroDisplay());
 
+   bool paused = false;
    while (state != QUIT) {
       Display();
       do {
@@ -394,11 +397,19 @@ int Game::Run() {
          if (ee.type == EAGLE_EVENT_DISPLAY_CLOSE) {
             state = QUIT;
          }
-         if (ee.type == EAGLE_EVENT_TIMER) {
-            Update(ee.timer.eagle_timer_source->SPT());
+         if (ee.type == EAGLE_EVENT_DISPLAY_SWITCH_OUT) {
+            paused = true;
          }
-         CheckInputs();
-         state = HandleEvent(ee);
+         if (ee.type == EAGLE_EVENT_DISPLAY_SWITCH_IN) {
+            paused = false;
+         }
+         if (!paused) {
+            if (ee.type == EAGLE_EVENT_TIMER) {
+               Update(ee.timer.eagle_timer_source->SPT());
+            }
+            CheckInputs();
+            state = HandleEvent(ee);
+         }
       } while (sys->GetSystemQueue()->HasEvent(0));
    }
    return 0;
@@ -482,6 +493,7 @@ STATE Game::HandleEvent(EagleEvent ee) {
             city = cities[citys[ee.keyboard.keycode - EAGLE_KEY_1]];
             EAGLE_ASSERT(city);
             city->Reset();
+            player_lasers.Reset();
             DIFFICULTY d[3] = {
                EASY , MEDIUM , HARD
             };
@@ -496,8 +508,12 @@ STATE Game::HandleEvent(EagleEvent ee) {
       break;
    case GAME :
       {
-         if (ee.type == EAGLE_EVENT_KEY_DOWN && ee.keyboard.keycode == EAGLE_KEY_ESCAPE) {
-            state = MENUE;
+         if (ee.type == EAGLE_EVENT_KEY_DOWN) {
+            if (ee.keyboard.keycode == EAGLE_KEY_ESCAPE) {
+               state = MENUE;
+            }
+            if (ee.keyboard.keycode == EAGLE_KEY_W) {state = WIN;}
+            if (ee.keyboard.keycode == EAGLE_KEY_L) {state = LOSE;}
          }
          if (ee.type == EAGLE_EVENT_MOUSE_AXES) {
             player_lasers.AimAt(ee.mouse.x , ee.mouse.y);

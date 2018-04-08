@@ -92,6 +92,8 @@ public :
    void Free();
    void Setup();
    
+   void Reset();
+   
    void AimAt(int aimx , int aimy);
 
    void Draw();
