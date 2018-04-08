@@ -149,6 +149,8 @@
 		<Unit filename="Skyline_Notes.txt" />
 		<Unit filename="cbbuild/bin/Data/Cities.txt" />
 		<Unit filename="cbbuild/bin/Data/Config.txt" />
+		<Unit filename="src/Blend.cpp" />
+		<Unit filename="src/Blend.hpp" />
 		<Unit filename="src/City.cpp" />
 		<Unit filename="src/City.hpp" />
 		<Unit filename="src/Config.cpp" />
@@ -180,6 +182,8 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="src/SettingsWidget.hpp" />
+		<Unit filename="src/SoundLibrary.cpp" />
+		<Unit filename="src/SoundLibrary.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
