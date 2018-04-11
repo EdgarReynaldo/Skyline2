@@ -6,10 +6,13 @@
 
 #include "Eagle/backends/Allegro5Backend.hpp"
 
-
-
 #include <string>
 using std::string;
+
+
+#include "Shields.hpp"
+
+
 
 
 int CountPixels(Allegro5Image* image , ALLEGRO_COLOR c);
@@ -30,15 +33,19 @@ private :
    int maxpixels;
    int pixelsleft;
    
+   Shield shield;
+   
 public :
    
    City(string name , string path , int screenw , int screenh);
    
-   void Display(EagleGraphicsContext* win);
+   void Display();
    
    void Reset();
    
    void Destroy(EagleGraphicsContext* win , int cx , int cy , int radius);
+   
+   void DamageShield(double damage);
    
    void Recount();
    
@@ -47,6 +54,7 @@ public :
    string Name() {return city;}
    
    bool Hit(int tx , int ty);
+   bool HitShield(int tx , int ty);
 };
 
 

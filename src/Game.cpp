@@ -93,7 +93,7 @@ void Game::DrawGame() {
          
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_INVERSE_ALPHA);
    
-   city->Display(win);
+   city->Display();
 
    for (unsigned int i = 0 ; i < enemy_mbs.size() ; ++i) {
       enemy_mbs[i]->Display();
@@ -176,6 +176,9 @@ void Game::CheckCollisions() {
       Missile* m = emissiles[i];
       if (city->Hit(m->X() , m->Y())) {
          m->Explode();
+         if (city->HitShield(m->X() , m->Y())) {
+            city->DamageShield(M_PI*m->Rad()*m->Rad());
+         }
       }
    }
    /// Check for player lasers hitting missiles
@@ -194,18 +197,6 @@ void Game::CheckCollisions() {
    }
    al_unlock_bitmap(bmp);
       
-
-/**
-      for (unsigned int j = 0 ; j < lasers.size() ; ++j) {
-         Laser* l = lasers[j];
-         if (l->Hit(m->X() , m->Y())) {
-            if (!m->Exploding()) {
-               m->Explode();
-            }
-         }
-      }
-   }
-//*/
 }
 
 

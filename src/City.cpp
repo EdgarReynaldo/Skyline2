@@ -14,7 +14,8 @@ City::City(string name , string path , int screenw , int screenh) :
    x(0),
    y(0),
    maxpixels(-1),
-   pixelsleft(0)
+   pixelsleft(0),
+   shield()
 {
    if (!original.Valid()) {
       throw EagleException(StringPrintF("Failed to load city (%s).\n" , path.c_str()));
@@ -23,6 +24,9 @@ City::City(string name , string path , int screenw , int screenh) :
    ConvertMaskColorToAlphaZero(&workingcopy , EagleColor(255,0,255,255));
    x = (screenw - original.W())/2;
    y = screenh - original.H();
+   
+   shield.Setup(Pos2D(x + 0.5 , y + 0.5) , Pos2D(x + screenw -0.5 , y + 0.5) , 500 , 100);
+   
    maxpixels = original.W()*original.H() - CountPixels(&original , al_map_rgba(0,0,0,0));
 //   maxpixels = original.W()*original.H() - CountPixels(original , makecol(255,0,255));
 ///   maxpixels = original.W()*original.H() - CountPixels(original , 255 , 0 , 255);
@@ -37,8 +41,9 @@ City::City(string name , string path , int screenw , int screenh) :
 
 
 
-void City::Display(EagleGraphicsContext* win) {
+void City::Display() {
    win->Draw(&workingcopy , x , y);
+   shield.Draw();
 }
 
 
@@ -49,6 +54,7 @@ void City::Reset() {
    win->Draw(&original , 0 , 0);
    win->RestoreLastBlendingState();
    pixelsleft = maxpixels;
+   shield.Reset();
 }
 
 
@@ -58,6 +64,12 @@ void City::Destroy(EagleGraphicsContext* win , int cx , int cy , int radius) {
    float ypos = cy - y + 0.5f;
    win->DrawFilledCircle(xpos , ypos , (float)radius , EagleColor(0,0,0,0));
    
+}
+
+
+
+void City::DamageShield(double damage) {
+   shield.Damage(damage);
 }
 
 
@@ -77,6 +89,9 @@ float City::PercentLeft() {
 
 
 bool City::Hit(int tx , int ty) {
+   if (shield.Hit(tx + 0.5 , ty + 0.5)) {
+      return true;
+   }
    int xpos = tx - x;
    int ypos = ty - y;
    if ((xpos < 0) || (xpos >= workingcopy.W())) {return false;}
@@ -89,6 +104,12 @@ bool City::Hit(int tx , int ty) {
       return true;
    }
    return false;
+}
+
+
+
+bool City::HitShield(int tx , int ty) {
+   return shield.Hit(tx + 0.5 , ty + 0.5);
 }
 
 
@@ -125,4 +146,8 @@ int CountPixels(Allegro5Image* image , int red , int green , int blue , int alph
    
    return count;
 }
+
+
+
+
 

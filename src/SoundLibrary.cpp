@@ -3,10 +3,31 @@
 
 #include "SoundLibrary.hpp"
 
+/**
+
+
+SOUNDID GetNewSoundID() {
+   static unsigned int sound_id = 0;
+   return sound_id++;
+}
+
+
+
+Sound::Sound(const Sound& s) {
+   (void)s;
+}
+
+
+
+Sound& Sound::operator=(const Sound& s) {
+   (void)s;
+   return *this;
+}
 
 
 
 Sound::Sound() :
+      sid(GetNewSoundID()),
       path(""),
       file(""),
       sample(0),
@@ -145,6 +166,9 @@ void SoundLibrary::CullStoppedSounds() {
       sounds[i]->CullStoppedSounds();
    }
 }
+
+//*/
+
 
    
    

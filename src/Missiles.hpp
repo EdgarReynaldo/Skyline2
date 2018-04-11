@@ -57,6 +57,7 @@ public :
    MISSILE_STATE State() {return state;}
    bool Exploding() {return (state != NORMAL) && (state != TOAST);}
    int CRad() {return (int)crad;}
+   int Rad() {return rad;}
 };
 
 
