@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Skyline2" />
+		<Option makefile="makefile" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../cbbuild/bin/skyline2d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../cbbuild/bin/" />
+				<Option object_output="obj/Dynamic/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DDEBUG" />
+					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
+				</Compiler>
+				<Linker>
+					<Add option="-leagle_a5_debug.dll" />
+					<Add option="-leagle_debug.dll" />
+					<Add option="-lallegro_monolith-debug.dll" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../cbbuild/bin/skyline2" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../cbbuild/bin/" />
+				<Option object_output="obj/Dynamic/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-leagle_a5.dll" />
+					<Add option="-leagle.dll" />
+					<Add option="-lallegro_monolith.dll" />
+				</Linker>
+			</Target>
+			<Target title="StaticDebug">
+				<Option output="../cbbuild/bin/skyline2ds" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../cbbuild/bin/" />
+				<Option object_output="obj/Static/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DALLEGRO_STATICLINK" />
+					<Add option="-DDEBUG" />
+					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
+				</Compiler>
+				<Linker>
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add option="-static" />
+					<Add option="-leagle_a5_debug-static" />
+					<Add option="-leagle_debug-static" />
+					<Add option="-lallegro_monolith-debug-static" />
+					<Add option="-ljpeg" />
+					<Add option="-ldumb" />
+					<Add option="-lFLAC" />
+					<Add option="-lfreetype" />
+					<Add option="-lvorbisfile" />
+					<Add option="-lvorbis" />
+					<Add option="-logg" />
+					<Add option="-lphysfs" />
+					<Add option="-lpng16" />
+					<Add option="-lzlibstatic" />
+					<Add option="-ldsound" />
+					<Add option="-lgdiplus" />
+					<Add option="-luuid" />
+					<Add option="-lkernel32" />
+					<Add option="-lwinmm" />
+					<Add option="-lpsapi" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-luser32" />
+					<Add option="-lcomdlg32" />
+					<Add option="-lgdi32" />
+					<Add option="-lshell32" />
+					<Add option="-lole32" />
+					<Add option="-ladvapi32" />
+					<Add option="-lws2_32" />
+					<Add option="-lshlwapi" />
+				</Linker>
+			</Target>
+			<Target title="StaticRelease">
+				<Option output="../cbbuild/bin/skyline2s" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../cbbuild/bin/" />
+				<Option object_output="obj/Static/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-DALLEGRO_STATICLINK" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add option="-static" />
+					<Add option="-leagle_a5-static" />
+					<Add option="-leagle-static" />
+					<Add option="-lallegro_monolith-static" />
+					<Add option="-ljpeg" />
+					<Add option="-ldumb" />
+					<Add option="-lFLAC" />
+					<Add option="-lfreetype" />
+					<Add option="-lvorbisfile" />
+					<Add option="-lvorbis" />
+					<Add option="-logg" />
+					<Add option="-lphysfs" />
+					<Add option="-lpng16" />
+					<Add option="-lzlibstatic" />
+					<Add option="-ldsound" />
+					<Add option="-lgdiplus" />
+					<Add option="-luuid" />
+					<Add option="-lkernel32" />
+					<Add option="-lwinmm" />
+					<Add option="-lpsapi" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-luser32" />
+					<Add option="-lcomdlg32" />
+					<Add option="-lgdi32" />
+					<Add option="-lshell32" />
+					<Add option="-lole32" />
+					<Add option="-ladvapi32" />
+					<Add option="-lws2_32" />
+					<Add option="-lshlwapi" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="../include" />
+			<Add directory="../Allegro5/include" />
+		</Compiler>
+		<Linker>
+			<Add option="-lopengl32" />
+			<Add option="-lglu32" />
+			<Add directory="../cbbuild/lib" />
+			<Add directory="../Allegro5/lib" />
+		</Linker>
+		<Unit filename="Skyline_Notes.txt" />
+		<Unit filename="cbbuild/bin/Data/Cities.txt" />
+		<Unit filename="cbbuild/bin/Data/Config.txt" />
+		<Unit filename="src/Blend.cpp" />
+		<Unit filename="src/Blend.hpp" />
+		<Unit filename="src/City.cpp" />
+		<Unit filename="src/City.hpp" />
+		<Unit filename="src/Config.cpp" />
+		<Unit filename="src/Config.hpp" />
+		<Unit filename="src/Explosion.cpp" />
+		<Unit filename="src/Explosion.hpp" />
+		<Unit filename="src/Game.cpp" />
+		<Unit filename="src/Game.hpp" />
+		<Unit filename="src/Globals.cpp" />
+		<Unit filename="src/Globals.hpp" />
+		<Unit filename="src/Intro.cpp" />
+		<Unit filename="src/Intro.hpp" />
+		<Unit filename="src/Lasers.cpp" />
+		<Unit filename="src/Lasers.hpp" />
+		<Unit filename="src/Missiles.cpp" />
+		<Unit filename="src/Missiles.hpp" />
+		<Unit filename="src/NewMain.cpp" />
+		<Unit filename="src/OldMain.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/SettingsScreen.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/SettingsScreen.hpp" />
+		<Unit filename="src/SettingsWidget.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="src/SettingsWidget.hpp" />
+		<Unit filename="src/Shields.cpp" />
+		<Unit filename="src/Shields.hpp" />
+		<Unit filename="src/SoundLibrary.cpp" />
+		<Unit filename="src/SoundLibrary.hpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
