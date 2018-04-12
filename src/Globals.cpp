@@ -5,8 +5,8 @@
 
 #include "Eagle.hpp"
 
-int ww = 800;
-int wh = 600;
+int sw = 1024;
+int sh = 768;
 
 int FPS = 60;
 

@@ -22,7 +22,7 @@ void Shield::ResetShieldRadius() {
    
    double hue = pct*360.0;
    float r,g,b;
-   al_color_hsl_to_rgb(hue , 1.0 , pct , &r , &g , &b);
+   al_color_hsl_to_rgb(hue , 1.0 , 0.5 + 0.5*pct , &r , &g , &b);
    icol.SetFloatColor(r,g,b,1.0f);
 ///   ocol.SetFloatColor(r,g,b,0.5f , false);/// OpenGL uses PM alpha
    ocol.SetFloatColor(r,g,b,0.5f);

@@ -11,8 +11,8 @@
 
 
 
-double LASER_BEAM_WIDTH = 100.0;
-double LASER_BEAM_DURATION = 2.0;
+double LASER_BEAM_WIDTH = 25.0;
+double LASER_BEAM_DURATION = 0.5;
 
 
 
@@ -86,7 +86,7 @@ LASER_STATE Laser::Update(double dt) {
 bool Laser::Hit(int x , int y) {
    
    GLE2D l1(Pos2D(s.X() , s.Y()) , Pos2D(d.X() , d.Y()));
-   return (DistanceFromLine(Pos2D(x + 0.5 , y + 0.5) , l1) < w/2.0);
+   return (DistanceFromLine(Pos2D(x + 0.5 , y + 0.5) , l1) < w/2.0);/// TODO : DEBUG : This doesn't work
 
 /*      
    Pos2F p = Pos2F(x + 0.5f - s.X() , y + 0.5f - s.Y());
@@ -230,10 +230,10 @@ void LaserBattery::Free() {
 
 void LaserBattery::Setup() {
    Free();
-   double range = sqrt(ww*ww + wh*wh);
-   lasers.push_back(new LaserLauncher(Pos2F(0 , wh) , range));
-   lasers.push_back(new LaserLauncher(Pos2F(ww/2 , wh) , range));
-   lasers.push_back(new LaserLauncher(Pos2F(ww , wh) , range));
+   double range = sqrt(sw*sw + sh*sh);
+   lasers.push_back(new LaserLauncher(Pos2F(0 , sh) , range));
+   lasers.push_back(new LaserLauncher(Pos2F(sw/2 , sh) , range));
+   lasers.push_back(new LaserLauncher(Pos2F(sw , sh) , range));
    /// CMY
    lasers[0]->SetColors(EagleColor(255,255,0,255) , EagleColor(255,255,255,0));
    lasers[1]->SetColors(EagleColor(0,255,255,255) , EagleColor(255,255,255,0));

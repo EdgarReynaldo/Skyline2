@@ -182,6 +182,8 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="src/SettingsWidget.hpp" />
+		<Unit filename="src/Shields.cpp" />
+		<Unit filename="src/Shields.hpp" />
 		<Unit filename="src/SoundLibrary.cpp" />
 		<Unit filename="src/SoundLibrary.hpp" />
 		<Extensions>

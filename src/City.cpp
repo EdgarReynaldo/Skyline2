@@ -3,13 +3,15 @@
 #include "City.hpp"
 #include "Globals.hpp"
 
+#include "Utility.hpp"
+
 
 
 City::City(string name , string path , int screenw , int screenh) :
 //   BitmapHandler(const char* filepath , RGB* pal , BMP_MEM_TYPE bmp_mem_type , BMP_DRAW_TYPE bmp_draw_type ,
 //                  bool load_now , ResourceRegistry* reg = &resource_registry);
-   original(path.c_str()),
-   workingcopy(path.c_str()),
+   original(win , string("") + "City::original - " + path),
+   workingcopy(win , string("") + "City::workingcopy - " + path),
    city(name),
    x(0),
    y(0),
@@ -17,15 +19,33 @@ City::City(string name , string path , int screenw , int screenh) :
    pixelsleft(0),
    shield()
 {
-   if (!original.Valid()) {
+   if (!original.Load(path)) {
       throw EagleException(StringPrintF("Failed to load city (%s).\n" , path.c_str()));
    }
    ConvertMaskColorToAlphaZero(&original , EagleColor(255,0,255,255));
-   ConvertMaskColorToAlphaZero(&workingcopy , EagleColor(255,0,255,255));
+
+   /// Scale up the city to fit the background
+   Rectangle scaled = Rectangle(0 , 0 , original.W() , original.H());
+   scaled.Scale((double)sw/original.W());
+   if (!workingcopy.Allocate(scaled.W() , scaled.H())) {
+      throw EagleException("Failed to allocate working copy.\n");
+   }
+///   scaled.SetPos(0 , sh - scaled.H());
+   win->SetDrawingTarget(&workingcopy);
+   win->Clear(EagleColor(0,0,0,0));
+   win->DrawStretchedRegion(&original , Rectangle(0,0,original.W() , original.H()) , scaled);
+
+   original.Allocate(scaled.W() , scaled.H());
+   /// Draw the scaled city on the original
+   win->SetDrawingTarget(&original);
+   win->Clear(EagleColor(0,0,0,0));
+   win->SetCopyBlender();
+   win->Draw(&workingcopy , 0 , 0);
+   win->RestoreLastBlendingState();
    x = (screenw - original.W())/2;
    y = screenh - original.H();
    
-   shield.Setup(Pos2D(x + 0.5 , y + 0.5) , Pos2D(x + screenw -0.5 , y + 0.5) , wh , 100);
+   shield.Setup(Pos2D(0.5 , y + 0.5) , Pos2D(screenw - 0.5 , y + 0.5) , screenh , 100);
    
    maxpixels = original.W()*original.H() - CountPixels(&original , al_map_rgba(0,0,0,0));
 //   maxpixels = original.W()*original.H() - CountPixels(original , makecol(255,0,255));

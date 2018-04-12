@@ -6,8 +6,8 @@
 #define Globals_HPP
 
 
-extern int ww;
-extern int wh;
+extern int sw;
+extern int sh;
 
 extern int FPS;
 

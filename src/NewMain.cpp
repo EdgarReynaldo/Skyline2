@@ -24,7 +24,11 @@ int main(int argc , char** argv) {
       EagleLog() << "Failed to initialize some subsystem. Continuing anyway." << std::endl;
    }
    
-   win = sys->CreateGraphicsContext("WIN" , ww , wh , EAGLE_OPENGL | EAGLE_WINDOWED);
+   win = sys->CreateGraphicsContext("WIN" , sw , sh , EAGLE_OPENGL | EAGLE_WINDOWED);
+///   win = sys->CreateGraphicsContext("WIN" , sw , sh , EAGLE_OPENGL | EAGLE_FULLSCREEN_WINDOW);
+   
+   sw = win->Width();
+   sh = win->Height();
    
    EAGLE_ASSERT(win);
    EAGLE_ASSERT(win->Valid());

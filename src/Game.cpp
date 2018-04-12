@@ -61,7 +61,7 @@ void Game::SetupMissileBatteries(Config c) {
       mbtry->SetAI(enemyai);
       enemy_mbs.push_back(mbtry);
    }
-   player_ai = new PlayerAI(Rectangle(ww/2,wh,1,1) , c.player_nmsl , c);
+   player_ai = new PlayerAI(Rectangle(sw/2,sh,1,1) , c.player_nmsl , c);
    player_mb.SetAI(player_ai);
 }
 
@@ -89,7 +89,7 @@ void Game::DrawGame() {
 ///   SetMultiplyBlender();
    al_set_blender(ALLEGRO_ADD , ALLEGRO_DEST_COLOR , ALLEGRO_ZERO);
 
-   win->Draw(&bg , 0 , 0);
+   win->DrawStretchedRegion(&bg , 0 , 0 , bg.W() , bg.H() , 0 , 0 , sw , sh);
          
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_INVERSE_ALPHA);
    
@@ -102,10 +102,10 @@ void Game::DrawGame() {
 
    
    if (state == WIN) {
-      win->DrawTextString(f , "WIN! WIN! WIN! WIN! WIN!" , ww/2 , wh/2 , EagleColor(0,255,0)  ,HALIGN_CENTER , VALIGN_CENTER);
+      win->DrawTextString(f , "WIN! WIN! WIN! WIN! WIN!" , sw/2 , sh/2 , EagleColor(0,255,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
    else if (state == LOSE) {
-      win->DrawTextString(f , "YOU LOSE! LOSE! LOSE! LOSE! LOSE!" , ww/2 , wh/2 , EagleColor(255,0,0)  ,HALIGN_CENTER , VALIGN_CENTER);
+      win->DrawTextString(f , "YOU LOSE! LOSE! LOSE! LOSE! LOSE!" , sw/2 , sh/2 , EagleColor(255,0,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
 
    win->Draw(pointer , mouse_x - pointer->W()/2 , mouse_y - pointer->H()/2);
@@ -238,7 +238,7 @@ Game::Game(string cityfile) :
    cities(),
    citystr(),
    city(0),
-   cbuffer(ww,wh),
+   cbuffer(sw,sh),
    bg("Data/Images/CloudySky.png"),
    nopointer(nopointer_file),
    okpointer(okpointer_file),
@@ -294,7 +294,7 @@ Game::Game(string cityfile) :
    config_changed(false)
 */
 ///{
-   SetupCities(cityfile , ww , wh);
+   SetupCities(cityfile , sw , sh);
    if (!cbuffer.Valid()) {
       throw EagleException("Failed to allocate cbuffer!\n");
    }
@@ -381,8 +381,15 @@ int Game::Run() {
    al_show_mouse_cursor(dynamic_cast<Allegro5GraphicsContext*>(win)->AllegroDisplay());
 
    bool paused = false;
+   bool timing = false;
    while (state != QUIT) {
-      Display();
+      if (timing) {
+         ProgramTime pt1 = ProgramTime::Now();
+         Display();
+         ProgramTime pt2 = ProgramTime::Now();
+         EagleLog() << StringPrintF("Display() took %1.5lf seconds.\n" , pt2 - pt1) << std::endl;
+      }
+      int nevents = 0;
       do {
          EagleEvent ee = sys->WaitForSystemEventAndUpdateState();
          if (ee.type == EAGLE_EVENT_DISPLAY_CLOSE) {
@@ -396,9 +403,17 @@ int Game::Run() {
          }
          if (!paused) {
             if (ee.type == EAGLE_EVENT_TIMER) {
-               Update(ee.timer.eagle_timer_source->SPT());
+               ++nevents;
+               if (nevents == 1) {
+                  Update(ee.timer.eagle_timer_source->SPT());
+               }
             }
-            CheckInputs();
+            if (timing) {
+               ProgramTime pt1 = ProgramTime::Now();
+               CheckInputs();
+               ProgramTime pt2 = ProgramTime::Now();
+               EagleLog() << StringPrintF("CheckInputs() took %1.5lf seconds.\n" , pt2 - pt1) << std::endl;
+            }
             state = HandleEvent(ee);
          }
       } while (sys->GetSystemQueue()->HasEvent(0));
@@ -431,7 +446,7 @@ void Game::Display() {
                EagleColor(255,255,0)
             };
             for (int i = 0 ; i < 4 ; ++i) {
-               win->DrawTextString(win->DefaultFont() , text[i] , ww/2.0 , wh/2 - 40 + i*20 , colors[i] , HALIGN_CENTER , VALIGN_CENTER);
+               win->DrawTextString(win->DefaultFont() , text[i] , sw/2.0 , sh/2 - 40 + i*20 , colors[i] , HALIGN_CENTER , VALIGN_CENTER);
             }
          }
          break;
