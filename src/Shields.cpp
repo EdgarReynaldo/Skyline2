@@ -11,6 +11,9 @@
 
 #include "GL/gl.h"
 
+#include "Eagle/Logging.hpp"
+#include "Eagle/Exception.hpp"
+
 
 
 void Shield::ResetShieldRadius() {
@@ -19,9 +22,13 @@ void Shield::ResetShieldRadius() {
    
    double hue = pct*360.0;
    float r,g,b;
-   al_color_hsv_to_rgb(hue , 1.0 , 1.0 - pct , &r , &g , &b);
-   icol.SetColor(r,g,b,1.0);
-   ocol.SetColor(r,g,b,0.5);
+   al_color_hsl_to_rgb(hue , 1.0 , pct , &r , &g , &b);
+   icol.SetFloatColor(r,g,b,1.0f);
+///   ocol.SetFloatColor(r,g,b,0.5f , false);/// OpenGL uses PM alpha
+   ocol.SetFloatColor(r,g,b,0.5f);
+   EAGLE_DEBUG(
+      EagleLog() << "Shield radius reset : ICOL = " << icol << " OCOL = " << ocol << std::endl;
+   );
 }
 
 
@@ -70,6 +77,7 @@ void Shield::Setup(Pos2D left , Pos2D right , double height , double thickness) 
 
 
 bool Shield::Hit(double xpos , double ypos) {
+   if (hp < 0.0) {return false;}
    Pos2D p1(cx,cy);
    Pos2D p2(xpos,ypos);
    double theta = p1.AngleToPoint(p2);
@@ -92,7 +100,7 @@ void Shield::Damage(double area) {
 
 void Shield::Reset() {
    hp = maxhp;
-   orad = maxrad;
+   ResetShieldRadius();
 }
 
 
@@ -105,32 +113,38 @@ void Shield::Draw() {
    const int NSEGMENTS = 60;
    
    double thetadiff = thetastop - thetastart;
-   if (thetadiff < -M_PI) {thetadiff += 2.0*M_PI;}
-   if (thetadiff > M_PI) {thetadiff -= 2.0*M_PI;}
+   if (thetadiff < 0.0) {thetadiff += 2.0*M_PI;}
    
    double dtheta = thetadiff/NSEGMENTS;
    
    glEnable(GL_COLOR);
+   glEnable(GL_BLEND);
    glBegin(GL_TRIANGLE_STRIP);
    glColor4d(1.0 , 1.0 , 1.0 , 1.0);
    bool even = true;
    for (int i = 0 ; i < NSEGMENTS + 1 ; ++i) {
       double theta = dtheta*i;
-      Pos2D inner = Vector(Pos2D(cx,cy) , irad , thetastart + theta);
       Pos2D outer = Vector(Pos2D(cx,cy) , orad , thetastart + theta);
+      Pos2D inner = Vector(Pos2D(cx,cy) , irad , thetastart + theta);
+      glColor4f(ocol.fR() , ocol.fG() , ocol.fB() , ocol.fA());
+      glVertex2d(outer.X() , outer.Y());
+      glColor4f(icol.fR() , icol.fG() , icol.fB() , icol.fA());
+      glVertex2d(inner.X() , inner.Y());
+/**
       if (even) {
-///         glColor4d(icol.fR() , icol.fG() , icol.fB() , icol.fA());
+///         glColor4f(icol.fR() , icol.fG() , icol.fB() , icol.fA());
          glVertex2d(inner.X() , inner.Y());
-///         glColor4d(ocol.fR() , ocol.fG() , ocol.fB() , ocol.fA());
+///         glColor4f(ocol.fR() , ocol.fG() , ocol.fB() , ocol.fA());
          glVertex2d(outer.X() , outer.Y());
       }
       else {
-///         glColor4d(ocol.fR() , ocol.fG() , ocol.fB() , ocol.fA());
+///         glColor4f(ocol.fR() , ocol.fG() , ocol.fB() , ocol.fA());
          glVertex2d(outer.X() , outer.Y());
-///         glColor4d(icol.fR() , icol.fG() , icol.fB() , icol.fA());
+///         glColor4f(icol.fR() , icol.fG() , icol.fB() , icol.fA());
          glVertex2d(inner.X() , inner.Y());
       }
       even = !even;
+*/
    }
    glEnd();
 }

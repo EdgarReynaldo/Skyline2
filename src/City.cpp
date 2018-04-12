@@ -25,7 +25,7 @@ City::City(string name , string path , int screenw , int screenh) :
    x = (screenw - original.W())/2;
    y = screenh - original.H();
    
-   shield.Setup(Pos2D(x + 0.5 , y + 0.5) , Pos2D(x + screenw -0.5 , y + 0.5) , 500 , 100);
+   shield.Setup(Pos2D(x + 0.5 , y + 0.5) , Pos2D(x + screenw -0.5 , y + 0.5) , wh , 100);
    
    maxpixels = original.W()*original.H() - CountPixels(&original , al_map_rgba(0,0,0,0));
 //   maxpixels = original.W()*original.H() - CountPixels(original , makecol(255,0,255));
