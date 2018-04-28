@@ -5,7 +5,7 @@
 
 #include "Eagle.hpp"
 #include "Eagle/backends/Allegro5Backend.hpp"
-#include "Config.hpp"
+#include "NewConfig.hpp"
 
 
 
@@ -19,7 +19,9 @@ using std::list;
 using std::string;
 
 
-extern Rectangle r;
+#include "Eagle/Position.hpp"
+
+
 
 enum MISSILE_STATE {
    NORMAL = 0,
@@ -30,20 +32,42 @@ enum MISSILE_STATE {
 };
 
 
+struct MISSILEDATA {
+public :
+   double mspeed;
+   double etime;
+   double eradius;
+   
+   MISSILEDATA() : mspeed(25.0) , etime(3.0) , eradius(10.0) {}
+   MISSILEDATA(double speed , double exptime , double expradius) : mspeed(speed) , etime(exptime) , eradius(expradius) {}
+};
+
 
 class Missile {
 public :
-   float sx,sy;        // start position
-   float xp,yp;        // position
-   float xv,yv;        // velocity
-   float theta;        // angle of travel
-   float crad;         // current radius;
-   float radspeed;     // speed radius expands
-   float explodetime;  // time it takes to explode
+   Pos2D start;
+   Pos2D dest;
+
+   Pos2D cpos;
+   Pos2D cvel;
+
+   double theta;        // angle of travel
+   double speed;
+   double distleft;
+
+   double crad;         // current radius;
+   double radspeed;     // speed radius expands
+   double explodetime;  // time it takes to explode
+
    int rad;            // total detonation radius
+
    MISSILE_STATE state;
    
-   Missile(float startx , float starty , float speed , float angle , int radius , float time);
+
+   Missile(Pos2D startpos , Pos2D destpos , MISSILEDATA data);
+
+   void SetDestination(Pos2D destpos);
+
    virtual ~Missile() {}
    
    virtual void Update(double dt);
@@ -52,125 +76,137 @@ public :
    void Explode();
    void Destroy();
 
-   int X() {return (int)xp;}
-   int Y() {return (int)yp;}
+   int X() {return (int)cpos.X();}
+   int Y() {return (int)cpos.Y();}
    MISSILE_STATE State() {return state;}
    bool Exploding() {return (state != NORMAL) && (state != TOAST);}
    int CRad() {return (int)crad;}
    int Rad() {return rad;}
+   
+   virtual EagleColor MissileColor()    {return EagleColor(255,   0,  0, 255);}
+   virtual EagleColor IExplosionColor() {return EagleColor(255,   0,  0, 127);}
+   virtual EagleColor OExplosionColor() {return EagleColor(255, 127,  0, 255);}
 };
 
 
 
 class AAMissile : public Missile {
 public :
-   float dx,dy;// destination x and y
-   float mspeed;
-   float distance_left;
-   
-   AAMissile(float startx , float starty , float speed , float angle , int radius , float time , int destx , int desty);
-
-   virtual void Update(double dt);
-   virtual void Display();
-
+   AAMissile(Pos2D startpos , Pos2D destpos , MISSILEDATA data);
+   virtual EagleColor MissileColor()    {return EagleColor(255,255,255,255);}
+   virtual EagleColor IExplosionColor() {return EagleColor(0.0f,0.25f,1.0f,0.5f);}
+   virtual EagleColor OExplosionColor() {return EagleColor(1.0f,1.0f,1.0f,1.0f);}
 };
 
 
+typedef Missile* (*MISSILECREATOR)(Pos2D startpos , Pos2D destpos , MISSILEDATA data);
 
-class AI;
-class Game;
-class EnemyAI;
-class PlayerAI;
+Missile* PlainMissileCreator(Pos2D startpos , Pos2D destpos , MISSILEDATA data);
+Missile* AAMissileCreator(Pos2D startpos , Pos2D destpos , MISSILEDATA data);
 
 
-class MissileBattery {
 
-friend class AI;
-friend class Game;
-friend class EnemyAI;
-friend class PlayerAI;
+class MissileLauncher {
 
-private :
-   list<Missile*> missiles;
-   int nmissiles;
-   int nmissilesleft;
-   float ttnl;// time to next launch
-   float tbl;// time between launches
+protected :
+   std::vector<Missile*> missiles;
+   double ttnl;/// time to next launch
+   double tbl;/// time between launches
+
+   Pos2D lpos;/// launcher position
    
-   AI* ai;
+   MISSILECREATOR mcreator;
    
 public :
+
+   MissileLauncher(MISSILECREATOR creator , Pos2D pos , double time_between_launches) :
+         missiles(),
+         ttnl(0.0f),
+         tbl(time_between_launches),
+         lpos(pos),
+         mcreator(creator)
+   {}
+   virtual ~MissileLauncher();
    
-   MissileBattery();
-   ~MissileBattery();
-   
-   void FreeAI();
    void FreeMissiles();
    
-   void SetAI(AI* new_ai);
+   virtual void Launch(Pos2D destpos , MISSILEDATA data);
+
+   void DelayLaunch(double delay) {ttnl += delay;}
    
    void Update(double dt);
-   void CheckInputs();
    void Display();
    
    bool Ready() {return ttnl <= 0.0f;}
 
+   virtual int NMissilesPerLaunch() {return 1;}
+   int NMissilesActive();
+
+   std::vector<Missile*> GetMissiles() {return missiles;}
 };
 
 
-class AI {
+class SpreadMissileLauncher : public MissileLauncher {
 protected :
-   MissileBattery* mb;
-   Rectangle zone;
-   int nmissiles;
-   Config c;
+   double nmsl;
+   double arcrad;
    
 public :
-   
-   AI(Rectangle launch_zone , int num_missiles , Config config);
+   SpreadMissileLauncher(MISSILECREATOR creator , Pos2D pos , double time_between_launches);
 
-   virtual ~AI() {}
-   
-   virtual void ControlMissileBattery(MissileBattery* battery)=0;
-   void DelayLaunchBy(double dt);
-   
-   virtual void Update(double dt)=0;
-   virtual void CheckInputs()=0;
+   void SetSpread(int nmissiles , double arc);
+   void Launch(Pos2D destpos , double mspeed , double etime , int mradius);
+   void LaunchSpread(int nmissiles , double arc , Pos2D destpos , double mspeed , double etime , int mradius);
+
+   int NMissilesPerLaunch() {return nmsl;}
 };
 
 
 
-class EnemyAI : public AI {
-private :
+typedef MissileLauncher* (*LAUNCHERCREATOR) (MISSILECREATOR creator , Pos2D pos , double time_between_launches);
 
-   void Launch();
+MissileLauncher* SingleMissileLauncher    (MISSILECREATOR creator , Pos2D pos , double time_between_launches);
+MissileLauncher* TripleMissileLauncher    (MISSILECREATOR creator , Pos2D pos , double time_between_launches);
+MissileLauncher* PentupleMissileLauncher  (MISSILECREATOR creator , Pos2D pos , double time_between_launches);
+MissileLauncher* SeptupleMissileLauncher  (MISSILECREATOR creator , Pos2D pos , double time_between_launches);
+
+
+
+class MissileBattery {
+protected :
+   std::vector<MissileLauncher*> launchers;
+
+   int nmissilestotal;
+   int nmissilesleft;
+   int clauncher;
+
+   MISSILECREATOR mcfunc;
+   MISSILEDATA mdata;
+   
+   
    
 public :
-   EnemyAI(Rectangle launch_zone , int num_missiles , Config config);
    
-   virtual void ControlMissileBattery(MissileBattery* battery);
+   void Launch(int destx , int desty);
    
-   virtual void Update(double dt);
-   virtual void CheckInputs();
+   MissileBattery(int nmissiles , MISSILECREATOR mcreator , MISSILEDATA data);
+   ~MissileBattery();
 
+   void Free();
+
+     
+   void AddLauncher(MissileLauncher* ml);
+   
+   void Update(double dt);
+   void Display();
+   
+   bool Ready();
+   int NMissilesLeft();
+   int NMissilesActive();
+   
+   std::vector<Missile*> GetMissiles();
 };
 
-
-
-class PlayerAI : public AI {
-private :
-   
-public :
-   PlayerAI(Rectangle launch_zone , int num_missiles , Config config);
-   
-   virtual void ControlMissileBattery(MissileBattery* battery);
-   
-   virtual void Update(double dt);
-   virtual void CheckInputs();
-
-   void Launch(int dx , int dy);
-   
-};
 
 
 #endif // Missiles_H

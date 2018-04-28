@@ -13,23 +13,34 @@
 
 
 
-Missile::Missile(float startx , float starty , float speed , float angle , int radius , float time) :
-      sx(startx),
-      sy(starty),
-      xp(startx),
-      yp(starty),
-      xv(0.0f),
-      yv(0.0f),
-      theta(angle),
-      crad(0.0f),
-      radspeed(0.0f),
-      explodetime(time),
-      rad(radius),
+
+Missile::Missile(Pos2D startpos , Pos2D destpos , MISSILEDATA data) :
+      start(startpos),
+      dest(destpos),
+      cpos(startpos),
+      cvel(0.0 , 0.0),
+      theta(0.0),
+      speed(data.mspeed),
+      distleft(-1.0),
+      crad(0.0),
+      radspeed(0.0),
+      explodetime(data.etime),
+      rad(data.eradius),
       state(NORMAL)
 {
-   xv = speed*cos(theta);
-   yv = speed*sin(theta);
-   radspeed = (float)rad/explodetime;
+   SetDestination(destpos);
+   radspeed = (double)rad/explodetime;
+}
+
+
+
+void Missile::SetDestination(Pos2D destpos) {
+   dest = destpos;
+   Pos2D move = dest - start;
+   distleft = move.Length();
+   cvel = move;
+   cvel.Normalize();
+   cvel *= speed;
 }
 
 
@@ -37,12 +48,19 @@ Missile::Missile(float startx , float starty , float speed , float angle , int r
 void Missile::Update(double dt) {
    switch (state) {
       case NORMAL :
-         xp += xv*dt;
-         yp += yv*dt;
+         {
+            Pos2D mv = cvel*dt;
+            cpos += mv;
+         }
+         distleft -= speed*dt;
+         if (distleft < 0.0) {
+            state = EXPLODING;
+            cpos = dest;
+         }
          break;
       case EXPLODING :
          crad += radspeed*dt;
-         if (crad > (float)rad) {
+         if (crad > (double)rad) {
             crad = rad;
             state = EXPLODED;
          }
@@ -61,17 +79,19 @@ void Missile::Update(double dt) {
    }
 }
 
+
+
 void Missile::Display() {
+   float xp = cpos.X();
+   float yp = cpos.Y();
    switch (state) {
       case NORMAL :
-         win->DrawFilledCircle(xp , yp , 3.0f , EagleColor(255,0,0));
-///         putpixel(bmp , (int)xp , (int)yp , makecol(255,255,255));
-///         circlefill(bmp , (int)xp , (int)yp , 3 , makecol(255,0,0));
+         win->DrawFilledCircle(xp , yp , 3.0f , MissileColor());
          break;
       case EXPLODING :
       case EXPLODED :
       case IMPLODING :
-         DrawExplosion(xp + 0.5 , yp + 0.5 , crad , EagleColor(255,0,0,127) , EagleColor(255,255,0,255));
+         DrawExplosion(xp + 0.5 , yp + 0.5 , crad , IExplosionColor() , OExplosionColor());
 //void ring_gradient(BITMAP* bmp , int cx , int cy , int inner_radius , int outer_radius , int inner_color , int outer_color);
 ///         circlefill(bmp , (int)xp , (int)yp , (int)crad , makecol(255,255,255));
 ///         ring_gradient(bmp , (int)xp , (int)yp , 0 , (int)crad , makecol(255,0,0) , makecol(255,255,0));
@@ -100,107 +120,48 @@ void Missile::Destroy() {
 
 
 
-AAMissile::AAMissile(float startx , float starty , float speed , float angle , int radius , float time , int destx , int desty) :
-      Missile(startx , starty , speed , angle , radius , time),
-      dx(destx),
-      dy(desty),
-      mspeed(speed),
-      distance_left(0)
-{
-   int deltax = destx - (int)startx;
-   int deltay = desty - (int)starty;
-   distance_left = sqrt((float)deltax*deltax + (float)deltay*deltay);
+AAMissile::AAMissile(Pos2D startpos , Pos2D destpos , MISSILEDATA data) :
+      Missile(startpos , destpos , data)
+{}
+
+
+
+/// -----------------    Missile creators     --------------------------
+
+
+
+Missile* PlainMissileCreator(Pos2D startpos , Pos2D destpos , MISSILEDATA data) {
+   return new Missile(startpos , destpos , data);
 }
 
 
 
-void AAMissile::Update(double dt) {
-   switch (state) {
-      case NORMAL :
-         xp += xv*dt;
-         yp += yv*dt;
-         distance_left -= mspeed*dt;
-         if (distance_left < 0.0) {
-            state = EXPLODING;
-            xp = dx;
-            yp = dy;
-         }
-         break;
-      case EXPLODING :
-         crad += radspeed*dt;
-         if (crad > (float)rad) {
-            crad = rad;
-            state = EXPLODED;
-         }
-         break;
-      case EXPLODED :
-         state = IMPLODING;
-         break;
-      case IMPLODING :
-         crad -= radspeed*dt;
-         if (crad < 0.0f) {
-            crad = 0.0f;
-            state = TOAST;
-         }
-      case TOAST :
-         break;
-   }
+Missile* AAMissileCreator(Pos2D startpos , Pos2D destpos , MISSILEDATA data) {
+   return new AAMissile(startpos , destpos , data);
 }
 
-
-
-void AAMissile::Display() {
-///   Missile::Display(bmp);
-
-//*
-   switch (state) {
-      case NORMAL :
-         win->DrawFilledCircle(xp , yp , 3.0 , EagleColor(255,255,255));
-///         circlefill(bmp , (int)xp , (int)yp , 3 , makecol(255,255,0));
-         break;
-      case EXPLODING :
-      case EXPLODED :
-      case IMPLODING :
-         DrawExplosion(xp + 0.5 , yp + 0.5 , crad , EagleColor(0.0f , 0.25f , 1.0f , 0.5f) , EagleColor(1.0f,1.0f,1.0f , 1.0f));
-         break;
-      case TOAST :
-         break;
-   }
-//*/
-}
 
 
 
 /// ------------------------------------   Missile Battery class       --------------------------------------
 
 
-MissileBattery::MissileBattery() :
-      missiles(),
-      nmissiles(0),
-      nmissilesleft(0),
-      ttnl(0.0f),
-      tbl(0.0f),
-      ai(0)
-{}
-
-
-
-MissileBattery::~MissileBattery() {
-   FreeAI();
+MissileLauncher::~MissileLauncher() {
    FreeMissiles();
 }
 
 
 
-void MissileBattery::FreeAI() {
-   if (ai) {delete ai;}
-   ai = 0;
+void MissileLauncher::Launch(Pos2D destpos , MISSILEDATA data) {
+   EAGLE_ASSERT(mcreator);
+   missiles.push_back(mcreator(lpos , destpos , data));
+   ttnl = tbl;
 }
 
 
 
-void MissileBattery::FreeMissiles() {
-   for (list<Missile*>::iterator it = missiles.begin() ; it != missiles.end() ; ++it) {
+void MissileLauncher::FreeMissiles() {
+   for (std::vector<Missile*>::iterator it = missiles.begin() ; it != missiles.end() ; ++it) {
       delete *it;
    }
    missiles.clear();
@@ -208,43 +169,25 @@ void MissileBattery::FreeMissiles() {
 
 
 
-void MissileBattery::SetAI(AI* new_ai) {
-   EAGLE_ASSERT(new_ai);
-   FreeAI();
-   ai = new_ai;
-   ai->ControlMissileBattery(this);
-}
-
-
-
-void MissileBattery::Update(double dt) {
-   EAGLE_ASSERT(ai);
-   for (list<Missile*>::iterator it = missiles.begin() ; it != missiles.end() ; ) {
+void MissileLauncher::Update(double dt) {
+   for (std::vector<Missile*>::iterator it = missiles.begin() ; it != missiles.end() ; ) {
       Missile* m = *it;
       m->Update(dt);
-      if (m->Y() >= 600) {m->Destroy();}
+      if (m->Y() >= sh) {m->Destroy();}
       if (m->State() == TOAST) {
          delete m;
          it = missiles.erase(it);
-         --nmissiles;
       } else {
          ++it;
       }
    }
-   ai->Update(dt);
+   ttnl -= dt;
 }
 
 
 
-void MissileBattery::CheckInputs() {
-   EAGLE_ASSERT(ai);
-   ai->CheckInputs();
-}
-
-
-
-void MissileBattery::Display() {
-   for (list<Missile*>::iterator it = missiles.begin() ; it != missiles.end() ; ++it) {
+void MissileLauncher::Display() {
+   for (std::vector<Missile*>::iterator it = missiles.begin() ; it != missiles.end() ; ++it) {
       Missile* m = *it;
       m->Display();
    }
@@ -252,164 +195,197 @@ void MissileBattery::Display() {
 
 
 
+int MissileLauncher::NMissilesActive() {
+   return missiles.size();
+}
 
-/// ------------------------------------   AI class       --------------------------------------
+
+
+/// --------------------       SpreadMissileLauncher       --------------------------
 
 
 
-AI::AI(Rectangle launch_zone , int num_missiles , Config config) :
-   mb(0),
-   zone(launch_zone),
-   nmissiles(num_missiles),
-   c(config)
+SpreadMissileLauncher::SpreadMissileLauncher(MISSILECREATOR creator , Pos2D pos , double time_between_launches) :
+      MissileLauncher(creator , pos , time_between_launches),
+      nmsl(1),
+      arcrad(0.0)
 {}
 
 
 
-void AI::DelayLaunchBy(double dt) {
-   if (dt < 0.0) {dt = 0.0;}
-   if (mb) {
-      mb->ttnl += dt;
+void SpreadMissileLauncher::SetSpread(int nmissiles , double arcdeg) {
+   nmsl = (nmissiles > 0)?nmissiles:1;
+   arcrad = arcdeg*M_PI/180.0;
+}
+
+
+
+void SpreadMissileLauncher::Launch(Pos2D destpos , double mspeed , double etime , int mradius) {
+   LaunchSpread(nmsl , arcrad , destpos , mspeed , etime , mradius);
+}
+
+
+
+void SpreadMissileLauncher::LaunchSpread(int nmissiles , double arc , Pos2D destpos , double mspeed , double etime , int mradius) {
+   double theta = lpos.AngleToPoint(destpos);
+   double harc = arc/2.0;
+   int NM = nmissiles/2;
+   double dtheta = harc/NM;
+   if (nmissiles % 2 == 1) {
+      MissileLauncher::Launch(destpos , MISSILEDATA(mspeed , etime , mradius));
+   }
+   Pos2D radius = destpos - lpos;
+   double r = radius.Length();
+   for (int i = 1 ; i < NM + 1 ; ++i) {
+      Pos2D dp1 = Vector(lpos , r , theta + i*dtheta);
+      Pos2D dp2 = Vector(lpos , r , theta - i*dtheta);
+      MissileLauncher::Launch(dp1 , MISSILEDATA(mspeed , etime , mradius));
+      MissileLauncher::Launch(dp2 , MISSILEDATA(mspeed , etime , mradius));
    }
 }
 
 
 
-/// ------------------------------------   EnemyAI class       --------------------------------------
+/// -------------------------     Missile Launcher creators     ------------------------------
 
 
 
-void EnemyAI::Launch() {
-   EAGLE_ASSERT(mb);
-   if (!(mb->nmissilesleft)) {return;}
-   --(mb->nmissilesleft);
-   ++(mb->nmissiles);
-   int startx = zone.X() + rand()%zone.W();
-   int starty = zone.Y() + rand()%zone.H();
-   int destx = rand()%800;
-   int desty = 600;
-   float angle = atan2(desty - starty , destx - startx);
-//   Missile(float startx , float starty , float speed , float angle , int radius , float time);
-   mb->missiles.push_back(
-      new Missile(startx , starty , c.enemy_mspd , angle , c.enemy_mrad , c.enemy_explode_time)
-   );
+MissileLauncher* SingleMissileLauncher(MISSILECREATOR creator , Pos2D pos , double time_between_launches) {
+   return new MissileLauncher(creator , pos , time_between_launches);
 }
 
 
 
-EnemyAI::EnemyAI(Rectangle launch_zone , int num_missiles , Config config) :
-   AI(launch_zone , num_missiles , config)
+MissileLauncher* TripleMissileLauncher(MISSILECREATOR creator , Pos2D pos , double time_between_launches) {
+   SpreadMissileLauncher* m = new SpreadMissileLauncher(creator , pos , time_between_launches);
+   m->SetSpread(3 , 10.0);
+   return m;
+}
+
+
+
+MissileLauncher* PentupleMissileLauncher(MISSILECREATOR creator , Pos2D pos , double time_between_launches) {
+   SpreadMissileLauncher* m = new SpreadMissileLauncher(creator , pos , time_between_launches);
+   m->SetSpread(5 , 30.0);
+   return m;
+}
+
+
+
+MissileLauncher* SeptupleMissileLauncher(MISSILECREATOR creator , Pos2D pos , double time_between_launches) {
+   SpreadMissileLauncher* m = new SpreadMissileLauncher(creator , pos , time_between_launches);
+   m->SetSpread(7 , 60.0);
+   return m;
+}
+
+
+
+/// ---------------------      MissileBattery      ------------------------------------
+
+
+
+MissileBattery::MissileBattery(int nmissiles , MISSILECREATOR mcreator , MISSILEDATA data) :
+      launchers(),
+      nmissilestotal(nmissiles),
+      nmissilesleft(nmissiles),
+      clauncher(-1),
+      mcfunc(mcreator),
+      mdata(data)
 {}
 
 
 
-void EnemyAI::ControlMissileBattery(MissileBattery* battery) {
-   EAGLE_ASSERT(battery);
-   mb = battery;
-   mb->FreeMissiles();
-/*
-   list<Missile*> missiles;
-   int nmissiles;
-   int nmissilesleft;
-   float ttnl;// time to next launch
-   float tbl;// time between launches
-*/   
-   mb->nmissiles = 0;
-   mb->nmissilesleft = nmissiles;
-   mb->tbl = c.enemy_tbl;
-   mb->ttnl = mb->tbl;
+MissileBattery::~MissileBattery() {
+   Free();
 }
-
-
-
-void EnemyAI::Update(double dt) {
-   double time_left = dt;
-   while (time_left > 0.0) {
-      // time_left
-      // time_to_next_launch
-      // time_between_launches
-      // MIN(ttnl , MIN(time_left , tbl));
-      double time_passed = MIN(mb->ttnl , MIN(time_left , mb->tbl));
-      time_left -= time_passed;
-      mb->ttnl -= time_passed;
-      if (mb->ttnl <= 0.0) {
-         Launch();
-         mb->ttnl += mb->tbl;
-      }
-   }
-}
-
-
-
-void EnemyAI::CheckInputs() {(void)0;}
-
-
-
-/// ------------------------------------   PlayerAI class       --------------------------------------
-
-
-
-void PlayerAI::Launch(int dx , int dy) {
-   EAGLE_ASSERT(mb);
-   if (!(mb->nmissilesleft)) {return;}
-   --(mb->nmissilesleft);
-   int startx = zone.X() + rand()%zone.W();
-   int starty = zone.Y() + rand()%zone.H();
-   float angle = atan2(dy - starty , dx - startx);
-//   AAMissile(float startx , float starty , float speed , float angle , int radius , float time , int destx , int desty);
-   mb->missiles.push_back(
-      new AAMissile(startx , starty , c.player_mspd , angle , c.player_mrad , c.player_explode_time , dx , dy)
-   );
-   mb->ttnl = mb->tbl;
-}
-
-
-
-PlayerAI::PlayerAI(Rectangle launch_zone , int num_missiles , Config config) :
-      AI(launch_zone , num_missiles , config)
-{}
-
-
-
-void PlayerAI::ControlMissileBattery(MissileBattery* battery) {
-   EAGLE_ASSERT(battery);
-   mb = battery;
-   mb->FreeMissiles();
-/*
-   list<Missile*> missiles;
-   int nmissiles;
-   int nmissilesleft;
-   float ttnl;// time to next launch
-   float tbl;// time between launches
-*/   
-   mb->nmissiles = 0;
-   mb->nmissilesleft = nmissiles;
-   mb->tbl = c.player_tbl;
-   mb->ttnl = mb->tbl;
-}
-
-
-
-void PlayerAI::Update(double dt) {
-   EAGLE_ASSERT(mb);
-   mb->ttnl -= dt;
    
+
+
+void MissileBattery::Free() {
+   for (int i = 0 ; i < (int)launchers.size() ; ++i) {
+      delete launchers[i];
+   }
+   launchers.clear();
+   clauncher = -1;
 }
 
 
 
-void PlayerAI::CheckInputs() {
-   EAGLE_ASSERT(mb);
-   if (input_mouse_press(LMB) || input_mouse_held(LMB)) {
-      if (mb->ttnl <= 0.0) {
-         Launch(mouse_x , mouse_y);
+void MissileBattery::AddLauncher(MissileLauncher* ml) {
+   EAGLE_ASSERT(ml);
+   launchers.push_back(ml);
+   clauncher = 0;
+}
+
+
+
+void MissileBattery::Launch(int destx , int desty) {
+   if (nmissilesleft < 1) {return;}
+   for (int i = 0 ; i < (int)launchers.size() ; ++i) {
+      int lnum = (clauncher + i)%(int)launchers.size();
+      if (launchers[lnum]->Ready()) {
+         launchers[lnum]->Launch(Pos2D(destx + 0.5 , desty + 0.5) , mdata);
+         clauncher = (lnum + 1)%(int)launchers.size();
+         --nmissilesleft;
+         break;
       }
    }
 }
 
 
 
+void MissileBattery::Update(double dt) {
+   for (unsigned int i = 0 ; i < launchers.size() ; ++i) {
+      launchers[i]->Update(dt);
+   }
+}
 
 
 
+void MissileBattery::Display() {
+   for (unsigned int i = 0 ; i < launchers.size() ; ++i) {
+      MissileLauncher* ml = launchers[i];
+      ml->Display();
+   }
+}
 
+
+
+bool MissileBattery::Ready() {
+   for (int i = 0 ; i < (int)launchers.size() ; ++i) {
+      if (launchers[i]->Ready()) {return true;}
+   }
+   return false;
+}
+
+
+
+int MissileBattery::NMissilesLeft() {
+   return nmissilesleft + NMissilesActive();
+}
+
+
+
+int MissileBattery::NMissilesActive() {
+   int total = 0;
+   for (int i = 0 ; i < (int)launchers.size() ; ++i) {
+      total += launchers[i]->NMissilesActive();
+   }
+   return total;
+}
+
+
+
+std::vector<Missile*> MissileBattery::GetMissiles() {
+   std::vector<Missile*> missiles;
+   for (unsigned int i = 0 ; i < launchers.size() ; ++i) {
+      MissileLauncher* ml = launchers[i];
+      std::vector<Missile*> submissiles = ml->GetMissiles();
+      missiles.insert(missiles.end() , submissiles.begin() , submissiles.end());
+   }
+   return missiles;
+}
+
+
+
+;
