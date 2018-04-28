@@ -104,7 +104,6 @@ void EnemyAI::HandleEvent(EagleEvent ee) {
 void EnemyAI::CheckInputs() {
    if (mb) {
       if (mb->Ready()) {
-         float pct = Percent();
          mb->Launch(sw*Percent() , sh);
       }
    }
