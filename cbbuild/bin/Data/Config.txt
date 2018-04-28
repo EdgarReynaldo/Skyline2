@@ -11,23 +11,21 @@ player_nmsl_hard = 360
 player_nmsl_custom = 180
 
 # Time between launches
-enemy_tbl_easy = 8.0
-enemy_tbl_medium = 4.0
-enemy_tbl_hard = 2.0
-enemy_tbl_custom = 2.000000
+enemy_tbl_easy = 2.0
+enemy_tbl_medium = 1.5
+enemy_tbl_hard = 1.0
+enemy_tbl_custom = 1.0
 
 player_tbl_easy = 0.25
 player_tbl_medium = 0.5
 player_tbl_hard = 0.5
 player_tbl_custom = 0.500000
 
-# Number of launchers and positions - Number of launchers followed by that many space separated
-# x,y,w,h quadruplets defining the zone they fire from
-nl_easy = 1 0,-100,800,100
-nl_medium = 2 0,-100,400,100 400,-100,400,100
-# 800 / 3 = 267
-nl_hard = 3 0,-100,267,100 267,-100,267,100 534,-100,267,100
-nl_custom = 4 0,-100,200,100 200,-100,200,100 400,-100,200,100 600,-100,200,100
+# Number of launchers and positions - Number of launchers followed by a fractional x value
+nl_easy = 1 0.5
+nl_medium = 2 0.25 0.75
+nl_hard = 3 0.0 0.5 1.0
+nl_custom = 4 0.0 0.33 0.67 1.0
 
 # Percentages of city left before game over
 city_left_easy = 0.1
@@ -36,10 +34,10 @@ city_left_hard = 0.5
 city_left_custom = 0.250000
 
 # Missile speeds (pixels per second)
-enemy_mspd_easy = 25.0
-enemy_mspd_medium = 50.0
-enemy_mspd_hard = 75.0
-enemy_mspd_custom = 50.000000
+enemy_mspd_easy = 50.0
+enemy_mspd_medium = 70.0
+enemy_mspd_hard = 90.0
+enemy_mspd_custom = 100.0
 
 player_mspd_easy = 250.0
 player_mspd_medium = 200.0
