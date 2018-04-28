@@ -14,6 +14,10 @@
 #include <vector>
 
 
+
+#include "NewConfig.hpp"
+
+
 enum LASER_STATE {
    LASER_FIRING = 0,
    LASER_TOAST = 1
@@ -30,7 +34,7 @@ public :
    float maxw;
    float w;/// width
 
-   Laser(float srcx , float srcy , float destx , float desty , float time_to_live);
+   Laser(float srcx , float srcy , float destx , float desty , float beam_width , float time_to_live);
 
    
    void DrawLaser(EagleColor ic , EagleColor oc);
@@ -80,7 +84,7 @@ class LaserBattery {
 
 protected :
    
-   Pos2F aim;
+   Pos2D aim;
    
    std::vector<LaserLauncher*> lasers;
    
@@ -90,7 +94,7 @@ public :
    ~LaserBattery();
    
    void Free();
-   void Setup();
+   void Setup(const Config& c);
    
    void Reset();
    

@@ -6,6 +6,9 @@
 #include "Globals.hpp"
 
 #include "Eagle/InputHandler.hpp"
+#include "Eagle/StringWork.hpp"
+
+#include <string>
 
 #include "GL/gl.h"
 
@@ -16,12 +19,12 @@ double LASER_BEAM_DURATION = 0.5;
 
 
 
-Laser::Laser(float srcx , float srcy , float destx , float desty , float time_to_live) :
+Laser::Laser(float srcx , float srcy , float destx , float desty , float beam_width , float time_to_live) :
       s(srcx , srcy),
       d(destx , desty),
       ttlmax(time_to_live),
       ttl(time_to_live),
-      maxw(LASER_BEAM_WIDTH),
+      maxw(beam_width),
       w(0.0)
 {}
 
@@ -51,17 +54,14 @@ void Laser::DrawLaser(EagleColor ic , EagleColor oc) {
    glColor4f(a*ic.fR() , a*ic.fG() , a*ic.fB() , a);///ic.fA());
    glVertex2f(p[0].X() , p[0].Y());
 
-///   glColor4f(oc.fR() , oc.fG() , oc.fB() , 0.0f);///oc.fA());
-   glColor4f(0.0f , 0.0f , 0.0f , 0.0f);
-
+   glColor4f(oc.fR() , oc.fG() , oc.fB() , oc.fA());///oc.fA());
    glVertex2f(p[1].X() , p[1].Y());
    glVertex2f(p[2].X() , p[2].Y());
 
    glColor4f(a*ic.fR() , a*ic.fG() , a*ic.fB() , a);///ic.fA());
    glVertex2f(p[3].X() , p[3].Y());
-///   glColor4f(oc.fR() , oc.fG() , oc.fB() , 0.0f);///oc.fA());
 
-   glColor4f(0.0f , 0.0f , 0.0f , 0.0f);
+   glColor4f(oc.fR() , oc.fG() , oc.fB() , oc.fA());///oc.fA());
    glVertex2f(p[4].X() , p[4].Y());
    glVertex2f(p[5].X() , p[5].Y());
 
@@ -178,7 +178,7 @@ void LaserLauncher::Draw() {
 
 
 void LaserLauncher::Fire() {
-   active_beams.push_back(new Laser(pos.X() , pos.Y() , aim.X() , aim.Y() , LASER_BEAM_DURATION));
+   active_beams.push_back(new Laser(pos.X() , pos.Y() , aim.X() , aim.Y() , LASER_BEAM_WIDTH , LASER_BEAM_DURATION));
 }
 
 
@@ -207,7 +207,7 @@ LaserBattery::LaserBattery() :
       aim(0.0f,0.0f),
       lasers()
 {
-   Setup();
+   
 }
 
 
@@ -228,21 +228,58 @@ void LaserBattery::Free() {
 
 
 
-void LaserBattery::Setup() {
+void LaserBattery::Setup(const Config& c) {
    Free();
    double range = sqrt(sw*sw + sh*sh);
    lasers.push_back(new LaserLauncher(Pos2F(0 , sh) , range));
    lasers.push_back(new LaserLauncher(Pos2F(sw/2 , sh) , range));
    lasers.push_back(new LaserLauncher(Pos2F(sw , sh) , range));
-   /// CMY
-   lasers[0]->SetColors(EagleColor(255,255,0,255) , EagleColor(255,255,255,0));
-   lasers[1]->SetColors(EagleColor(0,255,255,255) , EagleColor(255,255,255,0));
-   lasers[2]->SetColors(EagleColor(255,0,255,255) , EagleColor(255,255,255,0));
-/** RGB
-   lasers[0]->SetColors(EagleColor(255,0,0,255) , EagleColor(255,255,255,0));
-   lasers[1]->SetColors(EagleColor(0,255,0,255) , EagleColor(255,255,255,0));
-   lasers[2]->SetColors(EagleColor(0,0,255,255) , EagleColor(255,255,255,0));
-*/
+   
+   EagleColor red(1.0f , 0.0f , 0.0f , 1.0f);
+   EagleColor green(0.0f , 1.0f , 0.0f , 1.0f);
+   EagleColor blue(0.0f , 0.0f , 1.0f , 1.0f);
+   EagleColor cyan(0.0f , 1.0f , 1.0f , 1.0f);
+   EagleColor magenta(1.0f , 0.0f , 1.0f , 1.0f);
+   EagleColor yellow(1.0f , 1.0f , 0.0f , 1.0f);
+   EagleColor white(1.0f , 1.0f , 1.0f , 1.0f);
+   EagleColor clear(1.0f , 1.0f , 1.0f , 0.0f);
+
+   bool blend = false;
+
+   std::string lbstr = c.laser_blend_mode;
+   if (lbstr.compare("SOLID") == 0) {
+      blend = false;
+   }
+   else if (lbstr.compare("BLEND") == 0) {
+      blend = true;
+   }
+   else {
+      throw EagleException(StringPrintF("Laser blend mode not supported. Invalid value is '%s'." , lbstr.c_str()));
+   }
+   
+   std::string lcstr = c.laser_color;
+   if (lcstr.compare("RGB") == 0) {
+      lasers[0]->SetColors(red   , blend?clear:red);
+      lasers[1]->SetColors(green , blend?clear:green);
+      lasers[2]->SetColors(blue  , blend?clear:blue);
+   }
+   else if (lcstr.compare("CMY") == 0) {
+      lasers[0]->SetColors(cyan    , blend?clear:cyan);
+      lasers[1]->SetColors(magenta , blend?clear:magenta);
+      lasers[2]->SetColors(yellow  , blend?clear:yellow);
+   }
+   else if (lcstr.compare("WWW") == 0) {
+      lasers[0]->SetColors(white , blend?clear:white);
+      lasers[1]->SetColors(white , blend?clear:white);
+      lasers[2]->SetColors(white , blend?clear:white);
+   }
+   else {
+      throw EagleException(StringPrintF("Failed to read valid value from laser color string. str is '%s'" , lcstr.c_str()));
+   }
+   
+   LASER_BEAM_WIDTH = c.laser_width;
+   LASER_BEAM_DURATION = c.laser_duration;
+   
 }
 
 
@@ -256,10 +293,10 @@ void LaserBattery::Reset() {
 
 
 void LaserBattery::AimAt(int aimx , int aimy) {
-   aim = Pos2F(aimx + 0.5f , aimy + 0.5f);
+   aim = Pos2D(aimx + 0.5 , aimy + 0.5);
    std::vector<LaserLauncher*>::iterator it = lasers.begin();
    while (it != lasers.end()) {
-      (*it)->AimAt(aimx , aimy);
+      (*it)->AimAt(aim.X() , aim.Y());
       ++it;
    }
 }
