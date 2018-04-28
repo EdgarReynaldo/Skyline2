@@ -58,52 +58,15 @@ void set_config_string(const char* section , const char* name , string val) {
 
 ConfigSettings settings;
 
-/**
-WidgetColorset gui_colors;
-
-void MakeGuiColors();
 
 
-
-const char* const gui_color_names[NUMCOLS] = {
-   "SDCOL",
-   "BGCOL",
-   "MGCOL",
-   "FGCOL",
-   "HLCOL",
-   "TXTCOL"
-};
-
-const char* gui_color_strs[NUMCOLS] = {
-   "0,0,0,255",
-   "64,64,64,255",
-   "128,128,128,255",
-   "192,192,192,255",
-   "255,255,255,254",
-   "255,255,255,254"
-};
-
-
-
-void MakeGuiColors() {
-   int r,g,b,a;
-   for (int i = 0 ; i < NUMCOLS ; ++i) {
-      if (4 != sscanf(gui_color_strs[i] , "%i,%i,%i,%i" , &r , &g , &b , &a)) {
-         throw EagleException(StringPrintF("Gui color string #%i (%s) is invalid - proper format is r,g,b,a.\n" , i , gui_color_strs[i]));
-      }
-      gui_colors.SetRGBA((WIDGETCOLOR)i , r , g , b , a);
-   }
-}
-
-
-//*/
 const char* DiffToStr(DIFFICULTY d) {
    switch (d) {
       case EASY   : return "EASY";
       case MEDIUM : return "MEDIUM";
       case HARD   : return "HARD";
       case CUSTOM : return "CUSTOM";
-      default     : return "EASY";
+      default     : return (const char*)0;
    }
    return 0;
 }
@@ -231,10 +194,10 @@ ConfigSettings::ConfigSettings() :
    configs[HARD].player_tbl = 0.5f;
    configs[CUSTOM].player_tbl = 0.5f;
    
-   configs[EASY].nl_str = "1 0,-100,800,100";
-   configs[MEDIUM].nl_str = "2 0,-100,400,100 400,-100,400,100";
-   configs[HARD].nl_str = "3 0,-100,267,100 267,-100,267,100 534,-100,267,100";
-   configs[CUSTOM].nl_str = "4 0,-100,200,100 200,-100,200,100 400,-100,200,100 600,-100,200,100";
+   configs[EASY].nl_str = "1 0.5";
+   configs[MEDIUM].nl_str = "2 0.25 0.75";
+   configs[HARD].nl_str = "3 0.0 0.5 1.0";
+   configs[CUSTOM].nl_str = "4 0.0 0.33 0.67 1.0";
    
    configs[EASY].city_left = 0.1f;
    configs[MEDIUM].city_left = 0.25f;
@@ -312,23 +275,21 @@ void CreateConfigFile(const char* filepath) {
       "player_nmsl_custom=180",
       "",
       "# Time between launches",
-      "enemy_tbl_easy=8.0",
-      "enemy_tbl_medium=4.0",
-      "enemy_tbl_hard=2.0",
-      "enemy_tbl_custom=2.0",
+      "enemy_tbl_easy=6.0",
+      "enemy_tbl_medium=3.0",
+      "enemy_tbl_hard=1.5",
+      "enemy_tbl_custom=1.0",
       "",
       "player_tbl_easy=0.25",
       "player_tbl_medium=0.5",
       "player_tbl_hard=0.5",
       "player_tbl_custom=0.5",
       "",
-      "# Number of launchers and positions - Number of launchers followed by that many space separated",
-      "# x,y,w,h quadruplets defining the zone they fire from",
-      "nl_easy=1 0,-100,800,100",
-      "nl_medium=2 0,-100,400,100 400,-100,400,100",
-      "# 800 / 3 = 267",
-      "nl_hard=3 0,-100,267,100 267,-100,267,100 534,-100,267,100",
-      "nl_custom=4 0,-100,200,100 200,-100,200,100 400,-100,200,100 600,-100,200,100",
+      "# Number of launchers and positions - Number of launchers followed by a fractional x value",
+      "nl_easy = 1 0.5",
+      "nl_medium = 0.25 0.75",
+      "nl_hard = 3 0 0.5 1.0",
+      "nl_custom = 4 0.0 0.33 0.67 1.0",
       "",
       "# Percentages of city left before game over",
       "city_left_easy=0.1",
@@ -337,10 +298,10 @@ void CreateConfigFile(const char* filepath) {
       "city_left_custom=0.25",
       "",
       "# Missile speeds (pixels per second)",
-      "enemy_mspd_easy=25.0",
-      "enemy_mspd_medium=50.0",
-      "enemy_mspd_hard=75.0",
-      "enemy_mspd_custom=50.0",
+      "enemy_mspd_easy=50.0",
+      "enemy_mspd_medium=70.0",
+      "enemy_mspd_hard=90.0",
+      "enemy_mspd_custom=100.0",
       "",
       "player_mspd_easy=250.0",
       "player_mspd_medium=200.0",
@@ -429,16 +390,16 @@ void LoadConfig() {
    Config* c = settings.configs;
    for (int d = 0 ; d < NUM_DIFFICULTIES ; ++d) {
       c[d].enemy_nmsl = get_config_int("AI" , enemy_nmsl_strs[d] , c[d].enemy_nmsl);
-      c[d].player_nmsl = get_config_int("AI" , player_nmsl_strs[d] , c[d].player_nmsl);
-      c[d].enemy_tbl = get_config_float("AI" , enemy_tbl_strs[d] , c[d].enemy_tbl);
-      c[d].player_tbl = get_config_float("AI" , player_tbl_strs[d] , c[d].player_tbl);
-      c[d].nl_str = get_config_string("AI" , nl_strs[d] , c[d].nl_str.c_str());
-      c[d].city_left = get_config_float("AI" , city_left_strs[d] , c[d].city_left);
-      c[d].enemy_mspd = get_config_float("AI" , enemy_mspd_strs[d] , c[d].enemy_mspd);
-      c[d].player_mspd = get_config_float("AI" , player_mspd_strs[d] , c[d].player_mspd);
-      c[d].enemy_mrad = get_config_int("AI" , enemy_mrad_strs[d] , c[d].enemy_mrad);
-      c[d].player_mrad = get_config_int("AI" , player_mrad_strs[d] , c[d].player_mrad);
-      c[d].enemy_explode_time = get_config_float("AI" , enemy_explode_time_strs[d] , c[d].enemy_explode_time);
+      c[d].player_nmsl         = get_config_int("AI" , player_nmsl_strs[d] , c[d].player_nmsl);
+      c[d].enemy_tbl           = get_config_float("AI" , enemy_tbl_strs[d] , c[d].enemy_tbl);
+      c[d].player_tbl          = get_config_float("AI" , player_tbl_strs[d] , c[d].player_tbl);
+      c[d].nl_str              = get_config_string("AI" , nl_strs[d] , c[d].nl_str.c_str());
+      c[d].city_left           = get_config_float("AI" , city_left_strs[d] , c[d].city_left);
+      c[d].enemy_mspd          = get_config_float("AI" , enemy_mspd_strs[d] , c[d].enemy_mspd);
+      c[d].player_mspd         = get_config_float("AI" , player_mspd_strs[d] , c[d].player_mspd);
+      c[d].enemy_mrad          = get_config_int("AI" , enemy_mrad_strs[d] , c[d].enemy_mrad);
+      c[d].player_mrad         = get_config_int("AI" , player_mrad_strs[d] , c[d].player_mrad);
+      c[d].enemy_explode_time  = get_config_float("AI" , enemy_explode_time_strs[d] , c[d].enemy_explode_time);
       c[d].player_explode_time = get_config_float("AI" , player_explode_time_strs[d] , c[d].player_explode_time);
    }
    settings.seed = get_config_int("RAND" , "seed" , settings.seed);

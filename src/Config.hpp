@@ -3,6 +3,8 @@
 #ifndef Config_H
 #define Config_H
 
+#error "You've included the old config file!!!"
+
 #include <string>
 using std::string;
 
@@ -39,17 +41,22 @@ DIFFICULTY StrToDiff(const char* str);
 class Config {
 public :
    int enemy_nmsl;
-   int player_nmsl;
    float enemy_tbl;
-   float player_tbl;
-   string nl_str;
-   float city_left;
+   string enemy_nl_str;
+
    float enemy_mspd;
-   float player_mspd;
    int enemy_mrad;
-   int player_mrad;
    float enemy_explode_time;
+
+   int player_nmsl;
+   float player_tbl;
+   string player_nl_str;
+
+   float player_mspd;
+   int player_mrad;
    float player_explode_time;
+
+   float city_left;
 };
 
 class Difficulty {
@@ -57,17 +64,22 @@ public :
    Difficulty();
    
    DIFFICULTY enemy_nmsl_diff;
-   DIFFICULTY player_nmsl_diff;
    DIFFICULTY enemy_tbl_diff;
-   DIFFICULTY player_tbl_diff;
-   DIFFICULTY nl_diff;
-   DIFFICULTY city_left_diff;
+   DIFFICULTY enemy_nl_diff;
+
    DIFFICULTY enemy_mspd_diff;
-   DIFFICULTY player_mspd_diff;
    DIFFICULTY enemy_mrad_diff;
-   DIFFICULTY player_mrad_diff;
    DIFFICULTY enemy_explode_time_diff;
+
+   DIFFICULTY player_nmsl_diff;
+   DIFFICULTY player_tbl_diff;
+   DIFFICULTY player_nl_diff;
+
+   DIFFICULTY player_mspd_diff;
+   DIFFICULTY player_mrad_diff;
    DIFFICULTY player_explode_time_diff;
+
+   DIFFICULTY city_left_diff;
 };
 
 
