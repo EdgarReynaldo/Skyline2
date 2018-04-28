@@ -149,12 +149,12 @@
 		<Unit filename="Skyline_Notes.txt" />
 		<Unit filename="cbbuild/bin/Data/Cities.txt" />
 		<Unit filename="cbbuild/bin/Data/Config.txt" />
+		<Unit filename="src/AI.cpp" />
+		<Unit filename="src/AI.hpp" />
 		<Unit filename="src/Blend.cpp" />
 		<Unit filename="src/Blend.hpp" />
 		<Unit filename="src/City.cpp" />
 		<Unit filename="src/City.hpp" />
-		<Unit filename="src/Config.cpp" />
-		<Unit filename="src/Config.hpp" />
 		<Unit filename="src/Explosion.cpp" />
 		<Unit filename="src/Explosion.hpp" />
 		<Unit filename="src/Game.cpp" />
@@ -167,11 +167,15 @@
 		<Unit filename="src/Lasers.hpp" />
 		<Unit filename="src/Missiles.cpp" />
 		<Unit filename="src/Missiles.hpp" />
+		<Unit filename="src/NewConfig.cpp" />
+		<Unit filename="src/NewConfig.hpp" />
 		<Unit filename="src/NewMain.cpp" />
 		<Unit filename="src/OldMain.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="src/RNG.cpp" />
+		<Unit filename="src/RNG.hpp" />
 		<Unit filename="src/SettingsScreen.cpp">
 			<Option compile="0" />
 			<Option link="0" />
