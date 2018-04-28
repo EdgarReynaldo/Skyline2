@@ -4,13 +4,17 @@
 using std::ifstream;
 
 #include <iostream>
-using std::ios;
+using std::iostream;
 using std::endl;
 
+#include <algorithm>
+
 #include "Game.hpp"
-#include "Config.hpp"
+#include "NewConfig.hpp"
 #include "Globals.hpp"
 #include "Blend.hpp"
+#include "AI.hpp"
+#include "RNG.hpp"
 
 
 #include "Eagle/backends/Allegro5Backend.hpp"
@@ -29,7 +33,7 @@ string nopointer_file("Data/Images/NoPointer.bmp");
 
 
 
-
+/**
 void Game::SetupMissileBatteries(Config c) {
    FreeMissileBatteries();
    const char* cstr = c.nl_str.c_str();
@@ -42,64 +46,81 @@ void Game::SetupMissileBatteries(Config c) {
       throw EagleException(StringPrintF("Failed to read number of enemy launchers from '%s'\n" , cstr));
    }
    cstr += count;
-   int x = 0;
-   int y = 0;
-   int w = 0;
-   int h = 0;
+   float x = -1.0f;
+   EnemyAI* enemyai = new EnemyAI(r , c.enemy_nmsl/nlaunchers , c);
    for (int i = 0 ; i < nlaunchers ; ++i) {
-      ret = sscanf(cstr , "%i,%i,%i,%i%n" , &x , &y , &w , &h , &count);
-      if (4 != ret) {
+      ret = sscanf(cstr , "%f%n" , &x , &count);
+      if (1 != ret) {
          throw EagleException(StringPrintF("Failed to read launcher #%i's zone from '%s'.\n" , i + 1 , cstr));
       }
       cstr += count;
       MissileBattery* mbtry = new MissileBattery();
-      Rectangle r(x,y,w,h);
-      EnemyAI* enemyai = new EnemyAI(r , c.enemy_nmsl/nlaunchers , c);
+      Rectangle r((float)sw*x - 25,-20,50,50);
+      mbtry->SetAI(enemyai);
       if (nlaunchers > 1) {
          enemyai->DelayLaunchBy(c.enemy_tbl*((float)i/(float)(nlaunchers - 1)));
       }
-      mbtry->SetAI(enemyai);
       enemy_mbs.push_back(mbtry);
    }
-   player_ai = new PlayerAI(Rectangle(sw/2,sh,1,1) , c.player_nmsl , c);
+   player_ai = new PlayerAI(Rectangle(sw/2,sh - 10,1,1) , c.player_nmsl , c);
    player_mb.SetAI(player_ai);
+}
+//*/
+
+
+
+void Game::SetupAI() {
+   EAGLE_ASSERT(enemy);
+   EAGLE_ASSERT(player);
+   enemy->Setup(config);
+   player->Setup(config);
 }
 
 
 
+int SortMissileByY(Missile* m1 , Missile* m2) {return m1->Y() < m2->Y();}
+
+
 void Game::DrawGame() {
+   /// Draw collision buffer
    win->SetDrawingTarget(&cbuffer);
-///   win->DrawToBackBuffer();
    
    win->Clear(EagleColor(0,0,0,255));
 
    SetAdditiveBlender();
 
-   player_lasers.Draw();
+   player->DrawLasers();
 
    
-   
+   /// Draw cbuffer to display
    win->DrawToBackBuffer();
+   
+   /// Copy blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_ZERO);
    
+   /// Copy collision buffer to display
    win->Draw(&cbuffer , 0 , 0);
 
-///   return;
-   
-///   SetMultiplyBlender();
+   /// Multiply blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_DEST_COLOR , ALLEGRO_ZERO);
 
    win->DrawStretchedRegion(&bg , 0 , 0 , bg.W() , bg.H() , 0 , 0 , sw , sh);
          
+   /// Pre multiplied alpha blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_INVERSE_ALPHA);
    
    city->Display();
 
-   for (unsigned int i = 0 ; i < enemy_mbs.size() ; ++i) {
-      enemy_mbs[i]->Display();
+   std::vector<Missile*> missiles = enemy->GetMissiles();
+   std::vector<Missile*> missiles2 = player->GetMissiles();
+   missiles.insert(missiles.end() , missiles2.begin() , missiles2.end());
+   missiles2.clear();
+   std::sort(missiles.begin() , missiles.end() , SortMissileByY);
+   
+   for (unsigned int i = 0 ; i < missiles.size() ; ++i) {
+      Missile* m = missiles[i];
+      m->Display();
    }
-   player_mb.Display();
-
    
    if (state == WIN) {
       win->DrawTextString(f , "WIN! WIN! WIN! WIN! WIN!" , sw/2 , sh/2 , EagleColor(0,255,0)  ,HALIGN_CENTER , VALIGN_CENTER);
@@ -114,20 +135,12 @@ void Game::DrawGame() {
 
 
 void Game::CheckCollisions() {
-   /// TODO : Pre build database of missiles? Not worth it. There will probably never be enough missiles to matter. Maybe...
-   vector<MissileBattery*> mbs = enemy_mbs;
-   mbs.push_back(&player_mb);
-   vector<Missile*> missiles;
-   vector<Missile*> emissiles;
-   for (unsigned int i = 0 ; i < mbs.size() ; ++i) {
-      MissileBattery* mbtry = mbs[i];
-      for (list<Missile*>::iterator it = mbtry->missiles.begin() ; it != mbtry->missiles.end() ; ++it) {
-         if (i != mbs.size() - 1) {
-            emissiles.push_back(*it);
-         }
-         missiles.push_back(*it);
-      }
-   }
+
+   vector<Missile*> pmissiles = player->GetMissiles();
+   vector<Missile*> emissiles = enemy->GetMissiles();
+   vector<Missile*> missiles(pmissiles);
+   missiles.insert(missiles.begin() , emissiles.begin() , emissiles.end());
+
    /// O(log(n))?
    /// Check for missiles blowing up other missiles
    win->PushDrawingTarget(&city->workingcopy);
@@ -139,7 +152,9 @@ void Game::CheckCollisions() {
       int r1 = m1->CRad();
 //      MISSILE_STATE s1 = m1->State();
       bool e1 = m1->Exploding();
-      if (e1) {city->Destroy(win,x1,y1,r1);}
+      if (e1) {
+         city->Destroy(win,x1,y1,r1);
+      }
       for (unsigned int j = i + 1 ; j < missiles.size() ; ++j) {
          Missile* m2 = missiles[j];
          int x2 = m2->X();
@@ -182,9 +197,10 @@ void Game::CheckCollisions() {
       }
    }
    /// Check for player lasers hitting missiles
-///   vector<Laser*> lasers = player_lasers.GetActiveLaserBeams();
+///   vector<Laser*> lasers = player_lasers.GetActiveLaserBeams();/// Line distance hit detection doesn't work yet
    ALLEGRO_BITMAP* bmp = cbuffer.AllegroBitmap();
    ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(bmp , ALLEGRO_PIXEL_FORMAT_ANY_32_WITH_ALPHA , ALLEGRO_LOCK_READONLY);
+   (void)lock;/// This lock is used by al_get_pixel below
    for (unsigned int i = 0 ; i < missiles.size() ; ++i) {
       Missile* m = missiles[i];
       ALLEGRO_COLOR c;
@@ -203,7 +219,7 @@ void Game::CheckCollisions() {
 
 STATE Game::CheckGameState() {
    city->Recount();
-   float percent_allowed = GetConfig().city_left;
+   float percent_allowed = config.city_left;
 
    // 1.0 - percents[difficulty] = percent allowed
    // city->PercentLeft - percents[difficulty] = percent remaining
@@ -223,20 +239,36 @@ STATE Game::CheckGameState() {
 
 
 int Game::NumMissilesLeft() {
-   int count = 0;
-   for (unsigned int i = 0 ; i < enemy_mbs.size() ; ++i) {
-      MissileBattery* mbtry = enemy_mbs[i];
-      count += mbtry->nmissiles;
-      count += mbtry->nmissilesleft;
-   }
-   return count;
+   return enemy->NMissilesLeft();
 }
 
+/**
+   map<string , City*> cities;
+   string citystr;
+   City* city;
 
+   Allegro5Image cbuffer;
+   Allegro5Image bg;
+   Allegro5Image nopointer;
+   Allegro5Image okpointer;
+   Allegro5Image* pointer;
 
+   STATE state;
+   DIFFICULTY difficulty[NUM_GAME_SETTINGS];
+
+   int status;
+   
+   EnemyAI* enemy;
+   PlayerAI* player;
+
+   GameConfig gameconfig;
+   
+   bool config_changed;
+
+//*/
 Game::Game(string cityfile) :
    cities(),
-   citystr(),
+   citystr(""),
    city(0),
    cbuffer(sw,sh),
    bg("Data/Images/CloudySky.png"),
@@ -244,56 +276,17 @@ Game::Game(string cityfile) :
    okpointer(okpointer_file),
    pointer(&nopointer),
    state(INTRO),
-   difficulty(EASY),
+   difficulty(),
    status(0),
-   enemy_mbs(),
-   player_mb(),
-   player_ai(0),
-   player_lasers(),
-   last_config_settings(),
-   current_config_settings(),
-   current_config(),
+   enemy(0),
+   player(0),
+   gameconfig(),
+   config(),
    config_changed(false)
 {
-/**
-   padding(pad),
-   enemy_nmsl_setting("Number of enemy missiles" , pad),
-   player_nmsl_setting("Number of player missiles" , pad),
-   enemy_tbl_setting("Enemy time between launch" , pad),
-   player_tbl_setting("Player time between launch" , pad),
-   city_left_setting("Percent of city left to win" , pad),
-   enemy_mspd_setting("Enemy missile speed" , pad),
-   player_mspd_setting("Player missile speed" , pad),
-   enemy_mrad_setting("Enemy missile radius" , pad),
-   player_mrad_setting("Player missile radius" , pad),
-   enemy_explode_time_setting("Enemy explosion duration" , pad),
-   player_explode_time_setting("Player explosion duration" , pad),
-//   GenericRadioButton(std::string name , RADIO_TYPE rtype , Rectangle position , int padding = 0 , UINT wflags = DEFAULT_FLAGS);
-   nl_radio("nl_radio" , RADIO_HORIZONTAL , Rectangle(0,0,1,1) , pad),
-//   TextWidget(std::string name , std::string text_str , int tx , int ty , UINT wflags = DEFAULT_FLAGS);
-   nl_text("nl_text" , "Number of launchers" , 0 , 0),
-//   Button(std::string name , BUTTON_SHAPE shape , BTN_ACTION_TYPE atype , FONT* textfont , 
-//         std::string label , const InputGroup& input , const Rectangle& position , UINT wflags = DEFAULT_FLAGS);
-   alldiff_radio("alldiff_radio" , RADIO_HORIZONTAL , Rectangle(0,0,1,1) , pad),
-   alldiff_text("alldiff_text" , "Set all difficulties" , 0 , 0),
-   play_btn("play_btn" , RECTANGLE_BTN , SPRING_BTN , font , "Play" , input_key_press(KEY_NONE) , Rectangle(0,0,54,14)),
-   quit_btn("quit_btn" , RECTANGLE_BTN , SPRING_BTN , font , "Quit" , input_key_press(KEY_NONE) , Rectangle(0,0,54,14)),
-   save_changes_btn("save_changes_btn" , RECTANGLE_BTN , SPRING_BTN , font , "Save" , input_key_press(KEY_NONE) , Rectangle(0,0,54,14)),
-   revert_changes_btn("revert_changes_btn" , RECTANGLE_BTN , SPRING_BTN , font , "Revert" , input_key_press(KEY_NONE) , Rectangle(0,0,54,14)),
-//   DropDownList(std::string name , FONT* textfont , int num_items_shown , const Rectangle& position ,
-//                DROP_DOWN_LIST_DIRECTION direction = DDL_OPEN_BELOW , UINT wflags = DEFAULT_OVERLAP_FLAGS);
-   city_ddl("city_ddl" , font , 3 , Rectangle(0,0,108 + pad , 14) , DDL_OPEN_ABOVE),
-   city_text("city_text" , "Select A City" , 0 , 0),
-//   WidgetHandler(std::string name , BITMAP* surface , const Rectangle& position , UINT wflags = DEFAULT_FLAGS);   
-   menu_gui("menu_gui" , screen , Rectangle(0,0,800,600)),
-*/
-/**
-   last_config_settings(GetConfigSettings()),
-   current_config_settings(GetConfigSettings()),
-   current_config(GetConfig()),
-   config_changed(false)
-*/
-///{
+   
+   EAGLE_ASSERT(gameconfig.LoadConfig());
+   
    SetupCities(cityfile , sw , sh);
    if (!cbuffer.Valid()) {
       throw EagleException("Failed to allocate cbuffer!\n");
@@ -301,17 +294,22 @@ Game::Game(string cityfile) :
    if (!bg.Valid()) {
       throw EagleException("Failed to load background.\n");
    }
-   if (!okpointer.Load(okpointer_file)) {
+   if (!okpointer.Valid()) {
       throw EagleException(StringPrintF("Failed to load okay pointer (%s)!\n" , okpointer_file.c_str()));
    }
-   if (!nopointer.Load(nopointer_file)) {
+   if (!nopointer.Valid()) {
       throw EagleException(StringPrintF("Failed to load no pointer (%s)!\n" , nopointer_file.c_str()));
    }
+   
+   
+   
+   enemy = new EnemyAI;
+   player = new PlayerAI;
    
    ConvertMaskColorToAlphaZero(&okpointer , EagleColor(255,0,255,255));
    ConvertMaskColorToAlphaZero(&nopointer , EagleColor(255,0,255,255));
    
-   srand(current_config_settings.seed);
+   Seed(gameconfig.GetSeed());
 }
 
 
@@ -323,17 +321,15 @@ Game::~Game() {
 
 
 void Game::Free() {
-   FreeMissileBatteries();
-   FreeCities();
-}
-
-
-
-void Game::FreeMissileBatteries() {
-   for (unsigned int i = 0 ; i < enemy_mbs.size() ; ++i) {
-      delete enemy_mbs[i];
+   if (enemy) {
+      delete enemy;
+      enemy = 0;
    }
-   enemy_mbs.clear();
+   if (player) {
+      delete player;
+      player = 0;
+   }
+   FreeCities();
 }
 
 
@@ -349,8 +345,8 @@ void Game::FreeCities() {
 
 
 void Game::SetupCities(string file , int screenw , int screenh) {
-   Free();
-   ifstream strm(file.c_str() , ios::binary);
+   FreeCities();
+   ifstream strm(file.c_str() , std::ios::binary);
    if (!strm) {
       throw EagleException(StringPrintF("Could not open game setup file (%s)!\n" , file.c_str()));
    }
@@ -389,6 +385,9 @@ int Game::Run() {
          ProgramTime pt2 = ProgramTime::Now();
          EagleLog() << StringPrintF("Display() took %1.5lf seconds.\n" , pt2 - pt1) << std::endl;
       }
+      else {
+         Display();
+      }
       int nevents = 0;
       do {
          EagleEvent ee = sys->WaitForSystemEventAndUpdateState();
@@ -404,7 +403,7 @@ int Game::Run() {
          if (!paused) {
             if (ee.type == EAGLE_EVENT_TIMER) {
                ++nevents;
-               if (nevents == 1) {
+               if (nevents == 1) {/// Slow down gracefully if the gpu or cpu can't handle it
                   Update(ee.timer.eagle_timer_source->SPT());
                }
             }
@@ -413,6 +412,9 @@ int Game::Run() {
                CheckInputs();
                ProgramTime pt2 = ProgramTime::Now();
                EagleLog() << StringPrintF("CheckInputs() took %1.5lf seconds.\n" , pt2 - pt1) << std::endl;
+            }
+            else {
+               CheckInputs();
             }
             state = HandleEvent(ee);
          }
@@ -472,11 +474,8 @@ STATE Game::Update(double dt) {
 ///         menu_gui.Update(dt);
          break;
       case GAME :
-         for (unsigned int i = 0 ; i < enemy_mbs.size() ; ++i) {
-            enemy_mbs[i]->Update(dt);
-         }
-         player_mb.Update(dt);
-         player_lasers.Update(dt);
+         enemy->Update(dt);
+         player->Update(dt);
          CheckCollisions();
          state = CheckGameState();
          break;
@@ -499,12 +498,18 @@ STATE Game::HandleEvent(EagleEvent ee) {
             city = cities[citys[ee.keyboard.keycode - EAGLE_KEY_1]];
             EAGLE_ASSERT(city);
             city->Reset();
-            player_lasers.Reset();
+            
             DIFFICULTY d[3] = {
                EASY , MEDIUM , HARD
             };
-            current_config = current_config_settings.configs[d[ee.keyboard.keycode - EAGLE_KEY_1]];
-            SetupMissileBatteries(current_config);
+            gameconfig.SetOverallDifficulty(d[ee.keyboard.keycode - EAGLE_KEY_1]);
+
+            config = gameconfig.GetSelectedConfig();
+
+            Seed(gameconfig.GetSeed());
+
+            SetupAI();
+
             state = GAME;
          }
          if (ee.keyboard.keycode == EAGLE_KEY_ESCAPE) {
@@ -521,9 +526,8 @@ STATE Game::HandleEvent(EagleEvent ee) {
             if (ee.keyboard.keycode == EAGLE_KEY_W) {state = WIN;}
             if (ee.keyboard.keycode == EAGLE_KEY_L) {state = LOSE;}
          }
-         if (ee.type == EAGLE_EVENT_MOUSE_AXES) {
-            player_lasers.AimAt(ee.mouse.x , ee.mouse.y);
-         }
+         enemy->HandleEvent(ee);
+         player->HandleEvent(ee);
       }
       break;
    case WIN:
@@ -613,13 +617,9 @@ STATE Game::CheckInputs() {
          
          break;
       case GAME :
-         for (unsigned int i = 0 ; i < enemy_mbs.size() ; ++i) {
-            MissileBattery* mbtry = enemy_mbs[i];
-            mbtry->CheckInputs();
-         }
-         player_mb.CheckInputs();
-         player_lasers.CheckInputs();
-         if (player_mb.Ready()) {
+         enemy->CheckInputs();
+         player->CheckInputs();
+         if (player->MissilesReady()) {
             pointer = &okpointer;
          }
          else {

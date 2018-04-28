@@ -14,7 +14,7 @@ using std::vector;
 #include "City.hpp"
 #include "Missiles.hpp"
 #include "Lasers.hpp"
-#include "Config.hpp"
+#include "NewConfig.hpp"
 ///#include "SettingsWidget.hpp"
 
 
@@ -29,6 +29,8 @@ enum STATE {
    QUIT = 5
 };
 
+class EnemyAI;
+class PlayerAI;
 
 class Game {
 private :
@@ -43,40 +45,37 @@ private :
    Allegro5Image* pointer;
 
    STATE state;
-   DIFFICULTY difficulty;
+   DIFFICULTY difficulty[NUM_GAME_SETTINGS];
+
    int status;
    
-   vector<MissileBattery*> enemy_mbs;
+   EnemyAI* enemy;
+   PlayerAI* player;
 
-   MissileBattery player_mb;
-   PlayerAI* player_ai;
-
-   LaserBattery player_lasers;
+   GameConfig gameconfig;
    
-   ConfigSettings last_config_settings;
-   ConfigSettings current_config_settings;
-   Config current_config;
+   Config config;
+   
    bool config_changed;
 
 
-
-   void SetupMissileBatteries(Config c);
-
+   
+   void SetupAI();
+   
    void DrawGame();
 
    void CheckCollisions();
+
    STATE CheckGameState();
 
    int NumMissilesLeft();
 
 public :
-///   static volatile int ticks;
 
    Game(string cityfile);
    ~Game();
 
    void Free();
-   void FreeMissileBatteries();
    void FreeCities();
 
 
