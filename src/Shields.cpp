@@ -121,7 +121,6 @@ void Shield::Draw() {
    glEnable(GL_BLEND);
    glBegin(GL_TRIANGLE_STRIP);
    glColor4d(1.0 , 1.0 , 1.0 , 1.0);
-   bool even = true;
    for (int i = 0 ; i < NSEGMENTS + 1 ; ++i) {
       double theta = dtheta*i;
       Pos2D outer = Vector(Pos2D(cx,cy) , orad , thetastart + theta);
