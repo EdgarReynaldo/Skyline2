@@ -154,8 +154,10 @@ protected :
 public :
    SpreadMissileLauncher(MISSILECREATOR creator , Pos2D pos , double time_between_launches);
 
+   virtual void Launch(Pos2D destpos , MISSILEDATA data);
+
    void SetSpread(int nmissiles , double arc);
-   void Launch(Pos2D destpos , double mspeed , double etime , int mradius);
+
    void LaunchSpread(int nmissiles , double arc , Pos2D destpos , double mspeed , double etime , int mradius);
 
    int NMissilesPerLaunch() {return nmsl;}

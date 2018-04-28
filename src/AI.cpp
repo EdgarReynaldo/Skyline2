@@ -104,8 +104,8 @@ void EnemyAI::HandleEvent(EagleEvent ee) {
 void EnemyAI::CheckInputs() {
    if (mb) {
       if (mb->Ready()) {
+         float pct = Percent();
          mb->Launch(sw*Percent() , sh);
-         EagleLog() << "Enemy launched missile" << std::endl;
       }
    }
 }
@@ -172,6 +172,7 @@ void PlayerAI::Setup(const Config& c) {
    if (1 != sscanf(str , "%u%n" , &NSPREAD , &NREAD)) {
       throw new EagleException(StringPrintF("Failed to read spread number from player launcher str '%s'" , str));
    }
+   EagleLog() << StringPrintF("Player::Setup - spread is %u\n" , NSPREAD) << std::endl;
    lcreator = 0;///SingleMissileLauncher;
    switch (NSPREAD) {
    case 1 :

@@ -213,15 +213,15 @@ SpreadMissileLauncher::SpreadMissileLauncher(MISSILECREATOR creator , Pos2D pos 
 
 
 
-void SpreadMissileLauncher::SetSpread(int nmissiles , double arcdeg) {
-   nmsl = (nmissiles > 0)?nmissiles:1;
-   arcrad = arcdeg*M_PI/180.0;
+void SpreadMissileLauncher::Launch(Pos2D destpos , MISSILEDATA data) {
+   LaunchSpread(nmsl , arcrad , destpos , data.mspeed , data.etime , data.eradius);
 }
 
 
 
-void SpreadMissileLauncher::Launch(Pos2D destpos , double mspeed , double etime , int mradius) {
-   LaunchSpread(nmsl , arcrad , destpos , mspeed , etime , mradius);
+void SpreadMissileLauncher::SetSpread(int nmissiles , double arcdeg) {
+   nmsl = (nmissiles > 0)?nmissiles:1;
+   arcrad = arcdeg*M_PI/180.0;
 }
 
 
