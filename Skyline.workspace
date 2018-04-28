@@ -3,6 +3,9 @@
 	<Workspace title="Eagle5GUI_Workspace">
 		<Project filename="../Eagle5.cbp" />
 		<Project filename="../Allegro5_backend.cbp" />
-		<Project filename="Skyline.cbp" />
+		<Project filename="Skyline.cbp">
+			<Depends filename="../Eagle5.cbp" />
+			<Depends filename="../Allegro5_backend.cbp" />
+		</Project>
 	</Workspace>
 </CodeBlocks_workspace_file>
