@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Skyline2" />
+		<Option title="Skyline2Linux" />
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
@@ -20,9 +20,9 @@
 					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
 				</Compiler>
 				<Linker>
-					<Add option="-leagle_a5_debug.dll" />
-					<Add option="-leagle_debug.dll" />
-					<Add option="-lallegro_monolith-debug.dll" />
+					<Add option="-leagle_a5_debug" />
+					<Add option="-leagle_debug" />
+					<Add option="-lallegro_monolith-debug" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -36,9 +36,9 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-leagle_a5.dll" />
-					<Add option="-leagle.dll" />
-					<Add option="-lallegro_monolith.dll" />
+					<Add option="-leagle_a5" />
+					<Add option="-leagle" />
+					<Add option="-lallegro_monolith" />
 				</Linker>
 			</Target>
 			<Target title="StaticDebug">
@@ -54,38 +54,10 @@
 					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
 				</Compiler>
 				<Linker>
-					<Add option="-static-libstdc++" />
-					<Add option="-static-libgcc" />
 					<Add option="-static" />
-					<Add option="-leagle_a5_debug-static" />
-					<Add option="-leagle_debug-static" />
-					<Add option="-lallegro_monolith-debug-static" />
-					<Add option="-ljpeg" />
-					<Add option="-ldumb" />
-					<Add option="-lFLAC" />
-					<Add option="-lfreetype" />
-					<Add option="-lvorbisfile" />
-					<Add option="-lvorbis" />
-					<Add option="-logg" />
-					<Add option="-lphysfs" />
-					<Add option="-lpng16" />
-					<Add option="-lzlibstatic" />
-					<Add option="-ldsound" />
-					<Add option="-lgdiplus" />
-					<Add option="-luuid" />
-					<Add option="-lkernel32" />
-					<Add option="-lwinmm" />
-					<Add option="-lpsapi" />
-					<Add option="-lopengl32" />
-					<Add option="-lglu32" />
-					<Add option="-luser32" />
-					<Add option="-lcomdlg32" />
-					<Add option="-lgdi32" />
-					<Add option="-lshell32" />
-					<Add option="-lole32" />
-					<Add option="-ladvapi32" />
-					<Add option="-lws2_32" />
-					<Add option="-lshlwapi" />
+					<Add option="-leagle_a5-debug-static" />
+					<Add option="-leagle-debug-static" />
+					<Add option="`pkg-config --static --libs allegro5_monolith-debug`" />
 				</Linker>
 			</Target>
 			<Target title="StaticRelease">
@@ -100,38 +72,10 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-static-libstdc++" />
-					<Add option="-static-libgcc" />
 					<Add option="-static" />
 					<Add option="-leagle_a5-static" />
 					<Add option="-leagle-static" />
-					<Add option="-lallegro_monolith-static" />
-					<Add option="-ljpeg" />
-					<Add option="-ldumb" />
-					<Add option="-lFLAC" />
-					<Add option="-lfreetype" />
-					<Add option="-lvorbisfile" />
-					<Add option="-lvorbis" />
-					<Add option="-logg" />
-					<Add option="-lphysfs" />
-					<Add option="-lpng16" />
-					<Add option="-lzlibstatic" />
-					<Add option="-ldsound" />
-					<Add option="-lgdiplus" />
-					<Add option="-luuid" />
-					<Add option="-lkernel32" />
-					<Add option="-lwinmm" />
-					<Add option="-lpsapi" />
-					<Add option="-lopengl32" />
-					<Add option="-lglu32" />
-					<Add option="-luser32" />
-					<Add option="-lcomdlg32" />
-					<Add option="-lgdi32" />
-					<Add option="-lshell32" />
-					<Add option="-lole32" />
-					<Add option="-ladvapi32" />
-					<Add option="-lws2_32" />
-					<Add option="-lshlwapi" />
+					<Add option="`pkg-config --static --libs allegro5_monolith`" />
 				</Linker>
 			</Target>
 		</Build>
@@ -141,19 +85,21 @@
 			<Add directory="../Allegro5/include" />
 		</Compiler>
 		<Linker>
-			<Add option="-lopengl32" />
-			<Add option="-lglu32" />
+			<Add option="-lGL" />
+			<Add option="-lGLU" />
 			<Add directory="../cbbuild/lib" />
 			<Add directory="../Allegro5/lib" />
+			<Add directory="../cbbuild/bin" />
 		</Linker>
 		<Unit filename="Skyline_Notes.txt" />
 		<Unit filename="cbbuild/bin/Data/Cities.txt" />
 		<Unit filename="cbbuild/bin/Data/Config.txt" />
+		<Unit filename="src/AI.cpp" />
+		<Unit filename="src/AI.hpp" />
 		<Unit filename="src/Blend.cpp" />
 		<Unit filename="src/Blend.hpp" />
 		<Unit filename="src/City.cpp" />
 		<Unit filename="src/City.hpp" />
-		<Unit filename="src/Config.cpp" />
 		<Unit filename="src/Config.hpp" />
 		<Unit filename="src/Explosion.cpp" />
 		<Unit filename="src/Explosion.hpp" />
@@ -167,11 +113,15 @@
 		<Unit filename="src/Lasers.hpp" />
 		<Unit filename="src/Missiles.cpp" />
 		<Unit filename="src/Missiles.hpp" />
+		<Unit filename="src/NewConfig.cpp" />
+		<Unit filename="src/NewConfig.hpp" />
 		<Unit filename="src/NewMain.cpp" />
 		<Unit filename="src/OldMain.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="src/RNG.cpp" />
+		<Unit filename="src/RNG.hpp" />
 		<Unit filename="src/SettingsScreen.cpp">
 			<Option compile="0" />
 			<Option link="0" />
@@ -186,6 +136,8 @@
 		<Unit filename="src/Shields.hpp" />
 		<Unit filename="src/SoundLibrary.cpp" />
 		<Unit filename="src/SoundLibrary.hpp" />
+		<Unit filename="src/Utility.cpp" />
+		<Unit filename="src/Utility.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
