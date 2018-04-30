@@ -285,7 +285,11 @@ Game::Game(string cityfile) :
    config_changed(false)
 {
    
-   EAGLE_ASSERT(gameconfig.LoadConfig());
+   bool loaded_config = gameconfig.LoadConfig();
+   
+   if (!loaded_config) {
+      throw EagleException("Failed to load config!\n");
+   }
    
    SetupCities(cityfile , sw , sh);
    if (!cbuffer.Valid()) {
