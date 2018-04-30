@@ -14,6 +14,8 @@ int main(int argc , char** argv) {
    (void)argc;
    (void)argv;
    
+   EnableLog();
+   
    if (!SendOutputToFile("SkylineLog.txt" , "Skyline log:\n" , false)) {
       std::cout << "Failed to open SkylineLog.txt!" << std::endl;
    }
