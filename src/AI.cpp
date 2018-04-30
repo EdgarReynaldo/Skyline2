@@ -131,7 +131,8 @@ PlayerAI::PlayerAI() :
       mtrigger(input_mouse_press(LMB)),
       mtriggerheld(input_mouse_held(LMB)),
       ltrigger(input_mouse_press(RMB)),
-      ltriggerheld(input_mouse_held(RMB))
+      ltriggerheld(input_mouse_held(RMB)),
+      lcreator(0)
 {}
 
 

@@ -95,7 +95,7 @@ protected :
    
    void SetupDefaultConfig();
 
-   void ReadStoredConfig();
+   bool ReadStoredConfig();
    
 public :
    

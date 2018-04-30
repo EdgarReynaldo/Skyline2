@@ -241,39 +241,47 @@ void GameConfig::SetupDefaultConfig() {
 
 
 
-void GameConfig::ReadStoredConfig() {
+bool GameConfig::ReadStoredConfig() {
+   bool success = true;
    for (DIFFICULTY d = EASY ; d < NUM_DIFFICULTIES ; d = (DIFFICULTY)((int)d + 1)) {
       Config* c = &configs[d];
       ConfigFile& cf = config_file;
       ConfigSection& cs = cf["AI"];
       
-      /// Enemy
-      c->enemy_nmsl = std::stoi(cs[GetConfigKeyName(GSE_NMSL , d)]);
-      c->enemy_tbl  = std::stof(cs[GetConfigKeyName(GSE_TBL , d)]);
-      c->enemy_mspd = std::stof(cs[GetConfigKeyName(GSE_MSPD , d)]);
-      c->enemy_mrad = std::stoi(cs[GetConfigKeyName(GSE_MRAD , d)]);
-      c->enemy_explode_time = std::stof(cs[GetConfigKeyName(GSE_ETIME , d)]);
-      c->enemy_nl_str = cs[GetConfigKeyName(GSE_NLSTR , d)];
+      try {
+         /// Enemy
+         c->enemy_nmsl = std::stoi(cs[GetConfigKeyName(GSE_NMSL , d)]);
+         c->enemy_tbl  = std::stof(cs[GetConfigKeyName(GSE_TBL , d)]);
+         c->enemy_mspd = std::stof(cs[GetConfigKeyName(GSE_MSPD , d)]);
+         c->enemy_mrad = std::stoi(cs[GetConfigKeyName(GSE_MRAD , d)]);
+         c->enemy_explode_time = std::stof(cs[GetConfigKeyName(GSE_ETIME , d)]);
+         c->enemy_nl_str = cs[GetConfigKeyName(GSE_NLSTR , d)];
 
-      /// Player
-      c->player_nmsl         = std::stoi(cs[GetConfigKeyName(GSP_NMSL , d)]);
-      c->player_tbl          = std::stof(cs[GetConfigKeyName(GSP_TBL , d)]);
-      c->player_mspd         = std::stof(cs[GetConfigKeyName(GSP_MSPD , d)]);
-      c->player_mrad         = std::stoi(cs[GetConfigKeyName(GSP_MRAD , d)]);
-      c->player_explode_time = std::stof(cs[GetConfigKeyName(GSP_ETIME , d)]);
-      c->player_nl_str       = cs[GetConfigKeyName(GSP_NLSTR , d)];
-      
-      /// Laser
-      c->laser_color      = cs[GetConfigKeyName(GSP_LCOLOR , d)];
-      c->laser_blend_mode = cs[GetConfigKeyName(GSP_LBLEND , d)];
-      c->laser_width      = std::stof(cs[GetConfigKeyName(GSP_LWIDTH , d)]);
-      c->laser_duration   = std::stof(cs[GetConfigKeyName(GSP_LDURATION , d)]);
-      
-      /// City
-      c->city_left    = std::stof(cs[GetConfigKeyName(GSP_CITY_LEFT , d)]);
-      c->shield_depth = std::stoi(cs[GetConfigKeyName(GSP_SHIELD_DEPTH , d)]);
-      
+         /// Player
+         c->player_nmsl         = std::stoi(cs[GetConfigKeyName(GSP_NMSL , d)]);
+         c->player_tbl          = std::stof(cs[GetConfigKeyName(GSP_TBL , d)]);
+         c->player_mspd         = std::stof(cs[GetConfigKeyName(GSP_MSPD , d)]);
+         c->player_mrad         = std::stoi(cs[GetConfigKeyName(GSP_MRAD , d)]);
+         c->player_explode_time = std::stof(cs[GetConfigKeyName(GSP_ETIME , d)]);
+         c->player_nl_str       = cs[GetConfigKeyName(GSP_NLSTR , d)];
+         
+         /// Laser
+         c->laser_color      = cs[GetConfigKeyName(GSP_LCOLOR , d)];
+         c->laser_blend_mode = cs[GetConfigKeyName(GSP_LBLEND , d)];
+         c->laser_width      = std::stof(cs[GetConfigKeyName(GSP_LWIDTH , d)]);
+         c->laser_duration   = std::stof(cs[GetConfigKeyName(GSP_LDURATION , d)]);
+         
+         /// City
+         c->city_left    = std::stof(cs[GetConfigKeyName(GSP_CITY_LEFT , d)]);
+         c->shield_depth = std::stoi(cs[GetConfigKeyName(GSP_SHIELD_DEPTH , d)]);
+      }
+      catch (const std::exception& e) {
+         std::string dstr = DiffToStr(d);
+         EagleError() << StringPrintF("GameConfig::ReadStoredConfig - failed to parse config on difficulty %s\n" , dstr.c_str()) << std::endl;
+         success = false;
+      }
    }
+   return success;
 }
 
 
@@ -290,23 +298,32 @@ GameConfig::GameConfig() :
 
 
 bool GameConfig::LoadConfig() {
-   const char* fpath = "Data/Config.txt";
-   FSInfo finfo = GetFileInfo(fpath);
-   if (!finfo.Exists()) {
-      SetupDefaultConfig();
-      config_file.SaveToFile(fpath);
+
+   SetupDefaultConfig();
+   
+   const char* ecpath = "Data/ExampleConfig.txt";
+   const char* cpath = "Data/Config.txt";
+   FSInfo efinfo = GetFileInfo(ecpath);
+   FSInfo cfinfo = GetFileInfo(cpath);
+   
+   /// Make sure there is always an example file
+   if (!efinfo.Exists()) {
+      config_file.SaveToFile(ecpath);
    }
 
-   config_file.Clear();
-   bool load = config_file.LoadFromFile(fpath);
-   if (!load) {
-      EagleCritical() << StringPrintF("Could not load config from file '%s'" , fpath) << std::endl;
+   /// If the config file is present, use it as an override to the default settings
+   if (cfinfo.Exists()) {
+      ConfigFile override_config;
+      bool load = override_config.LoadFromFile(cpath);
+      if (!load) {
+         EagleWarn() << StringPrintF("Could not load override config from file '%s'" , cpath) << std::endl;
+      }
+      config_file.Absorb(override_config);
    }
+
    config_file.SaveToFile("Data/Config2.txt");
 
-   ReadStoredConfig();
-
-   return true;
+   return ReadStoredConfig();
 }
 
 
