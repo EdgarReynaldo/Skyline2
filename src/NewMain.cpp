@@ -14,7 +14,9 @@ int main(int argc , char** argv) {
    (void)argc;
    (void)argv;
    
-   SendOutputToFile("SkylineLog.txt" , StringPrintF("Skyline log:\n") , false);
+   if (!SendOutputToFile("SkylineLog.txt" , "Skyline log:\n" , false)) {
+      std::cout << "Failed to open SkylineLog.txt!" << std::endl;
+   }
    
    sys = GetAllegro5System();
    
@@ -59,7 +61,7 @@ int main(int argc , char** argv) {
       EagleError() << "Game encountered an exception and needs to close." << std::endl;
    }
    
-   EagleLog() << "Game closed." << std:: brendl;
+   EagleLog() << "Game closed." << std::endl;
    
    return 0;
 }
