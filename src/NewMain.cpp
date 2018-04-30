@@ -41,11 +41,25 @@ int main(int argc , char** argv) {
    
    f = win->LoadFont("Verdana.ttf" , -36);
    
-   Game game("Data/Cities.txt");
+   if (!f) {
+      EagleWarn() << "Failed to load Verdana.ttf!" << std::endl;
+      f = win->DefaultFont();
+   }
    
-   t->Start();
+   try {
+      Game game("Data/Cities.txt");
+      
+      EagleLog() << "Game successfully created." << std::endl;
+      
+      t->Start();
+      
+      game.Run();
+   }
+   catch (...) {
+      EagleError() << "Game encountered an exception and needs to close." << std::endl;
+   }
    
-   game.Run();
+   EagleLog() << "Game closed." << std:: brendl;
    
    return 0;
 }

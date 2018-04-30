@@ -370,7 +370,24 @@ Config GameConfig::GetSelectedConfig() {
 
 
 int GameConfig::GetSeed() {
-   return std::stoi(config_file["RAND"]["seed"]);
+   std::string s;
+   int ret = -1;
+   ConfigSection* cs = config_file.FindSection("RAND");
+   EAGLE_ASSERT(cs);
+   if (cs) {
+      ConfigLine* cl = cs->FindConfig("seed");
+      EAGLE_ASSERT(cl);
+      if (cl) {
+         s = cl->Value();
+      }
+   }
+   try {
+      ret = std::stoi(s);
+   }
+   catch (...) {
+      EagleError() << StringPrintF("GameConfig::GetSeed - could not convert string (\"%s\") to integer for seed value!" , s.c_str()) << std::endl;
+   }
+   return ret;
 }
 
 
