@@ -122,6 +122,14 @@ void Game::DrawGame() {
       m->Display();
    }
    
+   /// HUD display
+   if (show_fps) {
+      win->DrawTextString(f , StringPrintF("FPS : %4.2lf" , fps) , 10 , 10 , EagleColor(255,127,0,255) , HALIGN_LEFT , VALIGN_TOP);
+      win->DrawTextString(f , StringPrintF("LPS : %4.2lf" , lps) , 10 , 30 , EagleColor(255,127,0,255) , HALIGN_LEFT , VALIGN_TOP);
+   }
+   
+   /// Win status
+   
    if (state == WIN) {
       win->DrawTextString(f , "WIN! WIN! WIN! WIN! WIN!" , sw/2 , sh/2 , EagleColor(0,255,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
@@ -282,7 +290,12 @@ Game::Game(string cityfile) :
    player(0),
    gameconfig(),
    config(),
-   config_changed(false)
+   config_changed(false),
+   show_hud(false),
+   show_fps(false),
+   frame_skip(0),
+   lps(0.0),
+   fps(0.0)
 {
    
    bool loaded_config = gameconfig.LoadConfig();
@@ -382,12 +395,25 @@ int Game::Run() {
 
    bool paused = false;
    bool timing = false;
+
+   int display_count = 0;
+   double display_time = 0.0;
+
+   int input_count = 0;
+   double input_time = 0.0;
+   
    while (state != QUIT) {
       if (timing) {
          ProgramTime pt1 = ProgramTime::Now();
          Display();
          ProgramTime pt2 = ProgramTime::Now();
-         EagleLog() << StringPrintF("Display() took %1.5lf seconds.\n" , pt2 - pt1) << std::endl;
+         ++display_count;
+         display_time += pt2 - pt1;
+         if (display_count == 60) {
+            fps = (double)display_count/display_time;
+            display_count = 0;
+            display_time = 0.0;
+         }
       }
       else {
          Display();
@@ -404,18 +430,35 @@ int Game::Run() {
          if (ee.type == EAGLE_EVENT_DISPLAY_SWITCH_IN) {
             paused = false;
          }
+         if (ee.type == EAGLE_EVENT_KEY_DOWN) {
+            if (ee.keyboard.keycode == EAGLE_KEY_T) {
+               timing = !timing;
+               show_fps = timing;
+            }
+         }
          if (!paused) {
             if (ee.type == EAGLE_EVENT_TIMER) {
                ++nevents;
                if (nevents == 1) {/// Slow down gracefully if the gpu or cpu can't handle it
                   Update(ee.timer.eagle_timer_source->SPT());
+                  frame_skip = 0;
+               }
+               else {
+                  frame_skip++;
                }
             }
             if (timing) {
                ProgramTime pt1 = ProgramTime::Now();
                CheckInputs();
                ProgramTime pt2 = ProgramTime::Now();
-               EagleLog() << StringPrintF("CheckInputs() took %1.5lf seconds.\n" , pt2 - pt1) << std::endl;
+               double dt = pt2 - pt1;
+               input_count++;
+               input_time += dt;
+               if (input_count == 60) {
+                  lps = (double)input_count/input_time;
+                  input_count = 0;
+                  input_time = 0.0;
+               }
             }
             else {
                CheckInputs();

@@ -58,7 +58,13 @@ private :
    
    bool config_changed;
 
-
+   bool show_hud;
+   bool show_fps;
+   int frame_skip;
+   
+   double lps;
+   double fps;
+   
    
    void SetupAI();
    
