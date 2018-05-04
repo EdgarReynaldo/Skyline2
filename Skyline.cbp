@@ -148,9 +148,8 @@
 			<Add directory="../cbbuild/lib" />
 			<Add directory="../Allegro5/lib" />
 		</Linker>
-		<Unit filename="Skyline_Notes.txt" />
+		<Unit filename="../cbbuild/bin/Data/ExampleConfig.txt" />
 		<Unit filename="cbbuild/bin/Data/Cities.txt" />
-		<Unit filename="cbbuild/bin/Data/Config.txt" />
 		<Unit filename="src/AI.cpp" />
 		<Unit filename="src/AI.hpp" />
 		<Unit filename="src/Blend.cpp" />
@@ -176,6 +175,8 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="src/OpenGLDrawing.cpp" />
+		<Unit filename="src/OpenGLDrawing.hpp" />
 		<Unit filename="src/RNG.cpp" />
 		<Unit filename="src/RNG.hpp" />
 		<Unit filename="src/SettingsScreen.cpp">
