@@ -35,6 +35,8 @@ private :
    
    Shield shield;
    
+   ALLEGRO_LOCKED_REGION* wc_lock;
+   
 public :
    
    City(string name , string path , int screenw , int screenh);
@@ -53,6 +55,8 @@ public :
 
    string Name() {return city;}
    
+   void LockCityBuffer();
+   void UnLockCityBuffer();
    bool Hit(int tx , int ty);
    bool HitShield(int tx , int ty);
 };

@@ -45,6 +45,9 @@ int main(int argc , char** argv) {
    
    f = win->LoadFont("Verdana.ttf" , -36);
    
+///   int w = f->Width("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+///   (void)w;
+   
    if (!f) {
       EagleWarn() << "Failed to load Verdana.ttf!" << std::endl;
       f = win->DefaultFont();

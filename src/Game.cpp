@@ -123,13 +123,22 @@ void Game::DrawGame() {
    }
    
    /// HUD display
-   if (show_fps) {
-      win->DrawTextString(f , StringPrintF("FPS : %4.2lf" , fps) , 10 , 10 , EagleColor(255,127,0,255) , HALIGN_LEFT , VALIGN_TOP);
-      win->DrawTextString(f , StringPrintF("LPS : %4.2lf" , lps) , 10 , 30 , EagleColor(255,127,0,255) , HALIGN_LEFT , VALIGN_TOP);
+   if (show_hud) {
+      int pml = player->NMissilesLeft();
+      int eml = enemy->NMissilesLeft();
+      win->DrawTextString(f , StringPrintF("%d" , pml) , 10 , sh - 10 , EagleColor(255,255,255,255) , HALIGN_LEFT , VALIGN_BOTTOM);
+      win->DrawTextString(f , StringPrintF("%d" , eml) , sw - 10 , 10 , EagleColor(0,127,255,255) , HALIGN_RIGHT , VALIGN_TOP);
    }
    
-   /// Win status
-   
+   /// Timing
+   if (show_fps) {
+      win->DrawTextString(f , StringPrintF("FPS : %4.2lf" , fps) , 10 , 10 , EagleColor(255,127,0,255) , HALIGN_LEFT , VALIGN_TOP);
+      win->DrawTextString(f , StringPrintF("LPS : %4.2lf" , lps) , 10 , 50 , EagleColor(255,127,0,255) , HALIGN_LEFT , VALIGN_TOP);
+      win->DrawTextString(f , StringPrintF("UPS : %4.2lf" , ups) , 10 , 90 , EagleColor(255,127,0,255) , HALIGN_LEFT , VALIGN_TOP);
+      win->DrawTextString(f , StringPrintF("FPS : %4.2f" , win->GetFPS()) , sw - 10 , sh - 10 , EagleColor(255,127,0,255) , HALIGN_RIGHT , VALIGN_BOTTOM);
+   }
+
+   /// Status
    if (state == WIN) {
       win->DrawTextString(f , "WIN! WIN! WIN! WIN! WIN!" , sw/2 , sh/2 , EagleColor(0,255,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
@@ -137,6 +146,7 @@ void Game::DrawGame() {
       win->DrawTextString(f , "YOU LOSE! LOSE! LOSE! LOSE! LOSE!" , sw/2 , sh/2 , EagleColor(255,0,0)  ,HALIGN_CENTER , VALIGN_CENTER);
    }
 
+   /// Pointer
    win->Draw(pointer , mouse_x - pointer->W()/2 , mouse_y - pointer->H()/2);
 }
 
@@ -195,6 +205,7 @@ void Game::CheckCollisions() {
    win->RestoreLastBlendingState();
    win->PopDrawingTarget();
    /// Check for enemy missiles hitting the city
+///   city->LockCityBuffer();
    for (unsigned int i = 0 ; i < emissiles.size() ; ++i) {
       Missile* m = emissiles[i];
       if (city->Hit(m->X() , m->Y())) {
@@ -204,11 +215,14 @@ void Game::CheckCollisions() {
          }
       }
    }
+///   city->UnLockCityBuffer();
+
    /// Check for player lasers hitting missiles
 ///   vector<Laser*> lasers = player_lasers.GetActiveLaserBeams();/// Line distance hit detection doesn't work yet
    ALLEGRO_BITMAP* bmp = cbuffer.AllegroBitmap();
-   ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(bmp , ALLEGRO_PIXEL_FORMAT_ANY_32_WITH_ALPHA , ALLEGRO_LOCK_READONLY);
-   (void)lock;/// This lock is used by al_get_pixel below
+///   ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(bmp , al_get_bitmap_format(bmp) , ALLEGRO_LOCK_READONLY);
+///   ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(bmp , ALLEGRO_PIXEL_FORMAT_ANY_32_WITH_ALPHA , ALLEGRO_LOCK_READONLY);
+///   (void)lock;/// This lock is used by al_get_pixel below
    for (unsigned int i = 0 ; i < missiles.size() ; ++i) {
       Missile* m = missiles[i];
       ALLEGRO_COLOR c;
@@ -219,7 +233,7 @@ void Game::CheckCollisions() {
          if (!m->Exploding()) {m->Explode();}
       }
    }
-   al_unlock_bitmap(bmp);
+///   al_unlock_bitmap(bmp);
       
 }
 
@@ -295,7 +309,8 @@ Game::Game(string cityfile) :
    show_fps(false),
    frame_skip(0),
    lps(0.0),
-   fps(0.0)
+   fps(0.0),
+   ups(0.0)
 {
    
    bool loaded_config = gameconfig.LoadConfig();
@@ -402,6 +417,9 @@ int Game::Run() {
    int input_count = 0;
    double input_time = 0.0;
    
+   int ccount = 0;
+   double coll_time = 0.0;
+   
    while (state != QUIT) {
       if (timing) {
          ProgramTime pt1 = ProgramTime::Now();
@@ -440,7 +458,15 @@ int Game::Run() {
             if (ee.type == EAGLE_EVENT_TIMER) {
                ++nevents;
                if (nevents == 1) {/// Slow down gracefully if the gpu or cpu can't handle it
+                  ProgramTime pt1 = ProgramTime::Now();
                   Update(ee.timer.eagle_timer_source->SPT());
+                  ProgramTime pt2 = ProgramTime::Now();
+                  ccount++;
+                  double dt = pt2 - pt1;
+                  coll_time += dt;
+                  if (ccount > 60) {
+                     ups = ccount/coll_time;
+                  }
                   frame_skip = 0;
                }
                else {
@@ -572,6 +598,9 @@ STATE Game::HandleEvent(EagleEvent ee) {
             }
             if (ee.keyboard.keycode == EAGLE_KEY_W) {state = WIN;}
             if (ee.keyboard.keycode == EAGLE_KEY_L) {state = LOSE;}
+            if (ee.keyboard.keycode == EAGLE_KEY_H) {
+               show_hud = !show_hud;
+            }
          }
          enemy->HandleEvent(ee);
          player->HandleEvent(ee);

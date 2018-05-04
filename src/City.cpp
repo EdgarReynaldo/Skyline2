@@ -17,7 +17,8 @@ City::City(string name , string path , int screenw , int screenh) :
    y(0),
    maxpixels(-1),
    pixelsleft(0),
-   shield()
+   shield(),
+   wc_lock(0)
 {
    if (!original.Load(path)) {
       throw EagleException(StringPrintF("Failed to load city (%s).\n" , path.c_str()));
@@ -104,6 +105,23 @@ void City::Recount() {
 
 float City::PercentLeft() {
    return float(pixelsleft)/float(maxpixels);
+}
+
+
+
+void City::LockCityBuffer() {
+   if (!wc_lock) {
+      wc_lock = al_lock_bitmap(workingcopy.AllegroBitmap() , al_get_bitmap_format(workingcopy.AllegroBitmap()) , ALLEGRO_LOCK_READONLY);
+   }
+}
+
+
+
+void City::UnLockCityBuffer() {
+   if (wc_lock) {
+      al_unlock_bitmap(workingcopy.AllegroBitmap());
+      wc_lock = 0;
+   }
 }
 
 

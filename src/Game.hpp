@@ -64,6 +64,7 @@ private :
    
    double lps;
    double fps;
+   double ups;
    
    
    void SetupAI();

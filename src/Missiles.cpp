@@ -3,9 +3,13 @@
 #include "Globals.hpp"
 #include "Missiles.hpp"
 #include "Explosion.hpp"
-
+#include "OpenGLDrawing.hpp"
 
 #define MIN(a,b) ((a<b)?a:b)
+
+
+#include "GL/gl.h"
+
 
 
 
@@ -82,11 +86,29 @@ void Missile::Update(double dt) {
 
 
 void Missile::Display() {
+   static const double TRAIL_LENGTH = 150.0;
    float xp = cpos.X();
    float yp = cpos.Y();
+   EagleColor mc = MissileColor();
    switch (state) {
       case NORMAL :
-         win->DrawFilledCircle(xp , yp , 3.0f , MissileColor());
+         win->DrawFilledCircle(xp , yp , 3.0f , mc);
+
+         DrawJet(cpos , dest.AngleToPoint(start) , IExplosionColor() , OExplosionColor());
+         
+         if (false) {/// Draw a trail
+            Pos2D b1 = start - dest;
+            b1.Normalize();
+            b1 *= TRAIL_LENGTH;
+            Pos2D b2 = cpos + b1;
+            glBegin(GL_LINES);
+            glColor4d(mc.R() , mc.G() , mc.B() , mc.A());
+            glVertex2d(cpos.X() , cpos.Y());
+            glColor4d(0.0,0.0,0.0,0.0);
+            glVertex2d(b2.X() , b2.Y());
+            glEnd();
+///            win->DrawLine(cpos.X() , cpos.Y() , b2.X() , b2.Y() , 1.0 , mc);
+         }
          break;
       case EXPLODING :
       case EXPLODED :
