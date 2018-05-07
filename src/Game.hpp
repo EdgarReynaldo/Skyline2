@@ -60,6 +60,7 @@ private :
 
    bool show_hud;
    bool show_fps;
+   bool show_mask;
    int frame_skip;
    
    double lps;
@@ -77,6 +78,8 @@ private :
 
    int NumMissilesLeft();
 
+   double CityPercentLeft();
+   
 public :
 
    Game(string cityfile);

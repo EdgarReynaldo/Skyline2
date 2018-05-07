@@ -33,39 +33,7 @@ string nopointer_file("Data/Images/NoPointer.bmp");
 
 
 
-/**
-void Game::SetupMissileBatteries(Config c) {
-   FreeMissileBatteries();
-   const char* cstr = c.nl_str.c_str();
-   int count = 0;
-   int nlaunchers = 0;
-   int ret = 0;
-   ret = sscanf(cstr , "%i%n" , &nlaunchers , &count);
-///   OutputLog() << StringPrintF("Num launchers scan returned %i items.\n" , ret);
-   if (1 != ret) {
-      throw EagleException(StringPrintF("Failed to read number of enemy launchers from '%s'\n" , cstr));
-   }
-   cstr += count;
-   float x = -1.0f;
-   EnemyAI* enemyai = new EnemyAI(r , c.enemy_nmsl/nlaunchers , c);
-   for (int i = 0 ; i < nlaunchers ; ++i) {
-      ret = sscanf(cstr , "%f%n" , &x , &count);
-      if (1 != ret) {
-         throw EagleException(StringPrintF("Failed to read launcher #%i's zone from '%s'.\n" , i + 1 , cstr));
-      }
-      cstr += count;
-      MissileBattery* mbtry = new MissileBattery();
-      Rectangle r((float)sw*x - 25,-20,50,50);
-      mbtry->SetAI(enemyai);
-      if (nlaunchers > 1) {
-         enemyai->DelayLaunchBy(c.enemy_tbl*((float)i/(float)(nlaunchers - 1)));
-      }
-      enemy_mbs.push_back(mbtry);
-   }
-   player_ai = new PlayerAI(Rectangle(sw/2,sh - 10,1,1) , c.player_nmsl , c);
-   player_mb.SetAI(player_ai);
-}
-//*/
+int SortMissileByY(Missile* m1 , Missile* m2) {return m1->Y() < m2->Y();}
 
 
 
@@ -76,9 +44,6 @@ void Game::SetupAI() {
    player->Setup(config);
 }
 
-
-
-int SortMissileByY(Missile* m1 , Missile* m2) {return m1->Y() < m2->Y();}
 
 
 void Game::DrawGame() {
@@ -109,8 +74,13 @@ void Game::DrawGame() {
    /// Pre multiplied alpha blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_INVERSE_ALPHA);
    
-   city->Display();
-
+   if (show_mask) {
+      city->GetHitmask().DrawMask(city->X() , city->Y());
+   }
+   else {
+      city->Display();
+   }
+   
    std::vector<Missile*> missiles = enemy->GetMissiles();
    std::vector<Missile*> missiles2 = player->GetMissiles();
    missiles.insert(missiles.end() , missiles2.begin() , missiles2.end());
@@ -128,10 +98,7 @@ void Game::DrawGame() {
       int eml = enemy->NMissilesLeft();
       win->DrawTextString(f , StringPrintF("%d" , pml) , 10 , sh - 10 , EagleColor(255,255,255,255) , HALIGN_LEFT , VALIGN_BOTTOM);
       win->DrawTextString(f , StringPrintF("%d" , eml) , sw - 10 , 10 , EagleColor(0,127,255,255) , HALIGN_RIGHT , VALIGN_TOP);
-      double pct_left = city->PercentLeft();
-      double pct_allowed = config.city_left;
-      double real_pct = (pct_left - pct_allowed)/(1.0 - pct_allowed);
-      
+      double real_pct = CityPercentLeft();
       double hue = real_pct*120.0;
       double sat = 1.0;
       double val = 1.0;
@@ -139,6 +106,11 @@ void Game::DrawGame() {
       al_color_hsv_to_rgb(hue , sat , val , &r , &g , &b);
       EagleColor c(r,g,b);
       win->DrawTextString(f , StringPrintF("City left : %2.2lf" , real_pct) , sw/2 , sh - 10 , c , HALIGN_CENTER , VALIGN_BOTTOM);
+      real_pct = city->ShieldPercent();
+      hue = real_pct*120.0;
+      al_color_hsv_to_rgb(hue , sat , val , &r , &g , &b);
+      EagleColor c2(r,g,b);
+      win->DrawTextString(f , StringPrintF("Shield %s!" , city->ShieldDown()?"Down":"Up") , sw/2 , 10 , c2 , HALIGN_CENTER , VALIGN_TOP);
    }
    
    /// Timing
@@ -184,15 +156,15 @@ void Game::CheckCollisions() {
    win->SetCopyBlender();
    for (unsigned int i = 0 ; i < missiles.size() ; ++i) {
       Missile* m1 = missiles[i];
-      bool e1 = m1->Exploding();
-      int x1 = m1->X();
-      int y1 = m1->Y();
-      int r1 = m1->CRad();
-      if (e1) {
-         if (y1 < city->Y() - r1) {
-            continue;
+      /// We can optimize this by not drawing the implosion after the explosion. It's already been erased.
+      if (m1->Exploding() && m1->State() != IMPLODING) {
+         int x1 = m1->X();
+         int y1 = m1->Y();
+         int r1 = m1->CRad();
+         /// Missiles exploding above the city do no damage
+         if (y1 >= city->Y() - r1) {
+            city->Destroy(win,x1,y1,r1);/// This draws the explosion onto the city
          }
-         city->Destroy(win,x1,y1,r1);/// This draws the explosion onto the city
       }
    }
    win->RestoreLastBlendingState();
@@ -212,22 +184,14 @@ void Game::CheckCollisions() {
    t2 = ProgramTime::Now();
    
    dt = t2 - t1;
-   EagleLog() << StringPrintF("Collision frame took %2.8lf seconds.\n" , dt) << std::endl;
+   (void)dt;
+///   EagleLog() << StringPrintF("Collision frame took %2.8lf seconds.\n" , dt) << std::endl;
 }
 
 
 
 STATE Game::CheckGameState() {
-   city->Recount();
-   float percent_allowed = config.city_left;
-
-   // 1.0 - percents[difficulty] = percent allowed
-   // city->PercentLeft - percents[difficulty] = percent remaining
-   // percent remaining / percent allowed = percent of allowable damage taken
-
-
-   float percent_left = (city->PercentLeft() - percent_allowed)/(1.0f - percent_allowed);
-   if (percent_left <= 0.0f) {
+   if (CityPercentLeft() <= 0.0f) {
       return LOSE;
    }
    if (NumMissilesLeft() == 0) {
@@ -242,30 +206,16 @@ int Game::NumMissilesLeft() {
    return enemy->NMissilesLeft();
 }
 
-/**
-   map<string , City*> cities;
-   string citystr;
-   City* city;
 
-   Allegro5Image cbuffer;
-   Allegro5Image bg;
-   Allegro5Image nopointer;
-   Allegro5Image okpointer;
-   Allegro5Image* pointer;
 
-   STATE state;
-   DIFFICULTY difficulty[NUM_GAME_SETTINGS];
+double Game::CityPercentLeft() {
+   double pct_left = city->PercentLeft();
+   double pct_allowed = config.city_left;
+   return (pct_left - pct_allowed)/(1.0 - pct_allowed);
+}
 
-   int status;
-   
-   EnemyAI* enemy;
-   PlayerAI* player;
 
-   GameConfig gameconfig;
-   
-   bool config_changed;
 
-//*/
 Game::Game(string cityfile) :
    cities(),
    citystr(""),
@@ -285,6 +235,7 @@ Game::Game(string cityfile) :
    config_changed(false),
    show_hud(false),
    show_fps(false),
+   show_mask(false),
    frame_skip(0),
    lps(0.0),
    fps(0.0),
@@ -530,13 +481,16 @@ STATE Game::Update(double dt) {
       case GAME :
          {
             ProgramTime t1 = ProgramTime::Now();
+
             enemy->Update(dt);
             player->Update(dt);
-            ProgramTime t2 = ProgramTime::Now();
-            double dt = t2 - t1;
-            EagleLog() << StringPrintF("Update took %2.8lf seconds.\n" , dt);
             CheckCollisions();
             state = CheckGameState();
+
+            ProgramTime t2 = ProgramTime::Now();
+            double dt = t2 - t1;
+            (void)dt;
+///            EagleLog() << StringPrintF("Update took %2.8lf seconds.\n" , dt);
          }
          break;
       case WIN :
@@ -565,6 +519,8 @@ STATE Game::HandleEvent(EagleEvent ee) {
             gameconfig.SetOverallDifficulty(d[ee.keyboard.keycode - EAGLE_KEY_1]);
 
             config = gameconfig.GetSelectedConfig();
+            
+            city->SetupShield(Pos2D(sw/2.0 , city->Y()) , 3.0*sh/2.0 ,  (double)config.shield_depth);
 
             Seed(gameconfig.GetSeed());
 
@@ -587,6 +543,9 @@ STATE Game::HandleEvent(EagleEvent ee) {
             if (ee.keyboard.keycode == EAGLE_KEY_L) {state = LOSE;}
             if (ee.keyboard.keycode == EAGLE_KEY_H) {
                show_hud = !show_hud;
+            }
+            if (ee.keyboard.keycode == EAGLE_KEY_M) {
+               show_mask = !show_mask;
             }
          }
          enemy->HandleEvent(ee);

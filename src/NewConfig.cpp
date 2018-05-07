@@ -88,18 +88,18 @@ void GameConfig::SetupDefaultConfig() {
    cs.AddSpacer();
 
    cs.AddComment("Adjust the number of enemy missiles here");
-   cs[GetConfigKeyName(GSE_NMSL , EASY  )] = "45";
-   cs[GetConfigKeyName(GSE_NMSL , MEDIUM)] = "90";
+   cs[GetConfigKeyName(GSE_NMSL , EASY  )] = "60";
+   cs[GetConfigKeyName(GSE_NMSL , MEDIUM)] = "120";
    cs[GetConfigKeyName(GSE_NMSL , HARD  )] = "180";
-   cs[GetConfigKeyName(GSE_NMSL , INSANE)] = "250";
-   cs[GetConfigKeyName(GSE_NMSL , CUSTOM)] = "90";
+   cs[GetConfigKeyName(GSE_NMSL , INSANE)] = "240";
+   cs[GetConfigKeyName(GSE_NMSL , CUSTOM)] = "120";
    cs.AddSpacer();
 
    cs.AddComment("Enemy time between launches");
-   cs[GetConfigKeyName(GSE_TBL , EASY  )] = "3.0";
-   cs[GetConfigKeyName(GSE_TBL , MEDIUM)] = "2.5";
-   cs[GetConfigKeyName(GSE_TBL , HARD  )] = "1.75";
-   cs[GetConfigKeyName(GSE_TBL , INSANE)] = "1.5";
+   cs[GetConfigKeyName(GSE_TBL , EASY  )] = "2.5";
+   cs[GetConfigKeyName(GSE_TBL , MEDIUM)] = "2.0";
+   cs[GetConfigKeyName(GSE_TBL , HARD  )] = "1.5";
+   cs[GetConfigKeyName(GSE_TBL , INSANE)] = "1.0";
    cs[GetConfigKeyName(GSE_TBL , CUSTOM)] = "2.5";
    cs.AddSpacer();
 
@@ -112,7 +112,7 @@ void GameConfig::SetupDefaultConfig() {
    cs.AddSpacer();
    
    cs.AddComment("Enemy missile radius");
-   cs[GetConfigKeyName(GSE_MRAD , EASY  )] = "20";
+   cs[GetConfigKeyName(GSE_MRAD , EASY  )] = "30";
    cs[GetConfigKeyName(GSE_MRAD , MEDIUM)] = "40";
    cs[GetConfigKeyName(GSE_MRAD , HARD  )] = "60";
    cs[GetConfigKeyName(GSE_MRAD , INSANE)] = "80";
@@ -129,11 +129,11 @@ void GameConfig::SetupDefaultConfig() {
 
    
    cs.AddComment("Enemy launcher string : #launchers followed by fraction x positions (# [0.0,1.0] [0.0,1.0] ...");
-   cs[GetConfigKeyName(GSE_NLSTR , EASY  )] = "1 0.5";
-   cs[GetConfigKeyName(GSE_NLSTR , MEDIUM)] = "2 0.25 0.75";
-   cs[GetConfigKeyName(GSE_NLSTR , HARD  )] = "3 0.25 0.5 0.75";
-   cs[GetConfigKeyName(GSE_NLSTR , INSANE)] = "4 0.15 0.35 0.65 0.85";
-   cs[GetConfigKeyName(GSE_NLSTR , CUSTOM)] = "2 0.25 0.75";
+   cs[GetConfigKeyName(GSE_NLSTR , EASY  )] = "2 0.25 0.75";
+   cs[GetConfigKeyName(GSE_NLSTR , MEDIUM)] = "3 0.25 0.5 0.75";
+   cs[GetConfigKeyName(GSE_NLSTR , HARD  )] = "4 0.15 0.35 0.65 0.85";
+   cs[GetConfigKeyName(GSE_NLSTR , INSANE)] = "5 0.15 0.35 0.5 0.65 0.85";
+   cs[GetConfigKeyName(GSE_NLSTR , CUSTOM)] = "3 0.25 0.5 0.75";
    cs.AddSpacer();
 
    /// Player
@@ -147,11 +147,11 @@ void GameConfig::SetupDefaultConfig() {
    cs.AddSpacer();
 
    cs.AddComment("Player time between launches");
-   cs[GetConfigKeyName(GSP_TBL , EASY  )] = "0.25";
-   cs[GetConfigKeyName(GSP_TBL , MEDIUM)] = "0.5";
+   cs[GetConfigKeyName(GSP_TBL , EASY  )] = "0.2";
+   cs[GetConfigKeyName(GSP_TBL , MEDIUM)] = "0.4";
    cs[GetConfigKeyName(GSP_TBL , HARD  )] = "0.5";
-   cs[GetConfigKeyName(GSP_TBL , INSANE)] = "0.75";
-   cs[GetConfigKeyName(GSP_TBL , CUSTOM)] = "0.5";
+   cs[GetConfigKeyName(GSP_TBL , INSANE)] = "0.6";
+   cs[GetConfigKeyName(GSP_TBL , CUSTOM)] = "0.4";
    cs.AddSpacer();
 
    cs.AddComment("Player missile speed");
@@ -173,8 +173,8 @@ void GameConfig::SetupDefaultConfig() {
    cs.AddComment("Player explosion time");
    cs[GetConfigKeyName(GSP_ETIME , EASY  )] = "5.0";
    cs[GetConfigKeyName(GSP_ETIME , MEDIUM)] = "3.5";
-   cs[GetConfigKeyName(GSP_ETIME , HARD  )] = "2.0";
-   cs[GetConfigKeyName(GSP_ETIME , INSANE)] = "1.0";
+   cs[GetConfigKeyName(GSP_ETIME , HARD  )] = "2.5";
+   cs[GetConfigKeyName(GSP_ETIME , INSANE)] = "1.5";
    cs[GetConfigKeyName(GSP_ETIME , CUSTOM)] = "3.5";
    cs.AddSpacer();
 
@@ -190,26 +190,26 @@ void GameConfig::SetupDefaultConfig() {
    
    cs.AddComment("Player laser color : valid values are 'RGB' 'CMY' or 'WWW'");
    cs[GetConfigKeyName(GSP_LCOLOR , EASY  )] = "RGB";
-   cs[GetConfigKeyName(GSP_LCOLOR , MEDIUM)] = "RGB";
+   cs[GetConfigKeyName(GSP_LCOLOR , MEDIUM)] = "CMY";
    cs[GetConfigKeyName(GSP_LCOLOR , HARD  )] = "CMY";
-   cs[GetConfigKeyName(GSP_LCOLOR , INSANE)] = "CMY";
+   cs[GetConfigKeyName(GSP_LCOLOR , INSANE)] = "WWW";
    cs[GetConfigKeyName(GSP_LCOLOR , CUSTOM)] = "RGB";
    cs.AddSpacer();
 
    cs.AddComment("Player laser blend mode : valid values are 'SOLID' or 'BLEND'");
    cs[GetConfigKeyName(GSP_LBLEND , EASY  )] = "SOLID";
-   cs[GetConfigKeyName(GSP_LBLEND , MEDIUM)] = "BLEND";
+   cs[GetConfigKeyName(GSP_LBLEND , MEDIUM)] = "SOLID";
    cs[GetConfigKeyName(GSP_LBLEND , HARD  )] = "SOLID";
    cs[GetConfigKeyName(GSP_LBLEND , INSANE)] = "BLEND";
    cs[GetConfigKeyName(GSP_LBLEND , CUSTOM)] = "SOLID";
    cs.AddSpacer();
 
    cs.AddComment("Player laser width");
-   cs[GetConfigKeyName(GSP_LWIDTH , EASY  )] = "40";
-   cs[GetConfigKeyName(GSP_LWIDTH , MEDIUM)] = "30";
-   cs[GetConfigKeyName(GSP_LWIDTH , HARD  )] = "20";
+   cs[GetConfigKeyName(GSP_LWIDTH , EASY  )] = "35";
+   cs[GetConfigKeyName(GSP_LWIDTH , MEDIUM)] = "20";
+   cs[GetConfigKeyName(GSP_LWIDTH , HARD  )] = "15";
    cs[GetConfigKeyName(GSP_LWIDTH , INSANE)] = "10";
-   cs[GetConfigKeyName(GSP_LWIDTH , CUSTOM)] = "30";
+   cs[GetConfigKeyName(GSP_LWIDTH , CUSTOM)] = "25";
    cs.AddSpacer();
 
    cs.AddComment("Player laser duration");
@@ -229,11 +229,11 @@ void GameConfig::SetupDefaultConfig() {
    cs.AddSpacer();
    
    cs.AddComment("Depth of shield");
-   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , EASY  )] = "50";
-   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , MEDIUM)] = "80";
-   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , HARD  )] = "110";
-   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , INSANE)] = "150";
-   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , CUSTOM)] = "80";
+   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , EASY  )] = "30";
+   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , MEDIUM)] = "60";
+   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , HARD  )] = "150";
+   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , INSANE)] = "240";
+   cs[GetConfigKeyName(GSP_SHIELD_DEPTH , CUSTOM)] = "100";
    cs.AddSpacer();
    
    

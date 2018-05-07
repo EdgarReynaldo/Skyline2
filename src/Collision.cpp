@@ -16,10 +16,7 @@ LineList CircleScanLines(int centerx , int centery , int radius) {
    for (int y = centery - radius ; y <= centery + radius ; ++y) {
       double y2 = y*y;
       for (int x = centerx - radius ; x <= centerx + radius ; ++x) {
-         if (x*x + y2 > r2) {
-            continue;
-         }
-         else {
+         if (x*x + y2 <= r2) {
             ll.push_back(Line(y , x , centerx + (centerx - x)));
             break;
          }
@@ -43,16 +40,16 @@ void Hitmask::ReadFromImage(Allegro5Image* a5img) {
    solidmax = 0;
    solidcount = 0;
    if (!a5img) {return;}
-   ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(a5img->AllegroBitmap() , al_get_bitmap_format(a5img->AllegroBitmap()) , ALLEGRO_LOCK_READONLY);
+   ALLEGRO_BITMAP* bmp = a5img->AllegroBitmap();
+   ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(bmp , al_get_bitmap_format(bmp) , ALLEGRO_LOCK_READONLY);
    (void)lock;
    unsigned int w = a5img->W();
    unsigned int h = a5img->H();
    Resize(w,h);
-   int count = 0;
    for (unsigned int y = 0 ; y < h ; ++y) {
       for (unsigned int x = 0 ; x < w ; ++x) {
          unsigned char r,g,b,a;
-         al_unmap_rgba(al_get_pixel(a5img->AllegroBitmap() , x , y) , &r , &g , &b , &a);
+         al_unmap_rgba(al_get_pixel(bmp , x , y) , &r , &g , &b , &a);
          int index = y*w + x;
          bool hit = (a > 0)?true:false;
          hitmask[index] = hit;
@@ -62,7 +59,7 @@ void Hitmask::ReadFromImage(Allegro5Image* a5img) {
       }
    }
    solidcount = solidmax;
-   al_unlock_bitmap(a5img->AllegroBitmap());
+   al_unlock_bitmap(bmp);
 }
 
 
@@ -106,6 +103,23 @@ bool Hitmask::Hit(int x , int y) const {
    return hitmask[y*width + x];
 }
 
+
+
+
+void Hitmask::DrawMask(int xpos , int ypos) const {
+   ALLEGRO_BITMAP* bmp = al_get_target_bitmap();
+   al_lock_bitmap(bmp , al_get_bitmap_format(bmp) , ALLEGRO_LOCK_READWRITE);
+   ALLEGRO_COLOR c = al_map_rgb(0,255,255);
+   for (int y = 0 ; y < height ; ++y) {
+      int yindex = y*width;
+      for (int x = 0 ; x < width ; ++x) {
+         if (hitmask[yindex + x]) {
+            al_put_pixel(x + xpos , y + ypos , c);
+         }
+      }
+   }
+   al_unlock_bitmap(bmp);
+}
 
 
 

@@ -27,8 +27,8 @@ protected :
 public :
    Shield();
    
-   void Setup(Pos2D left , Pos2D right , double height , double thickness);
-
+   void Setup(Pos2D top , double radius , double thickness);
+   
    bool Hit(double xpos , double ypos);
 
    void Damage(double area);
@@ -38,6 +38,8 @@ public :
    void Draw();
    
    bool Up() {return hp > 0.0;}
+   
+   double Percent() {return hp/maxhp;}
 };
 
 #endif // Shields_HPP

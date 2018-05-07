@@ -46,6 +46,8 @@ public :
    int SolidCount() {return solidcount;}
    
    double PercentLeft() {return (double)solidcount/solidmax;}
+   
+   void DrawMask(int xpos , int ypos) const ;
 };
 
 

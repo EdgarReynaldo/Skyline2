@@ -15,8 +15,6 @@ City::City(string name , string path , int screenw , int screenh) :
    city(name),
    x(0),
    y(0),
-   maxpixels(-1),
-   pixelsleft(0),
    shield()
 {
    if (!original.Load(path)) {
@@ -45,13 +43,6 @@ City::City(string name , string path , int screenw , int screenh) :
    x = (screenw - original.W())/2;
    y = screenh - original.H();
    
-   shield.Setup(Pos2D(0.5 , y + 0.5) , Pos2D(screenw - 0.5 , y + 0.5) , screenh , 100);
-   
-   maxpixels = original.W()*original.H() - CountPixels(&original , al_map_rgba(0,0,0,0));
-   
-   EagleLog() << StringPrintF("%s pixel count = %i\n" , path.c_str() , maxpixels);
-   EagleLog() << StringPrintF("Total size = %i\n" , original.W()*original.H());
-   pixelsleft = maxpixels;
 }
 
 
@@ -68,31 +59,32 @@ void City::Reset() {
    win->SetCopyBlender();
    win->Draw(&original , 0 , 0);
    win->RestoreLastBlendingState();
-   pixelsleft = maxpixels;
    hitmask.ReadFromImage(&workingcopy);
    shield.Reset();
+
+   EagleLog() << StringPrintF("City::Reset - %s pixel count = %i\n" , city.c_str() , hitmask.SolidCount());
+   EagleLog() << StringPrintF("Total size = %i\n" , workingcopy.Area());
+}
+
+
+
+void City::SetupShield(Pos2D top , double radius , double thickness) {
+   shield.Setup(top , radius , thickness);
 }
 
 
 
 void City::Destroy(EagleGraphicsContext* win , int cx , int cy , int radius) {
-   float xpos = cx - x + 0.5f;
-   float ypos = cy - y + 0.5f;
-   win->DrawFilledCircle(xpos , ypos , (float)radius , EagleColor(0,0,0,0));
-   hitmask.EraseCircle(cx , cy , radius);
+   int xpos = cx - x + 0.5f;
+   int ypos = cy - y + 0.5f;
+   win->DrawFilledCircle(xpos + 0.5f , ypos + 0.5f , (float)radius , EagleColor(0,0,0,0));
+   hitmask.EraseCircle(xpos , ypos , radius);
 }
 
 
 
 void City::DamageShield(double damage) {
    shield.Damage(damage);
-}
-
-
-
-void City::Recount() {
-   pixelsleft = hitmask.SolidCount();
-///   pixelsleft = original.W()*original.H() - CountPixels(&workingcopy , al_map_rgba(0,0,0,0));
 }
 
 
@@ -106,7 +98,11 @@ double City::PercentLeft() {
 bool City::Hit(int tx , int ty) {
    int rx = tx - x;
    int ry = ty - y;
-   return hitmask.Hit(rx,ry);
+   bool hit = hitmask.Hit(rx,ry);
+   if (hit) {
+      EagleLog() << StringPrintF("City hit at %d,%d\n" , rx , ry) << std::endl;
+   }
+   return hit;
 }
 
 
@@ -114,42 +110,6 @@ bool City::Hit(int tx , int ty) {
 bool City::HitShield(int tx , int ty) {
    return shield.Hit(tx + 0.5 , ty + 0.5);
 }
-
-
-
-int CountPixels(Allegro5Image* image , ALLEGRO_COLOR c) {
-   unsigned char r,g,b,a;
-   
-   al_unmap_rgba(c , &r , &g , &b , &a);
-   
-   return CountPixels(image,r,g,b,a);
-}
-
-
-
-int CountPixels(Allegro5Image* image , int red , int green , int blue , int alpha) {
-   if (!image) {return 0;}
-   
-   ALLEGRO_BITMAP* bmp = image->AllegroBitmap();
-   
-   if (!bmp) {return 0;}
-   
-   ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(bmp , ALLEGRO_PIXEL_FORMAT_ANY , ALLEGRO_LOCK_READONLY);
-   (void)lock;
-   int count = 0;
-   for (int y = 0 ; y < image->H() ; ++y) {
-      for (int x = 0 ; x < image->W() ; ++x) {
-         unsigned char r,g,b,a;
-         al_unmap_rgba(al_get_pixel(bmp,x,y) , &r , &g , &b , &a);
-         if ((r == red) && (g == green) && (b == blue) && (a == alpha)) {++count;}
-      }
-   }
-   
-   al_unlock_bitmap(bmp);
-   
-   return count;
-}
-
 
 
 

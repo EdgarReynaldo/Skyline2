@@ -28,9 +28,6 @@ private :
    
    int x,y;
    
-   int maxpixels;
-   int pixelsleft;
-   
    Shield shield;
    
    Hitmask hitmask;
@@ -43,11 +40,11 @@ public :
    
    void Reset();
    
+   void SetupShield(Pos2D top , double radius , double thickness);
+   
    void Destroy(EagleGraphicsContext* win , int cx , int cy , int radius);
    
    void DamageShield(double damage);
-   
-   void Recount();
    
    double PercentLeft();
 
@@ -60,7 +57,7 @@ public :
    int Y() {return y;} 
    
    bool ShieldDown() {return !shield.Up();}
-   
+   double ShieldPercent() {return shield.Percent();}
    const Hitmask& GetHitmask() {return hitmask;}
 };
 

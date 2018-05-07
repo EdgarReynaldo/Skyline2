@@ -11,6 +11,9 @@
 
 int main2(int argc , char** argv) {
    
+   (void)argc;
+   (void)argv;
+   
    GLE2D xaxis(Pos2D(-100.0 , 0.0) , 0.0);
    GLE2D yaxis(Pos2D(0.0 , -100.0) , M_PI/2.0);
    GLE2D xyaxis(Pos2D(0.0 , 0.0) , M_PI/4.0);
@@ -20,13 +23,13 @@ int main2(int argc , char** argv) {
    GLE2D extra(f , 3.0*M_PI/4.0);
 
    bool i = IntersectionPoint(xyaxis , extra , &intersection);
-
+   
    double d1 = DistanceFromLine(f , xaxis);
    double d2 = DistanceFromLine(f , yaxis);
    double d3 = DistanceFromLine(f , xyaxis);
    
    printf("Distance from lines = %lf , %lf , %lf\n" , d1 , d2 , d3);
-   printf("Intersection point = %lf , %lf\n" , intersection.X() , intersection.Y());
+   printf("%s Intersection point = %lf , %lf\n" , (!i)?"No":"" , intersection.X() , intersection.Y());
    return 0;
 }
 
@@ -48,7 +51,29 @@ int main(int argc , char** argv) {
       EagleLog() << "Failed to initialize some subsystem. Continuing anyway." << std::endl;
    }
    
-   win = sys->CreateGraphicsContext("WIN" , sw , sh , EAGLE_OPENGL | EAGLE_WINDOWED);
+   bool fullscreen = false;
+   int screenw = 1024;
+   int screenh = 768;
+
+   ConfigFile cf;
+   if (cf.LoadFromFile("Data/Config.txt")) {
+      fullscreen = (cf["Graphics"]["fullscreen"].compare("true") == 0);
+      try {
+         int w = 0;
+         int h = 0;
+         w = stoi(cf["Graphics"]["screenw"]);
+         h = stoi(cf["Graphics"]["screenh"]);
+         screenw = w;
+         screenh = h;
+      }
+      catch (...) {}
+   }
+   
+   int winflags = EAGLE_OPENGL | (fullscreen?EAGLE_FULLSCREEN_WINDOW:EAGLE_WINDOWED);
+   sw = screenw;
+   sh = screenh;
+   
+   win = sys->CreateGraphicsContext("WIN" , sw , sh , winflags);
 ///   win = sys->CreateGraphicsContext("WIN" , sw , sh , EAGLE_OPENGL | EAGLE_FULLSCREEN_WINDOW);
    
    sw = win->Width();

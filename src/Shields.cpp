@@ -3,7 +3,7 @@
 
 
 #include "Shields.hpp"
-
+#include "Globals.hpp"
 
 #include "allegro5/allegro.h"
 #include "allegro5/allegro_color.h"
@@ -13,7 +13,9 @@
 
 #include "Eagle/Logging.hpp"
 #include "Eagle/Exception.hpp"
+#include "Eagle/StringWork.hpp"
 
+#include <cmath>
 
 
 void Shield::ResetShieldRadius() {
@@ -46,7 +48,7 @@ Shield::Shield() :
 {}
 
 
-
+/**
 void Shield::Setup(Pos2D left , Pos2D right , double height , double thickness) {
    Pos2D c((left.X() + right.X()) / 2.0 , (left.Y() + right.Y())/2.0 + height);
    double inner_radius = (left - c).Length();
@@ -70,8 +72,36 @@ void Shield::Setup(Pos2D left , Pos2D right , double height , double thickness) 
    double pct = fabs(thetadiff)/(2.0*M_PI);
    hp = maxhp = pct*(ao - ai);
    ResetShieldRadius();
+}
+//*/
+
+
+void Shield::Setup(Pos2D top , double radius , double thickness) {
+   EagleLog() << "Shield thickness is " << thickness << std::endl;
+
+   irad = radius;
+   orad = maxrad = irad + thickness;
+   cx = top.X();
+   cy = top.Y() + irad;
+   Pos2D c(cx,cy);
    
-   
+   /// We want our shield to draw a nice arc over the city. 
+   /// We need to figure out the theta range for our drawing function
+   /// We basically have a circle of radius r and a chord drawn by the line y = sh/2 + 100
+   double beta = asin(0.5*sw/radius);
+   double thetamid = c.AngleToPoint(top.X() , top.Y());
+   if (thetamid < 0.0) {thetamid += 2.0*M_PI;}
+   thetastart = thetamid - beta;
+   thetastop = thetamid + beta;
+
+   /// Area of the shield is its actual strength
+   double ao = M_PI*orad*orad;
+   double ai = M_PI*irad*irad;
+   double pct = fabs(beta/M_PI);
+   hp = maxhp = pct*(ao - ai);
+///   EagleLog() << StringPrintF("Shield setup : irad,orad = %lf,%lf , ai,ao = %lf,%lf , beta = %lf\n" , irad , orad , ai , ao , beta);
+   ResetShieldRadius();
+///   EagleLog() << StringPrintF("Shield setup : cx,cy = %d,%d rad = %4.2lf hp = %4.2lf betadeg = %3.2lf\n" , (int)c.X() , (int)c.Y() , radius , hp , beta*180.0/M_PI);
 }
 
 
@@ -86,7 +116,7 @@ bool Shield::Hit(double xpos , double ypos) {
       return false;
    }
    double d = (p2-p1).Length();
-   return (d >= irad && d <= orad);
+   return (d <= orad);
 }
 
 
