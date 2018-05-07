@@ -9,6 +9,27 @@
 
 
 
+int main2(int argc , char** argv) {
+   
+   GLE2D xaxis(Pos2D(-100.0 , 0.0) , 0.0);
+   GLE2D yaxis(Pos2D(0.0 , -100.0) , M_PI/2.0);
+   GLE2D xyaxis(Pos2D(0.0 , 0.0) , M_PI/4.0);
+   Pos2D intersection;
+   
+   Pos2D f(4.9 , 4.9);
+   GLE2D extra(f , 3.0*M_PI/4.0);
+
+   bool i = IntersectionPoint(xyaxis , extra , &intersection);
+
+   double d1 = DistanceFromLine(f , xaxis);
+   double d2 = DistanceFromLine(f , yaxis);
+   double d3 = DistanceFromLine(f , xyaxis);
+   
+   printf("Distance from lines = %lf , %lf , %lf\n" , d1 , d2 , d3);
+   printf("Intersection point = %lf , %lf\n" , intersection.X() , intersection.Y());
+   return 0;
+}
+
 int main(int argc , char** argv) {
    
    (void)argc;
