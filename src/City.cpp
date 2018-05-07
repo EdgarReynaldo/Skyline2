@@ -17,8 +17,7 @@ City::City(string name , string path , int screenw , int screenh) :
    y(0),
    maxpixels(-1),
    pixelsleft(0),
-   shield(),
-   wc_lock(0)
+   shield()
 {
    if (!original.Load(path)) {
       throw EagleException(StringPrintF("Failed to load city (%s).\n" , path.c_str()));
@@ -49,15 +48,10 @@ City::City(string name , string path , int screenw , int screenh) :
    shield.Setup(Pos2D(0.5 , y + 0.5) , Pos2D(screenw - 0.5 , y + 0.5) , screenh , 100);
    
    maxpixels = original.W()*original.H() - CountPixels(&original , al_map_rgba(0,0,0,0));
-//   maxpixels = original.W()*original.H() - CountPixels(original , makecol(255,0,255));
-///   maxpixels = original.W()*original.H() - CountPixels(original , 255 , 0 , 255);
+   
    EagleLog() << StringPrintF("%s pixel count = %i\n" , path.c_str() , maxpixels);
    EagleLog() << StringPrintF("Total size = %i\n" , original.W()*original.H());
    pixelsleft = maxpixels;
-//   int index = path.find_first_of('.');
-//   string newpath = path.substr(0 , index);
-//   newpath += ".bmp";
-//   original.SaveImage(newpath.c_str() , 0);
 }
 
 
@@ -75,6 +69,7 @@ void City::Reset() {
    win->Draw(&original , 0 , 0);
    win->RestoreLastBlendingState();
    pixelsleft = maxpixels;
+   hitmask.ReadFromImage(&workingcopy);
    shield.Reset();
 }
 
@@ -84,7 +79,7 @@ void City::Destroy(EagleGraphicsContext* win , int cx , int cy , int radius) {
    float xpos = cx - x + 0.5f;
    float ypos = cy - y + 0.5f;
    win->DrawFilledCircle(xpos , ypos , (float)radius , EagleColor(0,0,0,0));
-   
+   hitmask.EraseCircle(cx , cy , radius);
 }
 
 
@@ -96,52 +91,22 @@ void City::DamageShield(double damage) {
 
 
 void City::Recount() {
-   pixelsleft = original.W()*original.H() - CountPixels(&workingcopy , al_map_rgba(0,0,0,0));
-//   pixelsleft = original.W()*original.H() - CountPixels(workingcopy , makecol(255,0,255));
-///   pixelsleft = original.W()*original.H() - CountPixels(workingcopy , 255 , 0 , 255);
+   pixelsleft = hitmask.SolidCount();
+///   pixelsleft = original.W()*original.H() - CountPixels(&workingcopy , al_map_rgba(0,0,0,0));
 }
 
 
 
-float City::PercentLeft() {
-   return float(pixelsleft)/float(maxpixels);
-}
-
-
-
-void City::LockCityBuffer() {
-   if (!wc_lock) {
-      wc_lock = al_lock_bitmap(workingcopy.AllegroBitmap() , al_get_bitmap_format(workingcopy.AllegroBitmap()) , ALLEGRO_LOCK_READONLY);
-   }
-}
-
-
-
-void City::UnLockCityBuffer() {
-   if (wc_lock) {
-      al_unlock_bitmap(workingcopy.AllegroBitmap());
-      wc_lock = 0;
-   }
+double City::PercentLeft() {
+   return hitmask.PercentLeft();
 }
 
 
 
 bool City::Hit(int tx , int ty) {
-   if (shield.Hit(tx + 0.5 , ty + 0.5)) {
-      return true;
-   }
-   int xpos = tx - x;
-   int ypos = ty - y;
-   if ((xpos < 0) || (xpos >= workingcopy.W())) {return false;}
-   if ((ypos < 0) || (ypos >= workingcopy.H())) {return false;}
-//   if (getpixel(workingcopy , xpos , ypos) == makecol(255,0,255)) {return false;}
-   ALLEGRO_COLOR c = al_get_pixel(workingcopy.AllegroBitmap() , xpos , ypos);
-   unsigned char r,g,b,a;
-   al_unmap_rgba(c , &r , &g , &b , &a);
-   if (a != 0) {
-      return true;
-   }
-   return false;
+   int rx = tx - x;
+   int ry = ty - y;
+   return hitmask.Hit(rx,ry);
 }
 
 

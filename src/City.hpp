@@ -11,9 +11,7 @@ using std::string;
 
 
 #include "Shields.hpp"
-
-
-
+#include "Collision.hpp"
 
 int CountPixels(Allegro5Image* image , ALLEGRO_COLOR c);
 int CountPixels(Allegro5Image* image , int red , int green , int blue , int alpha);
@@ -35,7 +33,7 @@ private :
    
    Shield shield;
    
-   ALLEGRO_LOCKED_REGION* wc_lock;
+   Hitmask hitmask;
    
 public :
    
@@ -51,14 +49,19 @@ public :
    
    void Recount();
    
-   float PercentLeft();
+   double PercentLeft();
 
    string Name() {return city;}
    
-   void LockCityBuffer();
-   void UnLockCityBuffer();
    bool Hit(int tx , int ty);
    bool HitShield(int tx , int ty);
+   
+   int X() {return x;}
+   int Y() {return y;} 
+   
+   bool ShieldDown() {return !shield.Up();}
+   
+   const Hitmask& GetHitmask() {return hitmask;}
 };
 
 
