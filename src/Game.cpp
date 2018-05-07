@@ -20,7 +20,7 @@ using std::endl;
 #include "Eagle/backends/Allegro5Backend.hpp"
 #include "Eagle/InputHandler.hpp"
 
-
+#include "allegro5/allegro_color.h"
 
 const float SPT = 1.0f/float(FPS);
 
@@ -128,6 +128,17 @@ void Game::DrawGame() {
       int eml = enemy->NMissilesLeft();
       win->DrawTextString(f , StringPrintF("%d" , pml) , 10 , sh - 10 , EagleColor(255,255,255,255) , HALIGN_LEFT , VALIGN_BOTTOM);
       win->DrawTextString(f , StringPrintF("%d" , eml) , sw - 10 , 10 , EagleColor(0,127,255,255) , HALIGN_RIGHT , VALIGN_TOP);
+      double pct_left = city->PercentLeft();
+      double pct_allowed = config.city_left;
+      double real_pct = (pct_left - pct_allowed)/(1.0 - pct_allowed);
+      
+      double hue = real_pct*120.0;
+      double sat = 1.0;
+      double val = 1.0;
+      float r,g,b;
+      al_color_hsv_to_rgb(hue , sat , val , &r , &g , &b);
+      EagleColor c(r,g,b);
+      win->DrawTextString(f , StringPrintF("City left : %2.2lf" , real_pct) , sw/2 , sh - 10 , c , HALIGN_CENTER , VALIGN_BOTTOM);
    }
    
    /// Timing
@@ -154,87 +165,54 @@ void Game::DrawGame() {
 
 void Game::CheckCollisions() {
 
+   ProgramTime t1;
+   ProgramTime t2;
+   double dt = 0.0;
+
    vector<Missile*> pmissiles = player->GetMissiles();
    vector<Missile*> emissiles = enemy->GetMissiles();
    vector<Missile*> missiles(pmissiles);
    missiles.insert(missiles.begin() , emissiles.begin() , emissiles.end());
 
-   /// O(log(n))?
-   /// Check for missiles blowing up other missiles
+   t1 = ProgramTime::Now();
+   
+   /// Check for missile explosions making other missiles explode
+   ExplosionsVsMissiles(missiles);
+   
+   /// Check for missiles blowing up the city
    win->PushDrawingTarget(&city->workingcopy);
    win->SetCopyBlender();
    for (unsigned int i = 0 ; i < missiles.size() ; ++i) {
       Missile* m1 = missiles[i];
+      bool e1 = m1->Exploding();
       int x1 = m1->X();
       int y1 = m1->Y();
       int r1 = m1->CRad();
-//      MISSILE_STATE s1 = m1->State();
-      bool e1 = m1->Exploding();
       if (e1) {
-         city->Destroy(win,x1,y1,r1);
-      }
-      for (unsigned int j = i + 1 ; j < missiles.size() ; ++j) {
-         Missile* m2 = missiles[j];
-         int x2 = m2->X();
-         int y2 = m2->Y();
-         int r2 = m2->CRad();
-//         MISSILE_STATE s2 = m2->State();
-         bool e2 = m2->Exploding();
-         int dx = x2 - x1;
-         int dy = y2 - y1;
-         int dsq = dx*dx + dy*dy;
-         int rsq = (r1 + r2)*(r1 + r2);
-         if (dsq <= rsq) {
-            /// If one is exploding, the other should explode as well if not already
-            /// If either is exploding, cause damage to the city
-            if (e1 || e2) {
-               if (e1) {
-                  if (!e2) {
-                     m2->Explode();
-                  }
-               }
-               if (e2) {
-                  if (!e1) {
-                     m1->Explode();
-                  }
-               }
-            }
+         if (y1 < city->Y() - r1) {
+            continue;
          }
+         city->Destroy(win,x1,y1,r1);/// This draws the explosion onto the city
       }
    }
    win->RestoreLastBlendingState();
    win->PopDrawingTarget();
-   /// Check for enemy missiles hitting the city
-///   city->LockCityBuffer();
-   for (unsigned int i = 0 ; i < emissiles.size() ; ++i) {
-      Missile* m = emissiles[i];
-      if (city->Hit(m->X() , m->Y())) {
-         m->Explode();
-         if (city->HitShield(m->X() , m->Y())) {
-            city->DamageShield(M_PI*m->Rad()*m->Rad());
-         }
-      }
-   }
-///   city->UnLockCityBuffer();
 
-   /// Check for player lasers hitting missiles
-///   vector<Laser*> lasers = player_lasers.GetActiveLaserBeams();/// Line distance hit detection doesn't work yet
-   ALLEGRO_BITMAP* bmp = cbuffer.AllegroBitmap();
-///   ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(bmp , al_get_bitmap_format(bmp) , ALLEGRO_LOCK_READONLY);
-///   ALLEGRO_LOCKED_REGION* lock = al_lock_bitmap(bmp , ALLEGRO_PIXEL_FORMAT_ANY_32_WITH_ALPHA , ALLEGRO_LOCK_READONLY);
-///   (void)lock;/// This lock is used by al_get_pixel below
-   for (unsigned int i = 0 ; i < missiles.size() ; ++i) {
-      Missile* m = missiles[i];
-      ALLEGRO_COLOR c;
-      c = al_get_pixel(bmp , m->X() , m->Y());
-      unsigned char r,g,b;
-      al_unmap_rgb(c , &r , &g , &b);
-      if (r == 255 && g == 255 && b == 255) {
-         if (!m->Exploding()) {m->Explode();}
-      }
+   /// Check for enemy missiles hitting the city
+   
+   if (!city->ShieldDown()) {
+      MissilesVsShield(emissiles , city);
    }
-///   al_unlock_bitmap(bmp);
-      
+   else {
+      MissilesVsCity(emissiles , city);
+   }
+   
+   LasersVsMissiles(player->GetLaserBlasts() , emissiles);
+   
+   t2 = ProgramTime::Now();
+   
+   dt = t2 - t1;
+   EagleLog() << StringPrintF("Collision frame took %2.8lf seconds.\n" , dt) << std::endl;
 }
 
 
@@ -458,14 +436,17 @@ int Game::Run() {
             if (ee.type == EAGLE_EVENT_TIMER) {
                ++nevents;
                if (nevents == 1) {/// Slow down gracefully if the gpu or cpu can't handle it
+///               if (true) {/// Run full speed
                   ProgramTime pt1 = ProgramTime::Now();
                   Update(ee.timer.eagle_timer_source->SPT());
                   ProgramTime pt2 = ProgramTime::Now();
                   ccount++;
                   double dt = pt2 - pt1;
                   coll_time += dt;
-                  if (ccount > 60) {
+                  if (ccount >= 60) {
                      ups = ccount/coll_time;
+                     ccount = 0;
+                     coll_time = 0.0;
                   }
                   frame_skip = 0;
                }
@@ -547,10 +528,16 @@ STATE Game::Update(double dt) {
 ///         menu_gui.Update(dt);
          break;
       case GAME :
-         enemy->Update(dt);
-         player->Update(dt);
-         CheckCollisions();
-         state = CheckGameState();
+         {
+            ProgramTime t1 = ProgramTime::Now();
+            enemy->Update(dt);
+            player->Update(dt);
+            ProgramTime t2 = ProgramTime::Now();
+            double dt = t2 - t1;
+            EagleLog() << StringPrintF("Update took %2.8lf seconds.\n" , dt);
+            CheckCollisions();
+            state = CheckGameState();
+         }
          break;
       case WIN :
       case LOSE :
