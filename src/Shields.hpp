@@ -36,6 +36,8 @@ public :
    void Reset();
    
    void Draw();
+   
+   bool Up() {return hp > 0.0;}
 };
 
 #endif // Shields_HPP
