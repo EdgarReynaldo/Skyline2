@@ -27,6 +27,8 @@ extern double LASER_BEAM_WIDTH;
 extern double LASER_BEAM_DURATION;
 
 class Laser {
+   void DrawLaser(EagleColor ic , EagleColor oc);
+
 public :
    Pos2F s,d;/// source and destination xy of laser beam
    float ttlmax;/// time to live
@@ -34,10 +36,14 @@ public :
    float maxw;
    float w;/// width
 
+   EagleColor innercolor;
+   EagleColor outercolor;
+   
    Laser(float srcx , float srcy , float destx , float desty , float beam_width , float time_to_live);
 
+   void Draw();
    
-   void DrawLaser(EagleColor ic , EagleColor oc);
+   void SetColors(EagleColor inner , EagleColor outer);
    
    LASER_STATE Update(double dt);
    
@@ -53,8 +59,6 @@ protected :
    double aim_theta;
    double aim_length;
    
-   std::vector<Laser*> active_beams;
-   
    EagleColor lc1;
    EagleColor lc2;
    
@@ -69,16 +73,39 @@ public :
    void AimAt(int aimx , int aimy);
 
    void DrawLaserSight();
-   void DrawLasers();
+   
+   Laser* Fire();
+   
+};
+
+
+class LaserBlast {
+
+protected :
+   
+   friend class LaserBattery;
+   
+   Laser* beams[3];
+   std::string lcstr;
+   
+   LASER_STATE lstate;
+   
+public :
+   
+   LaserBlast(std::string colors) : beams() , lcstr(colors) , lstate(LASER_FIRING) {}
+   
+   ~LaserBlast() {Free();}
+   
+   void Free();
+   
    void Draw();
    
-   void Fire();
+   LASER_STATE Update(double dt);
    
-   void Update(double dt);
-   
-   std::vector<Laser*> Beams() {return active_beams;}
-
+   bool Hit(int x , int y);
 };
+
+
 
 class LaserBattery {
 
@@ -86,7 +113,12 @@ protected :
    
    Pos2D aim;
    
-   std::vector<LaserLauncher*> lasers;
+   LaserLauncher* lasers[3];
+   
+   std::vector<LaserBlast*> lblasts;
+   
+   std::string lbstr;
+   std::string lcstr;
    
 public :
    
@@ -108,7 +140,9 @@ public :
    
    void CheckInputs();
    
-   std::vector<Laser*> GetActiveLaserBeams();
+   std::vector<LaserBlast*> LaserBlasts() {return lblasts;}
+   
+   bool Ready();
    
 };
 

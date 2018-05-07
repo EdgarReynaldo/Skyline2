@@ -83,6 +83,19 @@ LASER_STATE Laser::Update(double dt) {
 
 
 
+void Laser::Draw() {
+   DrawLaser(innercolor , outercolor);
+}
+
+
+
+void Laser::SetColors(EagleColor inner , EagleColor outer) {
+   innercolor = inner;
+   outercolor = outer;
+}
+
+
+
 bool Laser::Hit(int x , int y) {
    
    GLE2D l1(Pos2D(s.X() , s.Y()) , Pos2D(d.X() , d.Y()));
@@ -112,7 +125,6 @@ LaserLauncher::LaserLauncher(Pos2F position , double range) :
       aim(position),
       aim_theta(0.0),
       aim_length(range),
-      active_beams(),
       lc1(),
       lc2()
 {}
@@ -120,18 +132,7 @@ LaserLauncher::LaserLauncher(Pos2F position , double range) :
 
 
 LaserLauncher::~LaserLauncher() {
-   Free();
-}
-
-
-
-void LaserLauncher::Free() {
-   std::vector<Laser*>::iterator it = active_beams.begin();
-   while (it != active_beams.end()) {
-      delete *it;
-      ++it;
-   }
-   active_beams.clear();
+   (void)0;
 }
 
 
@@ -154,46 +155,78 @@ void LaserLauncher::DrawLaserSight() {
    glBegin(GL_LINES);
    glColor4f(lc1.fR() , lc1.fG() , lc1.fB() , 0.5f);
    glVertex2f(pos.X() , pos.Y());
+   glColor4f(lc1.fR() , lc1.fG() , lc1.fB() , 0.0f);
    glVertex2f(aim.X() , aim.Y());
    glEnd();
 }
 
 
 
-void LaserLauncher::DrawLasers() {
-   std::vector<Laser*>::iterator it = active_beams.begin();
-   while (it != active_beams.end()) {
-      (*it)->DrawLaser(lc1 , lc2);
-      ++it;
+Laser* LaserLauncher::Fire() {
+   Laser* l = new Laser(pos.X() , pos.Y() , aim.X() , aim.Y() , LASER_BEAM_WIDTH , LASER_BEAM_DURATION);
+   l->SetColors(lc1 , lc2);
+   return l;
+}
+
+
+
+
+
+
+/// --------------------      Laser Blast      -------------------------
+
+
+
+void LaserBlast::Free() {
+   if (beams[0]) {delete beams[0];}
+   if (beams[1]) {delete beams[1];}
+   if (beams[2]) {delete beams[2];}
+}
+
+
+
+void LaserBlast::Draw() {
+   beams[0]->Draw();
+   beams[1]->Draw();
+   beams[2]->Draw();
+}
+
+
+
+LASER_STATE LaserBlast::Update(double dt) {
+   
+   if (lstate == LASER_TOAST) {return lstate;}
+   
+   LASER_STATE b0 = beams[0]->Update(dt);
+   LASER_STATE b1 = beams[1]->Update(dt);
+   LASER_STATE b2 = beams[2]->Update(dt);
+   
+   if (b0 == LASER_TOAST &&
+       b1 == LASER_TOAST &&
+       b2 == LASER_TOAST)
+   {
+      lstate = LASER_TOAST;
    }
+   return lstate;
 }
 
 
 
-void LaserLauncher::Draw() {
-   DrawLasers();
-   DrawLaserSight();
-}
-
-
-
-void LaserLauncher::Fire() {
-   active_beams.push_back(new Laser(pos.X() , pos.Y() , aim.X() , aim.Y() , LASER_BEAM_WIDTH , LASER_BEAM_DURATION));
-}
-
-
-
-void LaserLauncher::Update(double dt) {
-   std::vector<Laser*>::iterator it = active_beams.begin();
-   while (it != active_beams.end()) {
-      LASER_STATE s = (*it)->Update(dt);
-      if (s == LASER_TOAST) {
-         it = active_beams.erase(it);
-      }
-      else {
-         ++it;
-      }
+bool LaserBlast::Hit(int x , int y) {
+   bool h1 = beams[0]->Hit(x,y);
+   bool h2 = beams[1]->Hit(x,y);
+   bool h3 = beams[2]->Hit(x,y);
+   bool h = false;
+   if (lcstr.compare("RGB") == 0) {
+      h = h1 && h2 && h3;
    }
+   else if (lcstr.compare("CMY") == 0) {
+      h = (h1 && h2) || (h2 && h3) || (h1 && h3);
+   }
+   else if (lcstr.compare("WWW") == 0) {
+      h = h1 || h2 || h3;
+   }
+   return h;
 }
 
 
@@ -205,7 +238,10 @@ void LaserLauncher::Update(double dt) {
 
 LaserBattery::LaserBattery() :
       aim(0.0f,0.0f),
-      lasers()
+      lasers(),
+      lblasts(),
+      lbstr(""),
+      lcstr("")
 {
    
 }
@@ -218,12 +254,10 @@ LaserBattery::~LaserBattery() {
 
 
 void LaserBattery::Free() {
-   std::vector<LaserLauncher*>::iterator it = lasers.begin();
-   while (it != lasers.end()) {
-      delete *it;
-      ++it;
+   Reset();
+   for (int i = 0 ; i < 3 ; ++i) {
+      if (lasers[i]) {delete lasers[i];lasers[i] = 0;}
    }
-   lasers.clear();
 }
 
 
@@ -231,9 +265,9 @@ void LaserBattery::Free() {
 void LaserBattery::Setup(const Config& c) {
    Free();
    double range = sqrt(sw*sw + sh*sh);
-   lasers.push_back(new LaserLauncher(Pos2F(0 , sh) , range));
-   lasers.push_back(new LaserLauncher(Pos2F(sw/2 , sh) , range));
-   lasers.push_back(new LaserLauncher(Pos2F(sw , sh) , range));
+   lasers[0] = new LaserLauncher(Pos2F(0 , sh) , range);
+   lasers[1] = new LaserLauncher(Pos2F(sw/2 , sh) , range);
+   lasers[2] = new LaserLauncher(Pos2F(sw , sh) , range);
    
    EagleColor red(1.0f , 0.0f , 0.0f , 1.0f);
    EagleColor green(0.0f , 1.0f , 0.0f , 1.0f);
@@ -246,7 +280,7 @@ void LaserBattery::Setup(const Config& c) {
 
    bool blend = false;
 
-   std::string lbstr = c.laser_blend_mode;
+   lbstr = c.laser_blend_mode;
    if (lbstr.compare("SOLID") == 0) {
       blend = false;
    }
@@ -257,7 +291,7 @@ void LaserBattery::Setup(const Config& c) {
       throw EagleException(StringPrintF("Laser blend mode not supported. Invalid value is '%s'." , lbstr.c_str()));
    }
    
-   std::string lcstr = c.laser_color;
+   lcstr = c.laser_color;
    if (lcstr.compare("RGB") == 0) {
       lasers[0]->SetColors(red   , blend?clear:red);
       lasers[1]->SetColors(green , blend?clear:green);
@@ -285,71 +319,66 @@ void LaserBattery::Setup(const Config& c) {
 
 
 void LaserBattery::Reset() {
-   for (unsigned int i = 0 ; i < lasers.size() ; ++i) {
-      lasers[i]->Free();
+   for (unsigned int i = 0 ; i < lblasts.size() ; ++i) {
+      delete lblasts[i];
    }
+   lblasts.clear();
 }
 
 
 
 void LaserBattery::AimAt(int aimx , int aimy) {
    aim = Pos2D(aimx + 0.5 , aimy + 0.5);
-   std::vector<LaserLauncher*>::iterator it = lasers.begin();
-   while (it != lasers.end()) {
-      (*it)->AimAt(aim.X() , aim.Y());
-      ++it;
-   }
+   
+   lasers[0]->AimAt(aim.X() , aim.Y());
+   lasers[1]->AimAt(aim.X() , aim.Y());
+   lasers[2]->AimAt(aim.X() , aim.Y());
+   
 }
 
 
 
 void LaserBattery::Draw() {
-   std::vector<LaserLauncher*>::iterator it = lasers.begin();
-   while (it != lasers.end()) {
-      (*it)->Draw();
-      ++it;
+   std::vector<LaserBlast*>::iterator lit = lblasts.begin();
+   while (lit != lblasts.end()) {
+      (*lit)->Draw();
+      ++lit;
    }
+   lasers[0]->DrawLaserSight();
+   lasers[1]->DrawLaserSight();
+   lasers[2]->DrawLaserSight();
 }
 
 
 
 void LaserBattery::Fire() {
-   std::vector<LaserLauncher*>::iterator it = lasers.begin();
-   while (it != lasers.end()) {
-      (*it)->Fire();
-      ++it;
+   if (Ready()) {
+      LaserBlast* lb = new LaserBlast(lcstr);
+      lb->beams[0] = lasers[0]->Fire();
+      lb->beams[1] = lasers[1]->Fire();
+      lb->beams[2] = lasers[2]->Fire();
+      lblasts.push_back(lb);
    }
 }
 
 
 
 void LaserBattery::Update(double dt) {
-   std::vector<LaserLauncher*>::iterator it = lasers.begin();
-   while (it != lasers.end()) {
-      (*it)->Update(dt);
-      ++it;
+   std::vector<LaserBlast*>::iterator it = lblasts.begin();
+   while (it != lblasts.end()) {
+      LASER_STATE s = (*it)->Update(dt);
+      if (s == LASER_TOAST) {
+         it = lblasts.erase(it);
+      }
+      else {
+         ++it;
+      }
    }
 }
 
 
 
-void LaserBattery::CheckInputs() {
-   if (input_mouse_held(RMB)) {
-      Fire();
-   }
-}
-
-
-
-std::vector<Laser*> LaserBattery::GetActiveLaserBeams() {
-   std::vector<Laser*> beams;
-   for (unsigned int i = 0 ; i < lasers.size() ; ++i) {
-      std::vector<Laser*> bi = lasers[i]->Beams();
-      beams.insert(beams.end() , bi.begin() , bi.end());
-   }
-   return beams;
-}
-
+bool LaserBattery::Ready() {return true;}
 
 
 
