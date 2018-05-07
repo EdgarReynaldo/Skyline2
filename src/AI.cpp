@@ -119,6 +119,15 @@ void EnemyAI::Display() {
 
 
 
+int EnemyAI::NMissilesLeft() {
+   if (mb) {
+      return mb->NMissilesLeft() + mb->NMissilesActive();
+   }
+   return 0;
+}
+
+
+
 /// ---------------------------------     PlayeerAI     -----------------------------------
 
 
@@ -254,9 +263,4 @@ void PlayerAI::DrawLasers() {
 bool PlayerAI::MissilesReady() {
    return mb?mb->Ready():false;
 }
-
-
-
-
-
 

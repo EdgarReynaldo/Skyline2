@@ -31,7 +31,7 @@ public :
    virtual void Display()=0;
 
    std::vector<Missile*> GetMissiles();
-   int NMissilesLeft();
+   virtual int NMissilesLeft();
 };
 
 
@@ -53,10 +53,15 @@ public :
    virtual void CheckInputs();
 
    virtual void Display();
+   virtual int NMissilesLeft();
 };
 
 
 #include "Missiles.hpp"
+#include "Lasers.hpp"
+
+
+
 
 class PlayerAI : public AI {
 private :
@@ -88,6 +93,8 @@ public :
    void DrawLasers();
    
    bool MissilesReady();
+   
+   std::vector<LaserBlast*> GetLaserBlasts() {return lb->LaserBlasts();}
 };
 
 
