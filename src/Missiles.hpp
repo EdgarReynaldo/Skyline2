@@ -76,12 +76,12 @@ public :
    void Explode();
    void Destroy();
 
-   int X() {return (int)cpos.X();}
-   int Y() {return (int)cpos.Y();}
+   int X() const {return (int)cpos.X();}
+   int Y() const {return (int)cpos.Y();}
    MISSILE_STATE State() {return state;}
-   bool Exploding() {return (state != NORMAL) && (state != TOAST);}
-   int CRad() {return (int)crad;}
-   int Rad() {return rad;}
+   bool Exploding() const {return (state != NORMAL) && (state != TOAST);}
+   int CRad() const {return (int)crad;}
+   int Rad() const {return rad;}
    
    virtual EagleColor MissileColor()    {return EagleColor(255,   0,  0, 255);}
    virtual EagleColor IExplosionColor() {return EagleColor(255,   0,  0, 127);}

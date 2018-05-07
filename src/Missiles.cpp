@@ -383,7 +383,7 @@ bool MissileBattery::Ready() {
 
 
 int MissileBattery::NMissilesLeft() {
-   return nmissilesleft + NMissilesActive();
+   return nmissilesleft;/// + NMissilesActive();
 }
 
 
