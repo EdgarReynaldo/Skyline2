@@ -4,6 +4,30 @@
 
 #include "OpenGLDrawing.hpp"
 
+#include <cmath>
+
+#include "GL/gl.h"
+
+
+void DrawExplosion(float cx , float cy , float crad , EagleColor ic , EagleColor oc) {
+   
+      double deg = 0.0;
+      
+      glBegin(GL_TRIANGLE_FAN);
+      
+      eglColor(ic);
+      glVertex2d(cx , cy);
+      
+      eglColor(oc);
+      glVertex2d(cx + crad*cos(deg*M_PI/180.0f) , cy + crad*sin(deg*M_PI/180.0f));
+      
+      for (deg = 0.0 ; deg < 360.0 ; deg += 1.0) {
+         glVertex2d(cx + crad*cos((deg+1)*M_PI/180.0f) , cy + crad*sin((deg+1)*M_PI/180.0f));
+      }
+      
+      glEnd();
+}
+
 
 
 void DrawJet(Pos2D p , double theta , EagleColor icol , EagleColor ocol) {
