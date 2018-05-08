@@ -1,0 +1,183 @@
+Skyline log:
+
+EAGLE INFO     : Failed to find Allegro5 driver in library system map. Attempting creation.
+EAGLE_CREATE   : Creating Allegro5System object 'A5SYS' at 033c04a0 with eid 2
+
+EAGLE INFO     : Eagle : Initialized system.
+EAGLE INFO     : Eagle : Initialized images.
+EAGLE INFO     : Eagle : Initialized fonts.
+EAGLE INFO     : Eagle : Initialized TTF fonts.
+EAGLE INFO     : Eagle : Initialized audio.
+EAGLE INFO     : Eagle : Initialized shaders.
+EAGLE INFO     : Eagle : Initialized primitives.
+EAGLE INFO     : Eagle : Installed keyboard.
+EAGLE_CREATE   : Creating Allegro5InputHandler object 'Allegro5System::input_handler' at 04d93810 with eid 3
+
+EAGLE_CREATE   : Creating Allegro5Thread object 'A5 Input Thread' at 04d93910 with eid 4
+
+EAGLE_CREATE   : Creating Allegro5EventHandler object 'A5 KeyboardEventHandler' at 04d93998 with eid 5
+
+EAGLE_CREATE   : Creating Allegro5EventHandler object 'A5 JoystickEventHandler' at 04d93ad4 with eid 6
+
+EAGLE_CREATE   : Creating Allegro5EventHandler object 'A5 MouseEventHandler' at 04d93c10 with eid 7
+
+EAGLE_CREATE   : Creating Allegro5EventHandler object 'A5 TouchEventHandler' at 04d93d4c with eid 8
+
+EAGLE_CREATE   : Creating CXX11Mutex object 'A5EH::mutex' at 04d94d80 with eid 9
+
+EAGLE_CREATE   : Creating Allegro5Thread object 'A5EH::event_thread' at 04d97268 with eid 10
+
+EAGLE_CREATE   : Creating Allegro5ConditionVar object 'A5EH::cond_var' at 04d972f8 with eid 11
+
+EAGLE INFO     : Allegro5Thread::Start() : Starting thread.
+EAGLE INFO     : A5ThreadWrapperProcess : Starting process 00417410 on Allegro5Thread A5EH::event_thread : (EID   10 at 0x04d97268).
+EAGLE INFO     : Allegro5EventThreadProcess process starting on EagleThread 04d97268
+EAGLE_CREATE   : Creating CXX11Mutex object 'A5EH::mutex' at 04d97470 with eid 12
+
+EAGLE_CREATE   : Creating Allegro5Thread object 'A5EH::event_thread' at 04d974f0 with eid 13
+
+EAGLE_CREATE   : Creating Allegro5ConditionVar object 'A5EH::cond_var' at 04d97580 with eid 14
+
+EAGLE INFO     : Allegro5Thread::Start() : Starting thread.
+EAGLE INFO     : A5ThreadWrapperProcess : Starting process 00417410 on Allegro5Thread A5EH::event_thread : (EID   13 at 0x04d974f0).
+EAGLE INFO     : Allegro5EventThreadProcess process starting on EagleThread 04d974f0
+EAGLE_CREATE   : Creating CXX11Mutex object 'A5EH::mutex' at 04d98248 with eid 15
+
+EAGLE_CREATE   : Creating Allegro5Thread object 'A5EH::event_thread' at 04d982c8 with eid 16
+
+EAGLE_CREATE   : Creating Allegro5ConditionVar object 'A5EH::cond_var' at 04d98358 with eid 17
+
+EAGLE INFO     : Allegro5Thread::Start() : Starting thread.
+EAGLE INFO     : A5ThreadWrapperProcess : Starting process 00417410 on Allegro5Thread A5EH::event_thread : (EID   16 at 0x04d982c8).
+EAGLE INFO     : Allegro5EventThreadProcess process starting on EagleThread 04d982c8
+EAGLE_CREATE   : Creating CXX11Mutex object 'A5EH::mutex' at 04d96150 with eid 18
+
+EAGLE_CREATE   : Creating Allegro5Thread object 'A5EH::event_thread' at 04d961d0 with eid 19
+
+EAGLE_CREATE   : Creating Allegro5ConditionVar object 'A5EH::cond_var' at 04d96260 with eid 20
+
+EAGLE INFO     : Allegro5Thread::Start() : Starting thread.
+EAGLE INFO     : A5ThreadWrapperProcess : Starting process 00417410 on Allegro5Thread A5EH::event_thread : (EID   19 at 0x04d961d0).
+EAGLE INFO     : Allegro5EventThreadProcess process starting on EagleThread 04d961d0
+EAGLE INFO     : Allegro5Thread::Start() : Starting thread.
+EAGLE INFO     : A5ThreadWrapperProcess : Starting process 0041d060 on Allegro5Thread A5 Input Thread : (EID    4 at 0x04d93910).
+EAGLE_CREATE   : Creating Allegro5EventHandler object 'Allegro5System::system_queue' at 04d9bd38 with eid 21
+
+EAGLE_CREATE   : Creating CXX11Mutex object 'A5EH::mutex' at 04d9cf28 with eid 22
+
+EAGLE_CREATE   : Creating Allegro5Thread object 'A5EH::event_thread' at 04d9be80 with eid 23
+
+EAGLE_CREATE   : Creating Allegro5ConditionVar object 'A5EH::cond_var' at 04d9cfa8 with eid 24
+
+EAGLE INFO     : Allegro5Thread::Start() : Starting thread.
+EAGLE INFO     : A5ThreadWrapperProcess : Starting process 00417410 on Allegro5Thread A5EH::event_thread : (EID   23 at 0x04d9be80).
+EAGLE INFO     : Allegro5EventThreadProcess process starting on EagleThread 04d9be80
+EAGLE INFO     : Eagle : Installed mouse.
+EAGLE INFO     : Eagle : Installed joystick.
+EAGLE INFO     : Eagle : Installed touch input.
+EAGLE_CREATE   : Creating Allegro5Timer object 'Allegro5System::system_timer' at 04da2fa0 with eid 25
+
+EAGLE INFO     : Allegro5Timer::Destroy this=0x4da2fa0
+EAGLE INFO     : Allegro5Timer::Create this=0x4da2fa0
+EAGLE_CREATE   : Creating Allegro5Thread object 'Nemo' at 04da5278 with eid 26
+
+EAGLE INFO     : Allegro5Thread::Start() : Starting thread.
+EAGLE INFO     : A5ThreadWrapperProcess : Starting process 00414670 on Allegro5Thread Nemo : (EID   26 at 0x04da5278).
+EAGLE_CREATE   : Creating Allegro5Clipboard object 'Nemo' at 04d9d1c0 with eid 27
+
+EAGLE_CREATE   : Creating Allegro5WindowManager object 'A5WindowManager' at 04da5b10 with eid 28
+
+EAGLE_CREATE   : Creating CXX11Mutex object 'A5WM::manager_mutex' at 04d9d3c0 with eid 29
+
+EAGLE_CREATE   : Creating Allegro5Thread object 'A5WM::manager_thread' at 04da5cd8 with eid 30
+
+EAGLE INFO     : Allegro5Thread::Start() : Starting thread.
+EAGLE INFO     : A5ThreadWrapperProcess : Starting process 004157f0 on Allegro5Thread A5WM::manager_thread : (EID   30 at 0x04da5cd8).
+EAGLE INFO     : Eagle : Finalized the system state.
+EAGLE_CREATE   : Creating Allegro5GraphicsContext object 'WIN' at 04da4328 with eid 31
+
+EAGLE_CREATE   : Creating Allegro5Image object 'A5GC::realbackbuffer' at 04da4424 with eid 32
+
+EAGLE INFO     : Allegro5WindowManager::AddDisplay - adding ALLEGRO_DISPLAY* 04d98f28 .
+EAGLE_CREATE   : Creating Allegro5Font object 'Verdana.ttf' at 04d9b088 with eid 33
+
+EAGLE INFO     : Loaded font Verdana.ttf from disk.
+EAGLE INFO     : Allegro5GraphicsContext::LoadDefaultFont : Default font is Valid , size 16
+
+EAGLE_CREATE   : Creating CXX11Mutex object 'A5GC::window_mutex' at 04d9d5c0 with eid 34
+
+EAGLE_CREATE   : Creating Allegro5Font object 'Verdana.ttf' at 04dbbc00 with eid 35
+
+EAGLE INFO     : Loaded font Verdana.ttf from disk.
+EAGLE_CREATE   : Creating Allegro5Image object 'Allocated image' at 00a7f75c with eid 36
+
+EAGLE_CREATE   : Creating Allegro5Image object 'Data/Images/CloudySky.png' at 00a7f808 with eid 37
+
+EAGLE INFO     : Loaded image Data/Images/CloudySky.png from file at size 800 x 600.
+EAGLE_CREATE   : Creating Allegro5Image object 'Data/Images/NoPointer.bmp' at 00a7f8b4 with eid 38
+
+EAGLE INFO     : Loaded image Data/Images/NoPointer.bmp from file at size 50 x 50.
+EAGLE_CREATE   : Creating Allegro5Image object 'Data/Images/OkPointer.bmp' at 00a7f960 with eid 39
+
+EAGLE INFO     : Loaded image Data/Images/OkPointer.bmp from file at size 50 x 50.
+EAGLE INFO     : line read for city = 'New York,Data/Images/NewYorkSkyline.bmp'
+EAGLE_CREATE   : Creating Allegro5Image object 'City::original - Data/Images/NewYorkSkyline.bmp' at 04dd9d28 with eid 40
+
+EAGLE_CREATE   : Creating Allegro5Image object 'City::workingcopy - Data/Images/NewYorkSkyline.bmp' at 04dd9dd4 with eid 41
+
+EAGLE INFO     : Loaded image Data/Images/NewYorkSkyline.bmp from file at size 800 x 218.
+EAGLE INFO     : Destroying allegro bitmap at 0x4dd8130
+EAGLE INFO     : line read for city = 'Chicago,Data/Images/ChicagoSkyline.bmp'
+EAGLE_CREATE   : Creating Allegro5Image object 'City::original - Data/Images/ChicagoSkyline.bmp' at 04dd84b0 with eid 42
+
+EAGLE_CREATE   : Creating Allegro5Image object 'City::workingcopy - Data/Images/ChicagoSkyline.bmp' at 04dd855c with eid 43
+
+EAGLE INFO     : Loaded image Data/Images/ChicagoSkyline.bmp from file at size 800 x 240.
+EAGLE INFO     : Destroying allegro bitmap at 0x4dd8900
+EAGLE INFO     : line read for city = 'Houston,Data/Images/HoustonSkyline.bmp'
+EAGLE_CREATE   : Creating Allegro5Image object 'City::original - Data/Images/HoustonSkyline.bmp' at 04dd9f70 with eid 44
+
+EAGLE_CREATE   : Creating Allegro5Image object 'City::workingcopy - Data/Images/HoustonSkyline.bmp' at 04dda01c with eid 45
+
+EAGLE INFO     : Loaded image Data/Images/HoustonSkyline.bmp from file at size 800 x 331.
+EAGLE INFO     : Destroying allegro bitmap at 0x4ddb9c8
+EAGLE INFO     : line read for city = 'Chicago2,Data/Images/Chicago2.png'
+EAGLE_CREATE   : Creating Allegro5Image object 'City::original - Data/Images/Chicago2.png' at 04ddb468 with eid 46
+
+EAGLE_CREATE   : Creating Allegro5Image object 'City::workingcopy - Data/Images/Chicago2.png' at 04ddb514 with eid 47
+
+EAGLE INFO     : Loaded image Data/Images/Chicago2.png from file at size 1920 x 1278.
+EAGLE INFO     : Destroying allegro bitmap at 0x4ddcb38
+EAGLE INFO     : line read for city = ''
+EAGLE INFO     : Game successfully created.
+EAGLE INFO     : City::Reset - Chicago2 pixel count = 312898
+EAGLE INFO     : Total size = 696663
+EAGLE INFO     : Shield thickness is 240
+EAGLE INFO     : Player::Setup - spread is 7
+
+EAGLE INFO     : Destroying allegro bitmap at 0x4dd8a50
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image City::workingcopy - Data/Images/ChicagoSkyline.bmp : (EID   43 at 0x04dd855c)
+EAGLE INFO     : Destroying allegro bitmap at 0x4dd8900
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image City::original - Data/Images/ChicagoSkyline.bmp : (EID   42 at 0x04dd84b0)
+EAGLE INFO     : Destroying allegro bitmap at 0x4ddb6b0
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image City::workingcopy - Data/Images/Chicago2.png : (EID   47 at 0x04ddb514)
+EAGLE INFO     : Destroying allegro bitmap at 0x4ddb800
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image City::original - Data/Images/Chicago2.png : (EID   46 at 0x04ddb468)
+EAGLE INFO     : Destroying allegro bitmap at 0x4ddb1c8
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image City::workingcopy - Data/Images/HoustonSkyline.bmp : (EID   45 at 0x04dda01c)
+EAGLE INFO     : Destroying allegro bitmap at 0x4ddb318
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image City::original - Data/Images/HoustonSkyline.bmp : (EID   44 at 0x04dd9f70)
+EAGLE INFO     : Destroying allegro bitmap at 0x4dd8280
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image City::workingcopy - Data/Images/NewYorkSkyline.bmp : (EID   41 at 0x04dd9dd4)
+EAGLE INFO     : Destroying allegro bitmap at 0x4dd8130
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image City::original - Data/Images/NewYorkSkyline.bmp : (EID   40 at 0x04dd9d28)
+EAGLE INFO     : Destroying allegro bitmap at 0x4dcb600
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image Data/Images/OkPointer.bmp : (EID   39 at 0x00a7f960)
+EAGLE INFO     : Destroying allegro bitmap at 0x4dcb4b0
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image Data/Images/NoPointer.bmp : (EID   38 at 0x00a7f8b4)
+EAGLE INFO     : Destroying allegro bitmap at 0x4dcb960
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image Data/Images/CloudySky.png : (EID   37 at 0x00a7f808)
+EAGLE INFO     : Destroying allegro bitmap at 0x4dc8570
+EAGLE_DESTROY  : Destroying eagle object Allegro5Image Allocated image : (EID   36 at 0x00a7f75c)
+EAGLE INFO     : Game closed.
+EAGLE INFO     : EAGLE INFO : Shutting down Eagle DLL during atexit.

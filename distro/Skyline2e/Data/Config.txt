@@ -1,0 +1,4 @@
+[Graphics]
+fullscreen = false
+screenw = 1024
+screenh = 768

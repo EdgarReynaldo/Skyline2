@@ -171,14 +171,8 @@
 		<Unit filename="src/NewConfig.cpp" />
 		<Unit filename="src/NewConfig.hpp" />
 		<Unit filename="src/NewMain.cpp" />
-		<Unit filename="src/OldMain.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="src/OpenGLDrawing.cpp" />
 		<Unit filename="src/OpenGLDrawing.hpp" />
-		<Unit filename="src/QuadTree.cpp" />
-		<Unit filename="src/QuadTree.hpp" />
 		<Unit filename="src/RNG.cpp" />
 		<Unit filename="src/RNG.hpp" />
 		<Unit filename="src/SettingsScreen.cpp">
