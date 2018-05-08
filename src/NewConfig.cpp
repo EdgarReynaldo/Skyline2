@@ -89,9 +89,9 @@ void GameConfig::SetupDefaultConfig() {
 
    cs.AddComment("Adjust the number of enemy missiles here");
    cs[GetConfigKeyName(GSE_NMSL , EASY  )] = "60";
-   cs[GetConfigKeyName(GSE_NMSL , MEDIUM)] = "120";
-   cs[GetConfigKeyName(GSE_NMSL , HARD  )] = "180";
-   cs[GetConfigKeyName(GSE_NMSL , INSANE)] = "240";
+   cs[GetConfigKeyName(GSE_NMSL , MEDIUM)] = "150";
+   cs[GetConfigKeyName(GSE_NMSL , HARD  )] = "240";
+   cs[GetConfigKeyName(GSE_NMSL , INSANE)] = "500";
    cs[GetConfigKeyName(GSE_NMSL , CUSTOM)] = "120";
    cs.AddSpacer();
 

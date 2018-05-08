@@ -440,19 +440,21 @@ void Game::Display() {
       case MENUE :
          {
             win->Clear(EagleColor(0,0,0));
-            const char* text[4] = {
+            const char* text[5] = {
                "ESC : Quit",
                "1   : Chicago  - Easy",
                "2   : New York - Medium",
-               "3   : Houston  - Hard"
+               "3   : Houston  - Hard",
+               "4   : Chicago2 - Insane"
             };
-            EagleColor colors[4] = {
-               EagleColor(255,0,0),
-               EagleColor(0,255,0),
+            EagleColor colors[5] = {
+               EagleColor(255,255,255),
                EagleColor(0,255,255),
-               EagleColor(255,255,0)
+               EagleColor(0,255,0),
+               EagleColor(255,255,0),
+               EagleColor(255,0,0)
             };
-            for (int i = 0 ; i < 4 ; ++i) {
+            for (int i = 0 ; i < 5 ; ++i) {
                win->DrawTextString(win->DefaultFont() , text[i] , sw/2.0 , sh/2 - 40 + i*20 , colors[i] , HALIGN_CENTER , VALIGN_CENTER);
             }
          }
@@ -507,14 +509,14 @@ STATE Game::HandleEvent(EagleEvent ee) {
       break;
    case MENUE :
       if (ee.type == EAGLE_EVENT_KEY_DOWN) {
-         if (ee.keyboard.keycode >= EAGLE_KEY_1 && ee.keyboard.keycode <= EAGLE_KEY_3) {
-            const char* citys[3] = {"Chicago" , "New York" , "Houston"};
+         if (ee.keyboard.keycode >= EAGLE_KEY_1 && ee.keyboard.keycode <= EAGLE_KEY_4) {
+            const char* citys[4] = {"Chicago" , "New York" , "Houston" , "Chicago2"};
             city = cities[citys[ee.keyboard.keycode - EAGLE_KEY_1]];
             EAGLE_ASSERT(city);
             city->Reset();
             
-            DIFFICULTY d[3] = {
-               EASY , MEDIUM , HARD
+            DIFFICULTY d[4] = {
+               EASY , MEDIUM , HARD , INSANE
             };
             gameconfig.SetOverallDifficulty(d[ee.keyboard.keycode - EAGLE_KEY_1]);
 

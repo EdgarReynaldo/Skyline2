@@ -2,7 +2,6 @@
 
 #include "Globals.hpp"
 #include "Missiles.hpp"
-#include "Explosion.hpp"
 #include "OpenGLDrawing.hpp"
 
 #define MIN(a,b) ((a<b)?a:b)
