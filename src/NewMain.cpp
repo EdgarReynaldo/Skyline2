@@ -1,39 +1,52 @@
 
 
 
+#include "Eagle.hpp"
+
 
 #include "Eagle/backends/Allegro5Backend.hpp"
 
 #include "Game.hpp"
 #include "Globals.hpp"
 
+#warning TODO for SKYLINE - draw full city behind destroyed city, tinted the same color as the damage monitor
 
 
-int main2(int argc , char** argv) {
-   
-   (void)argc;
-   (void)argv;
-   
-   GLE2D xaxis(Pos2D(-100.0 , 0.0) , 0.0);
-   GLE2D yaxis(Pos2D(0.0 , -100.0) , M_PI/2.0);
-   GLE2D xyaxis(Pos2D(0.0 , 0.0) , M_PI/4.0);
-   Pos2D intersection;
-   
-   Pos2D f(4.9 , 4.9);
-   GLE2D extra(f , 3.0*M_PI/4.0);
+#include "physfs.h"
 
-   bool i = IntersectionPoint(xyaxis , extra , &intersection);
+
+
+int main(int argc , char** argv) {
    
-   double d1 = DistanceFromLine(f , xaxis);
-   double d2 = DistanceFromLine(f , yaxis);
-   double d3 = DistanceFromLine(f , xyaxis);
+   std::string dir = "";
+   if (argc > 1) {
+      dir = argv[1];
+   }
    
-   printf("Distance from lines = %lf , %lf , %lf\n" , d1 , d2 , d3);
-   printf("%s Intersection point = %lf , %lf\n" , (!i)?"No":"" , intersection.X() , intersection.Y());
+   Allegro5System* sys = GetAllegro5System();
+   
+   EAGLE_ASSERT(sys);
+   
+   if (sys->Initialize(EAGLE_GENERAL_SETUP) != EAGLE_GENERAL_SETUP) {
+      EagleLog() << "Failed to initialize eagle.";
+   }
+   
+   std::string cwd = GetCWD();
+   
+   FileSystem* fs = sys->GetFileSystem();
+   
+   PHYSFS_init(argv[0]);
+
+   std::shared_ptr<Folder> rootfolder = fs->ReadFolder(cwd , true);
+   
+   rootfolder->PrintContentsAbsolute();
+   
    return 0;
 }
 
-int main(int argc , char** argv) {
+
+
+int main2(int argc , char** argv) {
    
    (void)argc;
    (void)argv;

@@ -7,6 +7,9 @@
 #include "Eagle/Exception.hpp"
 #include "Eagle/StringWork.hpp"
 #include "Eagle/FileSystem.hpp"
+#include "Eagle/System.hpp"
+#include "Eagle/Lib.hpp"
+
 
 #include <cstring>
 
@@ -301,10 +304,16 @@ bool GameConfig::LoadConfig() {
 
    SetupDefaultConfig();
    
+   EagleSystem* sys = Eagle::EagleLibrary::System("Any");
+   
+   EAGLE_ASSERT(sys);
+   
+   FileSystem* fs = sys->GetFileSystem();
+   
    const char* ecpath = "Data/ExampleConfig.txt";
    const char* cpath = "Data/Config.txt";
-   FSInfo efinfo = GetFileInfo(ecpath);
-   FSInfo cfinfo = GetFileInfo(cpath);
+   FSInfo efinfo = fs->GetFileInfo(ecpath);
+   FSInfo cfinfo = fs->GetFileInfo(cpath);
    
    /// Make sure there is always an example file
    if (!efinfo.Exists()) {

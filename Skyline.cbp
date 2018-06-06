@@ -23,6 +23,7 @@
 					<Add option="-leagle_a5_debug.dll" />
 					<Add option="-leagle_debug.dll" />
 					<Add option="-lallegro_monolith-debug.dll" />
+					<Add option="-lphysfs.dll" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -41,6 +42,7 @@
 					<Add option="-leagle_a5.dll" />
 					<Add option="-leagle.dll" />
 					<Add option="-lallegro_monolith.dll" />
+					<Add option="-lphysfs.dll" />
 				</Linker>
 			</Target>
 			<Target title="StaticDebug">
@@ -148,6 +150,7 @@
 			<Add directory="../cbbuild/lib" />
 			<Add directory="../Allegro5/lib" />
 		</Linker>
+		<Unit filename="../cbbuild/bin/Data/Config.txt" />
 		<Unit filename="../cbbuild/bin/Data/ExampleConfig.txt" />
 		<Unit filename="cbbuild/bin/Data/Cities.txt" />
 		<Unit filename="src/AI.cpp" />
