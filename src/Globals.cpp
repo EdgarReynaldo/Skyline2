@@ -15,6 +15,10 @@ EagleGraphicsContext* win = 0;
 EagleEventHandler* q = 0;
 EagleTimer* t = 0;
 EagleFont* f = 0;
+EagleFont* menu_font = 0;
 
+SoundManager soundman;
 
-
+SOUNDID entrysid = BADSOUNDID;
+SOUNDID explodesid = BADSOUNDID;
+SOUNDID launchsid = BADSOUNDID;

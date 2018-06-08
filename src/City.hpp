@@ -36,6 +36,8 @@ public :
    
    City(string name , string path , int screenw , int screenh);
    
+   void DrawDamage();
+   
    void Display();
    
    void Reset();

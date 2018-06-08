@@ -53,6 +53,9 @@ void Missile::Update(double dt) {
       case NORMAL :
          {
             Pos2D mv = cvel*dt;
+            if (cpos.Y() < 0 && cpos.Y() + mv.Y() >= 0) {
+               soundman.Play(entrysid , al_get_default_mixer() , 0.5f , ALLEGRO_AUDIO_PAN_NONE , 1.0f , ALLEGRO_PLAYMODE_ONCE);
+            }
             cpos += mv;
          }
          distleft -= speed*dt;
@@ -126,7 +129,10 @@ void Missile::Display() {
 
 
 void Missile::Explode() {
-   if (state == NORMAL) {state = EXPLODING;}
+   if (state == NORMAL) {
+      state = EXPLODING;
+      soundman.Play(explodesid , al_get_default_mixer());
+   }
 }
 
 

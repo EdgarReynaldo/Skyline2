@@ -47,6 +47,13 @@ City::City(string name , string path , int screenw , int screenh) :
 
 
 
+void City::DrawDamage() {
+   ALLEGRO_BITMAP* bmp = original.AllegroBitmap();
+   al_draw_tinted_bitmap(bmp , al_map_rgb(255,0,0) , x , y , 0);
+}
+
+
+
 void City::Display() {
    win->Draw(&workingcopy , x , y);
    shield.Draw();

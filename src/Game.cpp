@@ -24,6 +24,10 @@ using std::endl;
 
 const float SPT = 1.0f/float(FPS);
 
+   static DIFFICULTY seldiff = EASY;
+   static int selcity = 0;
+   static int index = 0;
+   static const int diffkeys[4] = {EAGLE_KEY_A , EAGLE_KEY_B , EAGLE_KEY_C , EAGLE_KEY_D};
 
 
 /// ----------------------------------     Game class     -------------------------------------------
@@ -78,6 +82,8 @@ void Game::DrawGame() {
       city->GetHitmask().DrawMask(city->X() , city->Y());
    }
    else {
+      city->DrawDamage();
+         
       city->Display();
    }
    
@@ -216,7 +222,7 @@ double Game::CityPercentLeft() {
 
 
 
-Game::Game(string cityfile) :
+Game::Game(ConfigFile* configfile) :
    cities(),
    citystr(""),
    city(0),
@@ -230,6 +236,7 @@ Game::Game(string cityfile) :
    status(0),
    enemy(0),
    player(0),
+   cf(configfile),
    gameconfig(),
    config(),
    config_changed(false),
@@ -248,7 +255,7 @@ Game::Game(string cityfile) :
       throw EagleException("Failed to load config!\n");
    }
    
-   SetupCities(cityfile , sw , sh);
+   SetupCities(sw , sh);
    if (!cbuffer.Valid()) {
       throw EagleException("Failed to allocate cbuffer!\n");
    }
@@ -305,29 +312,20 @@ void Game::FreeCities() {
 
 
 
-void Game::SetupCities(string file , int screenw , int screenh) {
+void Game::SetupCities(int screenw , int screenh) {
    FreeCities();
-   ifstream strm(file.c_str() , std::ios::binary);
-   if (!strm) {
-      throw EagleException(StringPrintF("Could not open game setup file (%s)!\n" , file.c_str()));
-   }
-   int count = 0;
-   while (!strm.eof()) {
-      string line;
-      GetLinePN(strm , line);
-      EagleLog() << StringPrintF("line read for city = '%s'" , line.c_str()) << std::endl;
-      if (line.size() == 0) {continue;}
-      ++count;
-      unsigned int index = line.find_first_of(',');
-      if (index == string::npos) {
-         throw EagleException("No comma detected. Bad city file format.\nShould be 'cityname,path/to/city.bmp'\n");
-      }
-      string cityname = line.substr(0 , index);
-      string path = line.substr(index + 1 , string::npos);
-      cities[cityname] = new City(cityname , path , screenw , screenh);
-   }
-   if (!count) {
+   
+   ConfigSection* cs = &(*cf)["Cities"];
+   
+   std::vector<std::string> citykeys = cs->GetKeys();
+   
+   int ncities = (int)citykeys.size();
+   
+   if (!ncities) {
       throw EagleException("No cities detected!\n");
+   }
+   for (int i = 0 ; i < ncities ; ++i) {
+      cities[citykeys[i]] = new City(citykeys[i] , (*cs)[citykeys[i]] , screenw , screenh);
    }
 }
 
@@ -440,12 +438,15 @@ void Game::Display() {
       case MENUE :
          {
             win->Clear(EagleColor(0,0,0));
+            
+            std::map<std::string , City*>::iterator it;
+            
             const char* text[5] = {
                "ESC : Quit",
-               "1   : Chicago  - Easy",
-               "2   : New York - Medium",
-               "3   : Houston  - Hard",
-               "4   : Chicago2 - Insane"
+               "A   : Easy",
+               "B   : Medium",
+               "C   : Hard",
+               "D   : Insane"
             };
             EagleColor colors[5] = {
                EagleColor(255,255,255),
@@ -454,9 +455,19 @@ void Game::Display() {
                EagleColor(255,255,0),
                EagleColor(255,0,0)
             };
+            int lineheight = menu_font->Height() + 10;
             for (int i = 0 ; i < 5 ; ++i) {
-               win->DrawTextString(win->DefaultFont() , text[i] , sw/2.0 , sh/2 - 40 + i*20 , colors[i] , HALIGN_CENTER , VALIGN_CENTER);
+               win->DrawTextString(menu_font , text[i] , sw/4.0 , sh/2 - 40 + i*lineheight , colors[i] , HALIGN_LEFT , VALIGN_CENTER);
             }
+            int l = 0;
+            for (it = cities.begin() ; it != cities.end() ; ++it , ++l) {
+               win->DrawTextString(menu_font , StringPrintF("%i : %s" , l + 1 , it->first.c_str()) ,
+                                   3*sw/4.0 , sh/2 - 40 + l*lineheight , 
+                                   (l == index)?EagleColor(255,255,255):EagleColor(64,64,64) , HALIGN_RIGHT , VALIGN_CENTER);
+            }
+            
+            win->DrawTextString(menu_font , "ENTER to play" , sw/2.0 , 3*sh/4.0 , EagleColor(255,255,255) , HALIGN_CENTER , VALIGN_TOP);
+            
          }
          break;
       case GAME :
@@ -504,21 +515,42 @@ STATE Game::Update(double dt) {
 }
 
 STATE Game::HandleEvent(EagleEvent ee) {
+
    switch (state) {
    case INTRO :
       break;
    case MENUE :
       if (ee.type == EAGLE_EVENT_KEY_DOWN) {
-         if (ee.keyboard.keycode >= EAGLE_KEY_1 && ee.keyboard.keycode <= EAGLE_KEY_4) {
-            const char* citys[4] = {"Chicago" , "New York" , "Houston" , "Chicago2"};
-            city = cities[citys[ee.keyboard.keycode - EAGLE_KEY_1]];
+         for (int i = 0 ; i < 4 ; ++i) {
+            if (ee.keyboard.keycode == diffkeys[i]) {
+               seldiff = (DIFFICULTY)i;
+            }
+         }
+         
+         if (ee.keyboard.keycode >= EAGLE_KEY_1 && ee.keyboard.keycode <= EAGLE_KEY_9) {
+            
+            std::map<std::string , City*>::iterator it = cities.begin();
+
+            selcity = ee.keyboard.keycode - EAGLE_KEY_1;
+            if (selcity < 0) {selcity = 0;}
+            if (selcity >= (int)cities.size()) {selcity = (int)cities.size() - 1;}
+            EAGLE_ASSERT(selcity >= 0);
+            
+            index = 0;
+            while (it != cities.end() && index < selcity) {
+               ++it;
+               ++index;
+            }
+            city = cities[it->first];
+         }
+         
+         if (ee.keyboard.keycode == EAGLE_KEY_ENTER) {
+            
             EAGLE_ASSERT(city);
+
             city->Reset();
             
-            DIFFICULTY d[4] = {
-               EASY , MEDIUM , HARD , INSANE
-            };
-            gameconfig.SetOverallDifficulty(d[ee.keyboard.keycode - EAGLE_KEY_1]);
+            gameconfig.SetOverallDifficulty(seldiff);
 
             config = gameconfig.GetSelectedConfig();
             

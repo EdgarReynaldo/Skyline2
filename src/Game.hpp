@@ -52,6 +52,8 @@ private :
    EnemyAI* enemy;
    PlayerAI* player;
 
+   ConfigFile* cf;
+   
    GameConfig gameconfig;
    
    Config config;
@@ -82,14 +84,14 @@ private :
    
 public :
 
-   Game(string cityfile);
+   Game(ConfigFile* cf);
    ~Game();
 
    void Free();
    void FreeCities();
 
 
-   void SetupCities(string file , int screenw , int screenh);
+   void SetupCities(int screenw , int screenh);
 
    int Run();
    

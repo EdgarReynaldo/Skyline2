@@ -9,7 +9,7 @@
 #include "RNG.hpp"
 
 
-
+#include "SoundMan.hpp"
 
 AI::AI() :
       mb(0)
@@ -234,6 +234,7 @@ void PlayerAI::CheckInputs() {
       if (mtrigger || mtriggerheld) {
          if (mb->Ready()) {
             mb->Launch(aim.X() , aim.Y());
+            soundman.Play(launchsid , al_get_default_mixer());
          }
       }
    }
