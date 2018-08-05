@@ -52,7 +52,7 @@ void Game::SetupAI() {
 
 void Game::DrawGame() {
    /// Draw collision buffer
-   win->SetDrawingTarget(&cbuffer);
+   win->SetDrawingTarget(cbuffer);
    
    win->Clear(EagleColor(0,0,0,255));
 
@@ -68,12 +68,12 @@ void Game::DrawGame() {
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_ZERO);
    
    /// Copy collision buffer to display
-   win->Draw(&cbuffer , 0 , 0);
+   win->Draw(cbuffer , 0 , 0);
 
    /// Multiply blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_DEST_COLOR , ALLEGRO_ZERO);
 
-   win->DrawStretchedRegion(&bg , 0 , 0 , bg.W() , bg.H() , 0 , 0 , sw , sh);
+   win->DrawStretchedRegion(bg , 0 , 0 , bg->W() , bg->H() , 0 , 0 , sw , sh);
          
    /// Pre multiplied alpha blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_INVERSE_ALPHA);
@@ -226,11 +226,11 @@ Game::Game(ConfigFile* configfile) :
    cities(),
    citystr(""),
    city(0),
-   cbuffer(sw,sh),
-   bg("Data/Images/CloudySky.png"),
-   nopointer(nopointer_file),
-   okpointer(okpointer_file),
-   pointer(&nopointer),
+   cbuffer(dynamic_cast<Allegro5Image*>(win->CreateImage(sw,sh,VIDEO_IMAGE,"CollisionBuffer"))),
+   bg(dynamic_cast<Allegro5Image*>(win->LoadImageFromFile("Data/Images/CloudySky.png"))),
+   nopointer(dynamic_cast<Allegro5Image*>(win->LoadImageFromFile(nopointer_file))),
+   okpointer(dynamic_cast<Allegro5Image*>(win->LoadImageFromFile(okpointer_file))),
+   pointer(nopointer),
    state(INTRO),
    difficulty(),
    status(0),
@@ -256,16 +256,17 @@ Game::Game(ConfigFile* configfile) :
    }
    
    SetupCities(sw , sh);
-   if (!cbuffer.Valid()) {
+
+   if (!cbuffer->Valid()) {
       throw EagleException("Failed to allocate cbuffer!\n");
    }
-   if (!bg.Valid()) {
+   if (!bg->Valid()) {
       throw EagleException("Failed to load background.\n");
    }
-   if (!okpointer.Valid()) {
+   if (!okpointer->Valid()) {
       throw EagleException(StringPrintF("Failed to load okay pointer (%s)!\n" , okpointer_file.c_str()));
    }
-   if (!nopointer.Valid()) {
+   if (!nopointer->Valid()) {
       throw EagleException(StringPrintF("Failed to load no pointer (%s)!\n" , nopointer_file.c_str()));
    }
    
@@ -274,8 +275,8 @@ Game::Game(ConfigFile* configfile) :
    enemy = new EnemyAI;
    player = new PlayerAI;
    
-   ConvertMaskColorToAlphaZero(&okpointer , EagleColor(255,0,255,255));
-   ConvertMaskColorToAlphaZero(&nopointer , EagleColor(255,0,255,255));
+   ConvertMaskColorToAlphaZero(okpointer , EagleColor(255,0,255,255));
+   ConvertMaskColorToAlphaZero(nopointer , EagleColor(255,0,255,255));
    
    Seed(gameconfig.GetSeed());
 }
@@ -298,6 +299,14 @@ void Game::Free() {
       player = 0;
    }
    FreeCities();
+   win->FreeImage(bg);
+   win->FreeImage(cbuffer);
+   win->FreeImage(okpointer);
+   win->FreeImage(nopointer);
+   bg = 0;
+   cbuffer = 0;
+   okpointer = 0;
+   nopointer = 0;
 }
 
 
@@ -676,10 +685,10 @@ STATE Game::CheckInputs() {
          enemy->CheckInputs();
          player->CheckInputs();
          if (player->MissilesReady()) {
-            pointer = &okpointer;
+            pointer = okpointer;
          }
          else {
-            pointer = &nopointer;
+            pointer = nopointer;
          }
          break;
       case WIN :

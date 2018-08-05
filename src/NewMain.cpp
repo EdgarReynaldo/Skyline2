@@ -11,9 +11,6 @@
 #include "SoundMan.hpp"
 
 
-#warning TODO for SKYLINE - draw full city behind destroyed city, tinted the same color as the damage monitor
-
-
 #include "physfs.h"
 
 

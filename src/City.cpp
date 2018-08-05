@@ -10,8 +10,8 @@
 City::City(string name , string path , int screenw , int screenh) :
 //   BitmapHandler(const char* filepath , RGB* pal , BMP_MEM_TYPE bmp_mem_type , BMP_DRAW_TYPE bmp_draw_type ,
 //                  bool load_now , ResourceRegistry* reg = &resource_registry);
-   original(win , string("") + "City::original - " + path),
-   workingcopy(win , string("") + "City::workingcopy - " + path),
+   original(string("") + "City::original - " + path),
+   workingcopy(string("") + "City::workingcopy - " + path),
    city(name),
    x(0),
    y(0),

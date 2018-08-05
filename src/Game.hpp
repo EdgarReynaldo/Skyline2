@@ -38,11 +38,12 @@ private :
    string citystr;
    City* city;
 
-   Allegro5Image cbuffer;
-   Allegro5Image bg;
-   Allegro5Image nopointer;
-   Allegro5Image okpointer;
-   Allegro5Image* pointer;
+   Allegro5Image* cbuffer;
+   Allegro5Image* bg;
+   Allegro5Image* nopointer;
+   Allegro5Image* okpointer;
+
+   Allegro5Image* pointer;/// reference only
 
    STATE state;
    DIFFICULTY difficulty[NUM_GAME_SETTINGS];

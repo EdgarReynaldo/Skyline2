@@ -192,6 +192,8 @@
 		<Unit filename="src/Shields.hpp" />
 		<Unit filename="src/SoundLibrary.cpp" />
 		<Unit filename="src/SoundLibrary.hpp" />
+		<Unit filename="src/SoundMan.cpp" />
+		<Unit filename="src/SoundMan.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
