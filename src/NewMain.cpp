@@ -1,5 +1,6 @@
 
 
+#include "physfs.h"
 
 #include "Eagle.hpp"
 
@@ -11,12 +12,8 @@
 #include "SoundMan.hpp"
 
 
-#include "physfs.h"
 
-
-
-
-int main(int argc , char** argv) {
+int skymain(int argc , char** argv) {
    
    (void)argc;
    (void)argv;
@@ -59,7 +56,7 @@ int main(int argc , char** argv) {
       
    }
    
-   if (entrysid == BADSOUNDID || explodesid == BADSOUNDID) {
+   if (entrysid == BADSOUNDID || explodesid == BADSOUNDID || launchsid == BADSOUNDID) {
       EagleWarn() << "Failed to load needed sound." << std::endl;
    }
    
@@ -127,7 +124,7 @@ int main(int argc , char** argv) {
 
 
 
-int dirmain(int argc , char** argv) {
+int main(int argc , char** argv) {
    
    std::string dir = "";
    if (argc > 1) {
@@ -138,7 +135,7 @@ int dirmain(int argc , char** argv) {
    
    EAGLE_ASSERT(sys);
    
-   if (sys->Initialize(EAGLE_GENERAL_SETUP) != EAGLE_GENERAL_SETUP) {
+   if (sys->Initialize(EAGLE_FULL_SETUP) != EAGLE_FULL_SETUP) {
       EagleLog() << "Failed to initialize eagle.";
    }
    

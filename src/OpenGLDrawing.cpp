@@ -42,7 +42,7 @@ void DrawJet(Pos2D p , double theta , EagleColor icol , EagleColor ocol) {
       double t = (d+1)*M_PI/180.0;
       double s = sin(t);
       double rad = JET_LENGTH*(s*s*s*s*s);
-      Pos2D p2 = Vector(p , rad , theta + t);
+      Pos2D p2 = VectorD(p , rad , theta + t);
       glVertex2d(p2.X() , p2.Y());
    }
    glEnd();

@@ -153,8 +153,8 @@ void Shield::Draw() {
    glColor4d(1.0 , 1.0 , 1.0 , 1.0);
    for (int i = 0 ; i < NSEGMENTS + 1 ; ++i) {
       double theta = dtheta*i;
-      Pos2D outer = Vector(Pos2D(cx,cy) , orad , thetastart + theta);
-      Pos2D inner = Vector(Pos2D(cx,cy) , irad , thetastart + theta);
+      Pos2D outer = VectorD(Pos2D(cx,cy) , orad , thetastart + theta);
+      Pos2D inner = VectorD(Pos2D(cx,cy) , irad , thetastart + theta);
       glColor4f(ocol.fR() , ocol.fG() , ocol.fB() , ocol.fA());
       glVertex2d(outer.X() , outer.Y());
       glColor4f(icol.fR() , icol.fG() , icol.fB() , icol.fA());

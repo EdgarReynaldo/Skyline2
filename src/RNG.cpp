@@ -57,12 +57,12 @@ unsigned int Rand1toN(unsigned int n) {
 
 
 
-float Percent() {
-   return rng.Percent();
+float FRNGPercent() {
+   return rng.DPercent();
 }
 
 
 
-double DPercent() {
+double DRNGPercent() {
    return rng.DPercent();
 }

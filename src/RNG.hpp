@@ -22,8 +22,8 @@ double DRand();
 unsigned int Rand0toNM1(unsigned int n);
 unsigned int Rand1toN(unsigned int n);
 
-float Percent();
-double DPercent();
+float FRNGPercent();
+double DRNGPercent();
 
 
 

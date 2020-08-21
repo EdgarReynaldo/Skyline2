@@ -73,7 +73,7 @@ void Game::DrawGame() {
    /// Multiply blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_DEST_COLOR , ALLEGRO_ZERO);
 
-   win->DrawStretchedRegion(bg , 0 , 0 , bg->W() , bg->H() , 0 , 0 , sw , sh);
+   win->DrawStretchedRegion(bg , Rectangle(0 , 0 , bg->W() , bg->H()) , Rectangle(0 , 0 , sw , sh) , 0);
          
    /// Pre multiplied alpha blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_INVERSE_ALPHA);

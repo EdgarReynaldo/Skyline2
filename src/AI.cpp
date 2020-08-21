@@ -104,7 +104,7 @@ void EnemyAI::HandleEvent(EagleEvent ee) {
 void EnemyAI::CheckInputs() {
    if (mb) {
       if (mb->Ready()) {
-         mb->Launch(sw*Percent() , sh);
+         mb->Launch(sw*DRNGPercent() , sh);
       }
    }
 }

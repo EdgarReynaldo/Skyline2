@@ -264,8 +264,8 @@ void SpreadMissileLauncher::LaunchSpread(int nmissiles , double arc , Pos2D dest
    Pos2D radius = destpos - lpos;
    double r = radius.Length();
    for (int i = 1 ; i < NM + 1 ; ++i) {
-      Pos2D dp1 = Vector(lpos , r , theta + i*dtheta);
-      Pos2D dp2 = Vector(lpos , r , theta - i*dtheta);
+      Pos2D dp1 = VectorD(lpos , r , theta + i*dtheta);
+      Pos2D dp2 = VectorD(lpos , r , theta - i*dtheta);
       MissileLauncher::Launch(dp1 , MISSILEDATA(mspeed , etime , mradius));
       MissileLauncher::Launch(dp2 , MISSILEDATA(mspeed , etime , mradius));
    }
