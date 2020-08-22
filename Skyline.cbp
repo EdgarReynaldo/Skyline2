@@ -8,7 +8,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../cbbuild/bin/skyline2d" prefix_auto="1" extension_auto="1" />
+				<Option output="e:/usr/bin/skyline2GD" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../cbbuild/bin/" />
 				<Option object_output="obj/Dynamic/Debug/" />
 				<Option type="1" />
@@ -20,18 +20,21 @@
 					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
 				</Compiler>
 				<Linker>
-					<Add option="-leagle_a5_debug.dll" />
-					<Add option="-leagle_debug.dll" />
+					<Add option="-lEagleA5DebugShared" />
+					<Add option="-lEagleDebugShared" />
 					<Add option="-lallegro_monolith-debug.dll" />
-					<Add option="-lphysfs.dll" />
+					<Add option="-lphysfs" />
+					<Add option="-lglu32" />
+					<Add option="-lopengl32" />
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="../cbbuild/bin/skyline2" prefix_auto="1" extension_auto="1" />
+				<Option output="e:/usr/bin/skyline2G" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../cbbuild/bin/" />
 				<Option object_output="obj/Dynamic/Release/" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-DDEBUG" />
@@ -39,18 +42,18 @@
 					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
 				</Compiler>
 				<Linker>
-					<Add option="-leagle_a5.dll" />
-					<Add option="-leagle.dll" />
+					<Add option="-lEagleA5Shared" />
+					<Add option="-lEagleShared" />
 					<Add option="-lallegro_monolith.dll" />
-					<Add option="-lphysfs.dll" />
 				</Linker>
 			</Target>
 			<Target title="StaticDebug">
-				<Option output="../cbbuild/bin/skyline2ds" prefix_auto="1" extension_auto="1" />
+				<Option output="e:/usr/bin/skyline2GDS" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../cbbuild/bin/" />
 				<Option object_output="obj/Static/Debug/" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DALLEGRO_STATICLINK" />
@@ -61,10 +64,12 @@
 					<Add option="-static-libstdc++" />
 					<Add option="-static-libgcc" />
 					<Add option="-static" />
-					<Add option="-leagle_a5_debug-static" />
-					<Add option="-leagle_debug-static" />
+					<Add option="-lEagleA5Debug" />
+					<Add option="-lEagleDebug" />
 					<Add option="-lallegro_monolith-debug-static" />
+					<Add option="-static" />
 					<Add option="-ljpeg" />
+					<Add option="-lwebp" />
 					<Add option="-ldumb" />
 					<Add option="-lFLAC" />
 					<Add option="-lfreetype" />
@@ -93,24 +98,23 @@
 				</Linker>
 			</Target>
 			<Target title="StaticRelease">
-				<Option output="../cbbuild/bin/skyline2s" prefix_auto="1" extension_auto="1" />
+				<Option output="e:/usr/bin/skyline2GS" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../cbbuild/bin/" />
 				<Option object_output="obj/Static/Release/" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-DALLEGRO_STATICLINK" />
 				</Compiler>
 				<Linker>
-					<Add option="-s" />
-					<Add option="-static-libstdc++" />
-					<Add option="-static-libgcc" />
-					<Add option="-static" />
-					<Add option="-leagle_a5-static" />
-					<Add option="-leagle-static" />
+					<Add option="-lEagleA5" />
+					<Add option="-lEagle" />
 					<Add option="-lallegro_monolith-static" />
+					<Add option="-static" />
 					<Add option="-ljpeg" />
+					<Add option="-lwebp" />
 					<Add option="-ldumb" />
 					<Add option="-lFLAC" />
 					<Add option="-lfreetype" />
@@ -142,16 +146,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add directory="../include" />
-			<Add directory="../Allegro5/include" />
+			<Add directory="E:/usr/libs/Allegro52X/install/include" />
+			<Add directory="E:/usr/include" />
 		</Compiler>
 		<Linker>
 			<Add option="-lopengl32" />
 			<Add option="-lglu32" />
-			<Add directory="../cbbuild/lib" />
-			<Add directory="../Allegro5/lib" />
+			<Add directory="E:/usr/libs/Allegro52X/install/lib" />
+			<Add directory="E:/usr/lib" />
 		</Linker>
 		<Unit filename="../cbbuild/bin/Data/Config.txt" />
 		<Unit filename="../cbbuild/bin/Data/ExampleConfig.txt" />
+		<Unit filename="E:/LIBS/LIBS81Redistro/Allegro525_GCC81_MinGW_W64_i686_posix_dwarf/A5 Static Link Libraries.txt" />
 		<Unit filename="cbbuild/bin/Data/Cities.txt" />
 		<Unit filename="src/AI.cpp" />
 		<Unit filename="src/AI.hpp" />
@@ -194,10 +200,6 @@
 		<Unit filename="src/SoundLibrary.hpp" />
 		<Unit filename="src/SoundMan.cpp" />
 		<Unit filename="src/SoundMan.hpp" />
-		<Extensions>
-			<code_completion />
-			<debugger />
-			<envvars />
-		</Extensions>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
