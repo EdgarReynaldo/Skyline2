@@ -13,7 +13,7 @@
 
 
 
-int skymain(int argc , char** argv) {
+int main(int argc , char** argv) {
    
    (void)argc;
    (void)argv;
@@ -124,7 +124,7 @@ int skymain(int argc , char** argv) {
 
 
 
-int main(int argc , char** argv) {
+int dmain(int argc , char** argv) {
    
    std::string dir = "";
    if (argc > 1) {
