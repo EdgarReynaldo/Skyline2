@@ -17,6 +17,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DDEBUG" />
+					<Add option="-DLOG" />
 					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
 				</Compiler>
 				<Linker>
@@ -67,7 +68,6 @@
 					<Add option="-lEagleA5Debug" />
 					<Add option="-lEagleDebug" />
 					<Add option="-lallegro_monolith-debug-static" />
-					<Add option="-static" />
 					<Add option="-ljpeg" />
 					<Add option="-lwebp" />
 					<Add option="-ldumb" />
@@ -145,7 +145,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="../include" />
 			<Add directory="E:/usr/libs/Allegro52X/install/include" />
 			<Add directory="E:/usr/include" />
 		</Compiler>
@@ -157,7 +156,6 @@
 		</Linker>
 		<Unit filename="../cbbuild/bin/Data/Config.txt" />
 		<Unit filename="../cbbuild/bin/Data/ExampleConfig.txt" />
-		<Unit filename="E:/LIBS/LIBS81Redistro/Allegro525_GCC81_MinGW_W64_i686_posix_dwarf/A5 Static Link Libraries.txt" />
 		<Unit filename="cbbuild/bin/Data/Cities.txt" />
 		<Unit filename="src/AI.cpp" />
 		<Unit filename="src/AI.hpp" />
