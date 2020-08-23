@@ -466,7 +466,7 @@ void Game::Display() {
             };
             int lineheight = menu_font->Height() + 10;
             for (int i = 0 ; i < 5 ; ++i) {
-               win->DrawTextString(menu_font , text[i] , sw/4.0 , sh/2 - 40 + i*lineheight , colors[i] , HALIGN_LEFT , VALIGN_CENTER);
+               win->DrawTextString(menu_font , text[i] , sw/4.0 , sh/2 - 40 + i*lineheight , colors[i]*((i - 1) == seldiff?1.0f:0.5f)  , HALIGN_LEFT , VALIGN_CENTER);
             }
             int l = 0;
             for (it = cities.begin() ; it != cities.end() ; ++it , ++l) {

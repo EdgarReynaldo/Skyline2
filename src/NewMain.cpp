@@ -12,12 +12,16 @@
 #include "SoundMan.hpp"
 
 
+void AllegroLog(const char* text) {EagleInfo() << text;}
+
 
 int main(int argc , char** argv) {
    
    (void)argc;
    (void)argv;
    
+   al_register_trace_handler(AllegroLog);
+
    EnableLog();
    
    if (!SendOutputToFile("SkylineLog.txt" , "Skyline log:\n" , false)) {
@@ -124,6 +128,7 @@ int main(int argc , char** argv) {
 
 
 
+
 int dmain(int argc , char** argv) {
    
    std::string dir = "";
@@ -131,6 +136,8 @@ int dmain(int argc , char** argv) {
       dir = argv[1];
    }
    
+   al_register_trace_handler(AllegroLog);
+
    Allegro5System* sys = GetAllegro5System();
    
    EAGLE_ASSERT(sys);
