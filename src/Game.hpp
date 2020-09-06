@@ -39,6 +39,7 @@ private :
    City* city;
 
    Allegro5Image* cbuffer;
+   Allegro5Image* bgoriginal;
    Allegro5Image* bg;
    Allegro5Image* nopointer;
    Allegro5Image* okpointer;

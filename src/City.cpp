@@ -22,26 +22,33 @@ City::City(string name , string path , int screenw , int screenh) :
    }
    ConvertMaskColorToAlphaZero(&original , EagleColor(255,0,255,255));
 
-   /// Scale up the city to fit the background
-   Rectangle scaled = Rectangle(0 , 0 , original.W() , original.H());
-   scaled.Scale((double)sw/original.W());
-   if (!workingcopy.Allocate(scaled.W() , scaled.H())) {
-      throw EagleException("Failed to allocate working copy.\n");
+   workingcopy.Allocate(win->Width() , win->Height());
+   
+   double hscale = win->Width()/(double)original.W();
+   double vscale = win->Height()/(double)original.H();
+   double scale = hscale;
+   if (vscale < hscale) {
+      scale = vscale;
    }
-///   scaled.SetPos(0 , sh - scaled.H());
+
+   /// Hcenter
+   x = 0;
+   /// Bottom align
+   y = win->Height() - original.H()*scale;
+   
+   /// Scale up the city to fit the background
    win->SetDrawingTarget(&workingcopy);
    win->Clear(EagleColor(0,0,0,0));
-   win->DrawStretchedRegion(&original , Rectangle(0,0,original.W() , original.H()) , scaled);
+   win->DrawImageFit(&original , Rectangle(0,0,win->Width() , win->Height()) , EagleColor(255,255,255) , HALIGN_CENTER , VALIGN_BOTTOM);
 
-   original.Allocate(scaled.W() , scaled.H());
+   original.Allocate(win->Width() , win->Height());
    /// Draw the scaled city on the original
    win->SetDrawingTarget(&original);
    win->Clear(EagleColor(0,0,0,0));
    win->SetCopyBlender();
    win->Draw(&workingcopy , 0 , 0);
    win->RestoreLastBlendingState();
-   x = (screenw - original.W())/2;
-   y = screenh - original.H();
+   
    
 }
 
@@ -106,9 +113,6 @@ bool City::Hit(int tx , int ty) {
    int rx = tx - x;
    int ry = ty - y;
    bool hit = hitmask.Hit(rx,ry);
-   if (hit) {
-      EagleLog() << StringPrintF("City hit at %d,%d\n" , rx , ry) << std::endl;
-   }
    return hit;
 }
 

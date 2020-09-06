@@ -73,7 +73,7 @@ void Game::DrawGame() {
    /// Multiply blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_DEST_COLOR , ALLEGRO_ZERO);
 
-   win->DrawStretchedRegion(bg , Rectangle(0 , 0 , bg->W() , bg->H()) , Rectangle(0 , 0 , sw , sh) , 0);
+   win->Draw(bg , 0 , 0);
          
    /// Pre multiplied alpha blender
    al_set_blender(ALLEGRO_ADD , ALLEGRO_ONE , ALLEGRO_INVERSE_ALPHA);
@@ -227,7 +227,8 @@ Game::Game(ConfigFile* configfile) :
    citystr(""),
    city(0),
    cbuffer(dynamic_cast<Allegro5Image*>(win->CreateImage(sw,sh,VIDEO_IMAGE,"CollisionBuffer"))),
-   bg(dynamic_cast<Allegro5Image*>(win->LoadImageFromFile("Data/Images/CloudySky.png"))),
+   bgoriginal(dynamic_cast<Allegro5Image*>(win->LoadImageFromFile("Data/Images/CloudySky.png"))),
+   bg(0),
    nopointer(dynamic_cast<Allegro5Image*>(win->LoadImageFromFile(nopointer_file))),
    okpointer(dynamic_cast<Allegro5Image*>(win->LoadImageFromFile(okpointer_file))),
    pointer(nopointer),
@@ -255,12 +256,12 @@ Game::Game(ConfigFile* configfile) :
       throw EagleException("Failed to load config!\n");
    }
    
-   SetupCities(sw , sh);
+   SetupCities(win->Width() , win->Height());
 
    if (!cbuffer->Valid()) {
       throw EagleException("Failed to allocate cbuffer!\n");
    }
-   if (!bg->Valid()) {
+   if (!bgoriginal->Valid()) {
       throw EagleException("Failed to load background.\n");
    }
    if (!okpointer->Valid()) {
@@ -277,6 +278,13 @@ Game::Game(ConfigFile* configfile) :
    
    ConvertMaskColorToAlphaZero(okpointer , EagleColor(255,0,255,255));
    ConvertMaskColorToAlphaZero(nopointer , EagleColor(255,0,255,255));
+   
+   bg = dynamic_cast<Allegro5Image*>(win->CreateImage(win->Width() , win->Height() , VIDEO_IMAGE , "City::BG"));
+   win->SetDrawingTarget(bg);
+   win->Clear(EagleColor(0,0,0,0));
+   win->SetCopyBlender();
+   win->DrawStretched(bgoriginal , Rectangle(0,0,win->Width(),win->Height()));
+   win->RestoreLastBlendingState();
    
    Seed(gameconfig.GetSeed());
 }
@@ -299,10 +307,12 @@ void Game::Free() {
       player = 0;
    }
    FreeCities();
+   win->FreeImage(bgoriginal);
    win->FreeImage(bg);
    win->FreeImage(cbuffer);
    win->FreeImage(okpointer);
    win->FreeImage(nopointer);
+   bgoriginal = 0;
    bg = 0;
    cbuffer = 0;
    okpointer = 0;
