@@ -61,12 +61,10 @@
 					<Add option="-DEAGLE_ASSERT_EXCEPTION" />
 				</Compiler>
 				<Linker>
-					<Add option="-static-libstdc++" />
-					<Add option="-static-libgcc" />
-					<Add option="-static" />
 					<Add option="-lEagleA5Debug" />
 					<Add option="-lEagleDebug" />
 					<Add option="-lallegro_monolith-debug-static" />
+					<Add option="-static" />
 					<Add option="-ljpeg" />
 					<Add option="-lwebp" />
 					<Add option="-ldumb" />
@@ -94,11 +92,13 @@
 					<Add option="-ladvapi32" />
 					<Add option="-lws2_32" />
 					<Add option="-lshlwapi" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
 				</Linker>
 			</Target>
 			<Target title="StaticRelease">
 				<Option output="e:/usr/bin/skyline2GS" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../cbbuild/bin/" />
+				<Option working_dir="e:/usr/bin" />
 				<Option object_output="obj/Static/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -143,13 +143,11 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="E:/usr/libs/Allegro52X/install/include" />
 			<Add directory="E:/usr/include" />
 		</Compiler>
 		<Linker>
 			<Add option="-lopengl32" />
 			<Add option="-lglu32" />
-			<Add directory="E:/usr/libs/Allegro52X/install/lib" />
 			<Add directory="E:/usr/lib" />
 		</Linker>
 		<Unit filename="CMakeLists.txt" />
