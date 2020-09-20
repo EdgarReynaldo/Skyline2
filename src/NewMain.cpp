@@ -89,7 +89,7 @@ int main(int argc , char** argv) {
    
    t = sys->GetSystemTimer();
    
-   f = win->LoadFont("Verdana.ttf" , -36);
+   f = win->LoadFont("Data/Fonts/Verdana.ttf" , -36);
    
    int fsz = 32;
    try {

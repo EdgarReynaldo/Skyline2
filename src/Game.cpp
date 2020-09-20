@@ -257,7 +257,7 @@ Game::Game(ConfigFile* configfile) :
    }
    
    SetupCities(win->Width() , win->Height());
-
+   city = cities.begin()->second;
    if (!cbuffer->Valid()) {
       throw EagleException("Failed to allocate cbuffer!\n");
    }
