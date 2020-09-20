@@ -1,3 +1,5 @@
 New York,Data/Images/NewYorkSkyline.bmp
 Chicago,Data/Images/ChicagoSkyline.bmp
 Houston,Data/Images/HoustonSkyline.bmp
+LibertyNYC2,Data/Images/LibertyNYC2.png
+Miami,Data/Images/Miami2.png

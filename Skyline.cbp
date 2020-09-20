@@ -9,7 +9,7 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="e:/usr/bin/skyline2GD" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../cbbuild/bin/" />
+				<Option working_dir="e:/usr/bin" />
 				<Option object_output="obj/Dynamic/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -31,11 +31,10 @@
 			</Target>
 			<Target title="Release">
 				<Option output="e:/usr/bin/skyline2G" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../cbbuild/bin/" />
+				<Option working_dir="e:/usr/bin" />
 				<Option object_output="obj/Dynamic/Release/" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-DDEBUG" />
@@ -50,7 +49,7 @@
 			</Target>
 			<Target title="StaticDebug">
 				<Option output="e:/usr/bin/skyline2GDS" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="../cbbuild/bin/" />
+				<Option working_dir="e:/usr/bin" />
 				<Option object_output="obj/Static/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -101,9 +100,8 @@
 				<Option output="e:/usr/bin/skyline2GS" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../cbbuild/bin/" />
 				<Option object_output="obj/Static/Release/" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-DALLEGRO_STATICLINK" />
@@ -154,9 +152,11 @@
 			<Add directory="E:/usr/libs/Allegro52X/install/lib" />
 			<Add directory="E:/usr/lib" />
 		</Linker>
-		<Unit filename="../cbbuild/bin/Data/Config.txt" />
-		<Unit filename="../cbbuild/bin/Data/ExampleConfig.txt" />
+		<Unit filename="CMakeLists.txt" />
 		<Unit filename="cbbuild/bin/Data/Cities.txt" />
+		<Unit filename="cbbuild/bin/Data/Config.txt" />
+		<Unit filename="cbbuild/bin/Data/Config2.txt" />
+		<Unit filename="cbbuild/bin/Data/ExampleConfig.txt" />
 		<Unit filename="src/AI.cpp" />
 		<Unit filename="src/AI.hpp" />
 		<Unit filename="src/Blend.cpp" />

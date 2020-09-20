@@ -1,0 +1,20 @@
+[Graphics]
+fullscreen = false
+screenw = 1200
+screenh = 900
+
+[Cities]
+Chicago = Data/Images/Chicago2.png
+Houston = Data/Images/HoustonSkyline.png
+LadyLiberty = Data/Images/LibertyNYC2.png
+Miami = Data/Images/Miami2.png
+Seattle = Data/Images/Seattle1.png
+
+[SFX]
+Entry = Data/Sounds/MissileEntry.ogg
+Explode = Data/Sounds/Explode.ogg
+Launch = Data/Sounds/Oops.ogg
+
+[Menu]
+Font = Data/Fonts/miriam.ttf
+Fontsize = 36
