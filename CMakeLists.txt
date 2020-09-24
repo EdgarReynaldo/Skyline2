@@ -13,8 +13,8 @@ file(GLOB_RECURSE OBJSRCS "src/*.cpp")
 
 add_executable(SKYLINE ${OBJSRCS})
 
-target_include_directories(SKYLINE PUBLIC "/usr/include")
-target_link_directories(SKYLINE PUBLIC "/usr/lib")
+target_include_directories(SKYLINE PUBLIC "/usr/include" "/usr/local/include")
+target_link_directories(SKYLINE PUBLIC "/usr/lib" "/usr/local/lib")
 
 target_compile_options(SKYLINE PUBLIC "-Wall" "-Wextra" "-Wshadow")
 target_compile_definitions(SKYLINE PUBLIC "-DALLEGRO_STATICLINK")
