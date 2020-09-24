@@ -26,7 +26,7 @@ const float SPT = 1.0f/float(FPS);
 
    static DIFFICULTY seldiff = EASY;
    static int selcity = 0;
-   static int index = 0;
+   static int selindex = 0;
    static const int diffkeys[4] = {EAGLE_KEY_A , EAGLE_KEY_B , EAGLE_KEY_C , EAGLE_KEY_D};
 
 
@@ -482,7 +482,7 @@ void Game::Display() {
             for (it = cities.begin() ; it != cities.end() ; ++it , ++l) {
                win->DrawTextString(menu_font , StringPrintF("%i : %s" , l + 1 , it->first.c_str()) ,
                                    3*sw/4.0 , sh/2 - 40 + l*lineheight , 
-                                   (l == index)?EagleColor(255,255,255):EagleColor(64,64,64) , HALIGN_RIGHT , VALIGN_CENTER);
+                                   (l == selindex)?EagleColor(255,255,255):EagleColor(64,64,64) , HALIGN_RIGHT , VALIGN_CENTER);
             }
             
             win->DrawTextString(menu_font , "ENTER to play" , sw/2.0 , 3*sh/4.0 , EagleColor(255,255,255) , HALIGN_CENTER , VALIGN_TOP);
@@ -520,8 +520,8 @@ STATE Game::Update(double dt) {
             state = CheckGameState();
 
             ProgramTime t2 = ProgramTime::Now();
-            double dt = t2 - t1;
-            (void)dt;
+//            double dt = t2 - t1;
+//            (void)dt;
 ///            EagleLog() << StringPrintF("Update took %2.8lf seconds.\n" , dt);
          }
          break;
@@ -555,10 +555,10 @@ STATE Game::HandleEvent(EagleEvent ee) {
             if (selcity >= (int)cities.size()) {selcity = (int)cities.size() - 1;}
             EAGLE_ASSERT(selcity >= 0);
             
-            index = 0;
-            while (it != cities.end() && index < selcity) {
+            selindex = 0;
+            while (it != cities.end() && selindex < selcity) {
                ++it;
-               ++index;
+               ++selindex;
             }
             city = cities[it->first];
          }
