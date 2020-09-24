@@ -20,7 +20,7 @@ int main(int argc , char** argv) {
    (void)argc;
    (void)argv;
    
-   al_register_trace_handler(AllegroLog);
+//   al_register_trace_handler(AllegroLog);
 
    EnableLog();
    
